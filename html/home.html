@@ -1,12 +1,94 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
     <title>首页</title>
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link rel="stylesheet" href="../css/style.css">
+    <style>
+
+    </style>
 </head>
+
 <body>
-    还在开发中......
+    <div id="app">
+        <div class="top">
+            <el-row>
+                <el-col :span="4">
+                    <div class="grid-content "></div>
+                </el-col>
+                <el-col :span="16">
+                    <div class="grid-content">
+                        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal"
+                            @select="handleSelect">
+                            <el-menu-item index="1">网站首页</el-menu-item>
+                            <el-submenu index="2">
+                                <template slot="title">技术栈</template>
+                                <el-menu-item index="2-1">vue</el-menu-item>
+                                <el-menu-item index="2-2">react</el-menu-item>
+                                <el-menu-item index="2-3">uniapp</el-menu-item>
+                                <el-menu-item index="2-4">Android</el-menu-item>
+                            </el-submenu>
+                            <el-menu-item index="3">资源下载</el-menu-item>
+                            <el-menu-item index="4">小工具</el-menu-item>
+                            <!-- <el-menu-item index="4"><a href="https://blog.csdn.net/m0_46361270?type=blog"
+                                target="_blank">我的博客</a></el-menu-item> -->
+                        </el-menu>
+                    </div>
+                </el-col>
+                <el-col :span="4">
+                    <div class="grid-content "></div>
+                </el-col>
+            </el-row>
+            <el-row>
+                <el-col :span="4">
+                    <div class="grid-content "></div>
+                </el-col>
+                <el-col :span="16">
+                    <div class="grid-content">
+                        <template v-if="activeIndex==1">
+                            <el-empty :image-size="200"></el-empty>
+                        </template>
+                        <template v-if="activeIndex==3">
+                            <div id="page_source">
+                                <el-empty :image-size="200"></el-empty>
+
+                                <!-- <iframe src="../html/source.html" width="800px" height="500px" frameborder="0"></iframe> -->
+                            </div>
+                        </template>
+                    </div>
+                </el-col>
+                <el-col :span="4">
+                    <div class="grid-content"></div>
+                </el-col>
+            </el-row>
+        </div>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.0-beta.5/vue.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.9/index.js"></script>
+    <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g6-3.7.1/dist/g6.min.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            // components: {
+            //     'source': 'url:../vue/source.vue'
+            // },
+            data() {
+                return {
+                    activeIndex: '1',
+                    url: "../html/source.html"
+                }
+            },
+            methods: {
+                handleSelect(key, keyPath) {
+                    this.activeIndex = key;
+                }
+            },
+            mounted() {
+            }
+        })
+    </script>
 </body>
+
 </html>
