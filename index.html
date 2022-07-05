@@ -2,306 +2,49 @@
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8" />
-    <title>图谱生成器</title>
-    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
-    <style>
-        .xt {
-            display: flex;
-            justify-content: space-between;
-        }
-
-        .case {
-            width: 50rem;
-            height: 31.25rem;
-        }
-
-        #mountNode {
-            max-width: 500px;
-            display: flex;
-            flex-wrap: wrap;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <title>登录</title>
+  <link rel="stylesheet" href="css/index/login.css">
 </head>
 
 <body>
-    <div id="app">
-        <div class="xt">
-            <div class="case">
-                <el-form ref="form" :model="form" label-width="6.25rem">
-                    <el-form-item label="图谱名称：">
-                        <el-input v-model="form.name"></el-input>
-                    </el-form-item>
-                    <el-form-item label="图谱布局：">
-                        <el-select v-model="form.layout" placeholder="请选择布局方式">
-                            <el-option label="辐射布局" value="radial"></el-option>
-                            <el-option label="树图布局" value="dendrogram"></el-option>
-                        </el-select>
-                    </el-form-item>
-                    <el-form-item label="数据配置：">
-                        <el-transfer v-model="value" :data="data" :titles="titles"></el-transfer>
-                    </el-form-item>
-                    <el-form-item label="防止重叠：">
-                        <el-switch v-model="form.preventOverlap"></el-switch>
-                    </el-form-item>
-                    <el-form-item label="图谱下载：">
-                        <el-radio-group v-model="form.type">
-                            <el-radio label="image/png"></el-radio>
-                            <el-radio label="image/jpeg"></el-radio>
-                            <el-radio label="image/webp"></el-radio>
-                            <el-radio label="image/bmp"></el-radio>
-                        </el-radio-group>
-                    </el-form-item>
-                    <el-form-item>
-                        <el-button type="primary" @click="onSubmit">立即创建</el-button>
-                        <el-button type="success" @click="exportVal">导出图片</el-button>
-                    </el-form-item>
-                </el-form>
-            </div>
-            <div id="mountNode"></div>
-        </div>
-    </div>
-    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.0-beta.5/vue.min.js"></script>
-    <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.9/index.js"></script>
-    <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g6-3.7.1/dist/g6.min.js"></script>
-
-    <script>
-        new Vue({
-            el: '#app',
-            data() {
-                const generateData = _ => {
-                    const data = [];
-                    for (let i = 1; i <= 15; i++) {
-                        data.push({
-                            key: i,
-                            id: `工种${i}`,
-                            x: 200,
-                            y: 300,
-                            label: `工种${i}`,
-                            type: 'circle',//元素形状
-                            size: 40,//元素大小
-                            labelCfg: {//标签配置
-                                style: {//样式
-                                    fontSize: 11
-                                }
-                            },
-                        });
-                    }
-                    return data;
-                };
-                return {
-                    init: false,
-                    data: generateData(),
-                    value: [],
-                    titles: ['总数居', '辐射集'],
-                    graph: {},
-                    treeGraph:{},
-                    form: {
-                        name: '',
-                        layout: '',
-                        preventOverlap: false,
-                        type: 'image/png',
-                    },
-                    dataTreeList: [],
-                }
-            },
-            methods: {
-                onSubmit() {
-                    let _this = this;
-                    let data = [];
-                    let dataEdges = [];
-                    let dataList = {
-                        nodes: [],
-                        edges: [],
-                    }
-                    if (!_this.form.name || !_this.form.layout || _this.value.length === 0) return _this.$message({
-                        message: '请将信息补充完整',
-                        type: 'warning'
-                    });
-                    if (_this.init) _this.graph.destroy();//销毁画布
-                    for (var i in _this.data) {
-                        for (var j in _this.value) {
-                            if (_this.data[i].key === _this.value[j]) {
-                                data.push(_this.data[i])
-                            }
-                        }
-                    }
-                    for (var i in data) {
-                        if (data[i].key !== data[0].key) {
-                            dataEdges.push({ source: data[0].label, target: data[i].label })
-                        }
-                    }
-                    dataList.nodes = data;
-                    dataList.edges = dataEdges
-                    if (_this.form.layout === 'radial') {
-                        _this.radiation(dataList);
-                    } else if (_this.form.layout === 'dendrogram') {
-                        _this.tree();
-                    }
-                },
-                //  导出5图片
-                exportVal() {
-                    if (!this.init) return this.$message({
-                        message: '请先初始化图谱数据',
-                        type: 'warning'
-                    });
-                    if (this.form.layout === 'radial') {
-                        this.graph.downloadImage(this.form.name, this.form.type, '#ffffff');
-
-                    } else if (this.form.layout === 'dendrogram') {
-                        this.treeGraph.downloadImage(this.form.name, this.form.type, '#ffffff');
-                    }
-                },
-                //辐射图普 
-                radiation(dataList) {
-                    let _this = this;
-                    const graph = new G6.Graph({
-                        container: 'mountNode',
-                        width: 400,
-                        height: 400,
-                        layout: {
-                            type: _this.form.layout,
-                            center: [200, 200],     // 可选，默认为图的中心
-                            linkDistance: 50,         // 可选，边长
-                            maxIteration: 1000,       // 可选
-                            focusNode: dataList.edges[0].source,      // 可选
-                            unitRadius: 100,          // 可选
-                            preventOverlap: _this.form.preventOverlap,     // 可选，必须配合 nodeSize
-                            nodeSize: 30,             // 可选
-                            strictRadial: false,       // 可选
-                            workerEnabled: true,       // 可选，开启 web-worker
-                            preventOverlap: false,
-                        }
-                    });
-                    // 读取数据
-                    graph.data(dataList);
-                    // 渲染图
-                    graph.render();
-                    _this.graph = graph;
-                    _this.init = true;
-                },
-                //树形图谱
-                tree() {
-                    const treeGraph = new G6.TreeGraph({
-                        container: 'mountNode',
-                        width: 400,
-                        height: 400,
-                        modes: {
-                            default: [
-                                {
-                                    type: 'collapse-expand',
-                                    onChange(item, collapsed) {
-                                        const icon = item.get('group').findByClassName('collapse-icon');
-                                        if (collapsed) {
-                                            icon.attr('symbol', EXPAND_ICON);
-                                        } else {
-                                            icon.attr('symbol', COLLAPSE_ICON);
-                                        }
-                                    },
-                                },
-                                'drag-canvas',
-                                'zoom-canvas',
-                            ],
-                        },
-                        layout: {
-                            type: 'dendrogram',
-                            direction: 'LR',
-                            nodeSep: 50,
-                            rankSep: 100,
-                            radial: false,//辐射状布局
-
-                        },
-                    });
-                    treeGraph.data(this.dataTreeList);
-                    // 渲染图
-                    treeGraph.render();
-                    this.treeGraph=treeGraph;
-                    this.init=true;
-                },
-            },
-            mounted() {
-                const data = {
-                    id: 'sub1',
-                    label: "山东省",
-                    size: 40,
-                    labelCfg: {
-                        style: {
-                            fontSize: 11
-                        }
-                    },
-                    children: [
-                        {
-                            id: 'subTree1',
-                            label: "青岛市",
-                            size: 40,
-                            labelCfg: {
-                                style: {
-                                    fontSize: 11
-                                }
-                            },
-                            children: [
-                                {
-                                    id: "subtree33",
-                                    label: "市北区",
-                                    size: 40,
-                                    labelCfg: {
-                                        style: {
-                                            fontSize: 11
-                                        }
-                                    },
-                                }
-                            ]
-                        },
-                        {
-                            id: 'subTree2',
-                            label: "济南市",
-                            size: 40,
-                            labelCfg: {
-                                style: {
-                                    fontSize: 11
-                                }
-                            },
-                            children: [
-                                {
-                                    id: "subtree43",
-                                    label: "...",
-                                    size: 40,
-                                    labelCfg: {
-                                        style: {
-                                            fontSize: 11
-                                        }
-                                    },
-                                }
-                            ]
-                        },
-                        {
-                            id: 'subTree3',
-                            label: "淄博市",
-                            size: 40,
-                            labelCfg: {
-                                style: {
-                                    fontSize: 11
-                                }
-                            },
-                            children: [
-                                {
-                                    id: "subtree433",
-                                    label: "...",
-                                    size: 40,
-                                    labelCfg: {
-                                        style: {
-                                            fontSize: 11
-                                        }
-                                    },
-                                }
-                            ]
-                        }
-                    ]
-                };
-                this.dataTreeList = data;
-            }
-        })
-    </script>
+  <div class="container">
+    <div class="tit">登录</div>
+    <input type="text" placeholder="账号" id="count">
+    <input type="password" placeholder="密码" id="password">
+    <button id="login">登录</button>
+    <span>没有账号？<a href="#">去注册</a> </span>
+  </div>
+  <div class="square">
+    <ul>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+  </div>
+  <div class="circle">
+    <ul>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+  </div>
+  <script src="./js/jquery.js"></script>
+  <script>
+    $(function () {
+      $("#login").click(function () {
+        if ($("#count").val() === 'zxtss' && $("#password").val() === '123456') {
+          window.location.href = './html/home.html';
+        } else {
+          alert("账号或密码错误");
+        }
+      })
+    })
+  </script>
 </body>
 
 </html>
