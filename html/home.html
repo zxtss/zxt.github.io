@@ -7,7 +7,31 @@
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <link rel="stylesheet" href="../css/style.css">
     <style>
+        .el-card__body {
+            padding: 0;
+        }
 
+        .link {
+            line-height: 50px;
+            padding: 0 20px;
+            display: -webkit-box;
+            -webkit-box-orient: vertical;
+            -webkit-line-clamp: 1;
+            overflow: hidden;
+        }
+
+        .loading-title {
+            height: 50px;
+            line-height: 50px;
+            text-align: center;
+            font-size: 15px;
+            color: #333333;
+            box-shadow: 0 0 10px 0 #ccc;
+        }
+
+        .loading-title {
+            cursor: pointer;
+        }
     </style>
 </head>
 
@@ -31,7 +55,9 @@
                                 <el-menu-item index="2-4">Android</el-menu-item>
                             </el-submenu>
                             <el-menu-item index="3">资源下载</el-menu-item>
-                            <el-menu-item index="4">小工具</el-menu-item>
+                            <el-menu-item index="4">文章</el-menu-item>
+                            <el-menu-item index="5">小工具</el-menu-item>
+                            <el-menu-item index="6">新闻资讯</el-menu-item>
                             <!-- <el-menu-item index="4"><a href="https://blog.csdn.net/m0_46361270?type=blog"
                                 target="_blank">我的博客</a></el-menu-item> -->
                         </el-menu>
@@ -50,12 +76,33 @@
                         <template v-if="activeIndex==1">
                             <el-empty :image-size="200"></el-empty>
                         </template>
+                        <!-- 资源下载 -->
                         <template v-if="activeIndex==3">
                             <div id="page_source">
-                                <el-empty :image-size="200"></el-empty>
-
-                                <!-- <iframe src="../html/source.html" width="800px" height="500px" frameborder="0"></iframe> -->
+                                <el-row :gutter="12">
+                                    <el-col :span="8" v-for="(item,index) in sourceList" :key="index">
+                                        <el-card shadow="hover" style="margin-bottom: 20px;">
+                                            <div class="link" @click="select(item.url)">
+                                                <i class="el-icon-link"></i>
+                                                {{item.title}}
+                                            </div>
+                                        </el-card>
+                                    </el-col>
+                                </el-row>
                             </div>
+                        </template>
+                        <template v-if="activeIndex==4">
+                            <el-row :gutter="12">
+                                <el-col :span="12" v-for="(item,index) in articleList" :key="index">
+                                    <el-card shadow="hover" style="margin-bottom: 20px;">
+                                        <div class="link" @click="select(item.url)">
+                                            <i class="el-icon-link"></i>
+                                            {{item.title}}
+                                        </div>
+                                    </el-card>
+                                </el-col>
+                            </el-row>
+                            <div class="loading-title" v-if="!loading" @click="more">更多>></div>
                         </template>
                     </div>
                 </el-col>
@@ -68,6 +115,7 @@
     <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.0-beta.5/vue.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.9/index.js"></script>
     <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g6-3.7.1/dist/g6.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
     <script>
         new Vue({
             el: '#app',
@@ -77,15 +125,79 @@
             data() {
                 return {
                     activeIndex: '1',
-                    url: "../html/source.html"
+                    url: "../html/source.html",
+                    sourceList: [],
+                    count: 0,
+                    page: 1,
+                    articleList: [],
+                    loading: false,
                 }
             },
             methods: {
-                handleSelect(key, keyPath) {
-                    this.activeIndex = key;
+                select(url) {
+                    console.log(url)
+                    window.location.href = url;
+                },
+                more() {
+                    this.page++;
+                    this.handleSelect(4);
+                },
+                handleSelect(key) {
+                    const _this = this;
+                    _this.activeIndex = key;
+                    if (key == 3) {
+                        const url = 'https://blog.csdn.net/community/home-api/v1/get-business-list?page=1&size=100&businessType=download&noMore=false&username=m0_46361270';
+                        axios.get(url).then(res => {
+                            if (res.data.code === 200) {
+                                _this.sourceList = res.data.data.list;
+                                _this.page = 1;
+                            } else {
+                                _this.$message({
+                                    message: res.data.message,
+                                    type: 'warning'
+                                });
+                            }
+                        }).catch(err => {
+                            _this.$message.error('请求失败');
+                        })
+                    } else if (key == 4) {
+                        const url = `https://blog.csdn.net/community/home-api/v1/get-business-list?page=${_this.page}&size=200&businessType=blog&orderby=&noMore=false&year=&month=&username=m0_46361270`;
+                        const url2 = `https://blog.csdn.net/community/home-api/v1/get-business-list?page=1&size=200&businessType=blog&orderby=&noMore=false&year=&month=&username=qq_38698632`;
+                        if (_this.loading) return;
+                        axios.get(url).then(res => {
+                            if (res.data.code === 200) {
+                                _this.articleList = _this.articleList.concat(res.data.data.list);
+                                if (res.data.data.list.length == 0) {
+                                    axios.get(url2).then(res2 => {
+                                        if (res2.data.code === 200) {
+                                            _this.articleList = _this.articleList.concat(res2.data.data.list);
+                                            if (res2.data.data.list.length < 200) _this.loading = true;
+                                        } else {
+                                            _this.$message({
+                                                message: res2.data.message,
+                                                type: 'warning'
+                                            });
+                                        }
+                                    }).catch(err => {
+                                        _this.$message.error('请求失败');
+                                    })
+                                }
+                            } else {
+                                _this.$message({
+                                    message: res.data.message,
+                                    type: 'warning'
+                                });
+                            }
+                        }).catch(err => {
+                            _this.$message.error('请求失败');
+                        })
+                    } else {
+                        _this.page = 1;
+                    }
                 }
             },
             mounted() {
+
             }
         })
     </script>
