@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <title>登录</title>
+  <link rel="stylesheet" href="css/index/login.css">
+</head>
+
+<body>
+  <div class="container">
+    <div class="tit">登录</div>
+    <input type="text" placeholder="账号" id="count">
+    <input type="password" placeholder="密码" id="password">
+    <button id="login">登录</button>
+    <span>没有账号？<a href="#">去注册</a> </span>
+  </div>
+  <div class="square">
+    <ul>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+  </div>
+  <div class="circle">
+    <ul>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+      <li></li>
+    </ul>
+  </div>
+  <script src="./js/jquery.js"></script>
+  <script>
+    $(function () {
+      $("#login").click(function () {
+        if ($("#count").val() === 'zxtss' && $("#password").val() === '123456') {
+          window.location.href = './html/home.html';
+        } else {
+          alert("账号或密码错误");
+        }
+      })
+    })
+  </script>
+</body>
+
+</html>
