@@ -7,9 +7,10 @@
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <link rel="stylesheet" href="./css/style.css">
     <link rel="icon" href="./images/ETH.png" sizes="50x50">
+    <link rel="stylesheet" href="./css/an.css">
 </head>
 
-<body style="background: url('./images/background.webp') no-repeat;">
+<body style="background: url('./images/background.webp');">
     <div id="app">
         <div class="top">
             <el-row>
@@ -30,9 +31,11 @@
                             </el-submenu> -->
                             <el-menu-item index="3">资源下载</el-menu-item>
                             <el-menu-item index="4">文章</el-menu-item>
-                            <el-menu-item index="5">小工具</el-menu-item>
+                            <el-menu-item index="9">动画专区</el-menu-item>
+                            <!-- <el-menu-item index="5">小工具</el-menu-item> -->
                             <el-menu-item index="6">新闻资讯</el-menu-item>
                             <el-menu-item index="7">疫情专区</el-menu-item>
+                            <el-menu-item index="8">联系我</el-menu-item>
                             <!-- <el-menu-item index="4"><a href="https://blog.csdn.net/m0_46361270?type=blog"
                                 target="_blank">我的博客</a></el-menu-item> -->
                         </el-menu>
@@ -57,7 +60,7 @@
                             <!-- <el-empty :image-size="200"></el-empty> -->
                             <div id="clock">
                                 <p class="date">{{ date }}</p>
-                                <p class="time">{{ time }}</p>
+                                <p class="time">{{ dateTime }}</p>
                             </div>
                         </template>
                         <!-- 资源下载 -->
@@ -132,6 +135,39 @@
                                 </el-table>
                             </el-row>
                         </template>
+                        <template v-if="activeIndex==8">
+                            <el-row :gutter="20" v-for="(item,index) in 15" :key="index"></el-row>
+                            <el-row :gutter="12">
+                                <el-col :span="6" :offset="8">
+                                    <el-card class="box-card">
+                                        <div class="concat">
+                                            <el-avatar src="./images/ETH.png">
+                                            </el-avatar>
+                                            <div class="li">
+                                                Name：{{userInfo.name}}
+                                            </div>
+                                            <div class="li">
+                                                QQ：{{userInfo.QQ}}
+                                            </div>
+                                            <div class="li">
+                                                Email：{{userInfo.email}}
+                                            </div>
+                                        </div>
+                                    </el-card>
+                                </el-col>
+                            </el-row>
+
+                        </template>
+                        <template v-if="activeIndex==9">
+                            <el-row :gutter="12">
+                                <div class="all">
+                                    <div class="lk" @click="check(item,index)"
+                                        :class="selectIndex==index ? an_type:''"
+                                        :style="{background:index%2==0 ? '#FC797A':'#1F8DD6'}" v-for="(item,index) in dataList"
+                                        :key="index">{{item.title}}</div>
+                                </div>
+                            </el-row>
+                        </template>
                     </div>
                 </el-col>
                 <el-col :span="4">
@@ -154,6 +190,8 @@
     <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g6-3.7.1/dist/g6.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
     <script src="./js/jquery.js"></script>
+    <script src="./js/index.js"></script>
+    <script src="./js/hub.js"></script>
     <script>
         //禁止查看代码
         document.oncontextmenu = new Function("event.returnValue=false;");
@@ -169,6 +207,7 @@
         });
     </script>
     <script>
+        var plugin = new plugin();
         var week = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
         new Vue({
             el: '#app',
@@ -187,7 +226,7 @@
                     tableData: [],
                     time: "",
                     newsList: [],
-                    time: '',
+                    dateTime: '',
                     date: '',
                     weatherData: {},
                     toolList: [
@@ -197,12 +236,15 @@
                     dialogVisible: false,
                     sourceData: {},
                     content: "",
+                    userInfo: {},
+                    an_type: "",
+                    selectIndex: -1,
                 }
             },
             methods: {
                 updateTime() {
                     var cd = new Date();
-                    this.time = this.zeroPadding(cd.getHours(), 2) + ':' + this.zeroPadding(cd.getMinutes(), 2) + ':' + this.zeroPadding(cd.getSeconds(), 2);
+                    this.dateTime = this.zeroPadding(cd.getHours(), 2) + ':' + this.zeroPadding(cd.getMinutes(), 2) + ':' + this.zeroPadding(cd.getSeconds(), 2);
                     this.date = this.zeroPadding(cd.getFullYear(), 4) + '-' + this.zeroPadding(cd.getMonth() + 1, 2) + '-' + this.zeroPadding(cd.getDate(), 2) + ' ' + week[cd.getDay()];
                 },
                 zeroPadding(num, digit) {
@@ -213,7 +255,6 @@
                     return (zero + num).slice(-digit);
                 },
                 select(url) {
-                    console.log(url)
                     window.location.href = url;
                 },
                 more() {
@@ -231,13 +272,13 @@
                         _this.$message.error('请求失败');
                     })
                 },
-                generate() {
-                    const _this = this;
-                    console.log(_this.sourceData.api)
-
-                },
                 handleSelect(key) {
                     const _this = this;
+                    if (_this.activeIndex == key) return;
+                    _this.sourceList = [];
+                    _this.articleList = [];
+                    _this.tableData = [];
+                    _this.newsList = [];
                     _this.activeIndex = key;
                     if (key == 3) {
                         const url = 'https://blog.csdn.net/community/home-api/v1/get-business-list?page=1&size=100&businessType=download&noMore=false&username=m0_46361270';
@@ -320,9 +361,21 @@
                         _this.$message.error('请求失败');
                     })
                 },
+                init() {
+                    this.userInfo = plugin.userInfo().data;
+                },
+                check(item, index) {
+                    this.selectIndex = index;
+                    this.an_type = item.type;
+                    setTimeout(() => {
+                        this.an_type = '';
+                        this.selectIndex = -1;
+                    }, 1000);
+                },
             },
             mounted() {
                 var timerID = setInterval(this.updateTime, 1000);
+                this.init();
                 this.updateTime();
                 this.weather();
             }
