@@ -32,3 +32,84 @@
   padding: 10px 0;
   background-color: #f9fafc;
 }
+
+.placedTop {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 10000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.el-menu {
+  background: none !important;
+}
+
+.el-menu.el-menu--horizontal {
+  border: none;
+}
+
+.el-menu--horizontal>.el-menu-item {
+  color: #ffffff;
+}
+
+.el-menu--horizontal>.el-menu-item.is-active {
+  color: #ffffff;
+  border-bottom: 2px solid #ffffff;
+  background: none;
+}
+
+#clock {
+  font-family: "Share Tech Mono", monospace;
+  color: #ffffff;
+  text-align: center;
+  position: absolute;
+  left: 50%;
+  top: 350px;
+  transform: translate(-50%, -50%);
+  color: #daf6ff;
+  text-shadow: 0 0 20px #0aafe6, 0 0 20px rgba(10, 175, 230, 0);
+}
+
+#clock .time {
+  letter-spacing: 0.05em;
+  font-size: 80px;
+  padding: 5px 0;
+}
+
+#clock .date {
+  letter-spacing: 0.1em;
+  font-size: 24px;
+}
+
+#clock .text {
+  letter-spacing: 0.1em;
+  font-size: 12px;
+  padding: 20px 0 0;
+}
+
+.el-card__body {
+  padding: 0;
+}
+
+.link {
+  line-height: 50px;
+  padding: 0 20px;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: 1;
+  overflow: hidden;
+}
+
+.loading-title {
+  height: 50px;
+  line-height: 50px;
+  text-align: center;
+  font-size: 15px;
+  color: #ffffff;
+  box-shadow: 0 0 10px 0 #ccc;
+  cursor: pointer;
+}

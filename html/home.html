@@ -6,36 +6,10 @@
     <title>首页</title>
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <link rel="stylesheet" href="../css/style.css">
-    <style>
-        .el-card__body {
-            padding: 0;
-        }
-
-        .link {
-            line-height: 50px;
-            padding: 0 20px;
-            display: -webkit-box;
-            -webkit-box-orient: vertical;
-            -webkit-line-clamp: 1;
-            overflow: hidden;
-        }
-
-        .loading-title {
-            height: 50px;
-            line-height: 50px;
-            text-align: center;
-            font-size: 15px;
-            color: #333333;
-            box-shadow: 0 0 10px 0 #ccc;
-        }
-
-        .loading-title {
-            cursor: pointer;
-        }
-    </style>
+    <link rel="icon" href="../images/ETH.png" sizes="50x50">
 </head>
 
-<body>
+<body style="background: url('../images/background.webp') no-repeat;">
     <div id="app">
         <div class="top">
             <el-row>
@@ -43,17 +17,17 @@
                     <div class="grid-content "></div>
                 </el-col>
                 <el-col :span="16">
-                    <div class="grid-content">
-                        <el-menu :default-active="activeIndex" class="el-menu-demo" mode="horizontal"
+                    <div class="grid-content placedTop" style="background: url('../images/background.webp') no-repeat;">
+                        <el-menu :default-active="activeIndex" class="el-menu-i" mode="horizontal"
                             @select="handleSelect">
                             <el-menu-item index="1">网站首页</el-menu-item>
-                            <el-submenu index="2">
+                            <!-- <el-submenu index="2">
                                 <template slot="title">技术栈</template>
                                 <el-menu-item index="2-1">vue</el-menu-item>
                                 <el-menu-item index="2-2">react</el-menu-item>
                                 <el-menu-item index="2-3">uniapp</el-menu-item>
                                 <el-menu-item index="2-4">Android</el-menu-item>
-                            </el-submenu>
+                            </el-submenu> -->
                             <el-menu-item index="3">资源下载</el-menu-item>
                             <el-menu-item index="4">文章</el-menu-item>
                             <el-menu-item index="5">小工具</el-menu-item>
@@ -68,6 +42,7 @@
                     <div class="grid-content "></div>
                 </el-col>
             </el-row>
+            <div style="height: 30px;"></div>
             <el-row>
                 <el-col :span="4">
                     <div class="grid-content "></div>
@@ -75,7 +50,11 @@
                 <el-col :span="16">
                     <div class="grid-content">
                         <template v-if="activeIndex==1">
-                            <el-empty :image-size="200"></el-empty>
+                            <!-- <el-empty :image-size="200"></el-empty> -->
+                            <div id="clock">
+                                <p class="date">{{ date }}</p>
+                                <p class="time">{{ time }}</p>
+                            </div>
                         </template>
                         <!-- 资源下载 -->
                         <template v-if="activeIndex==3">
@@ -105,9 +84,23 @@
                             </el-row>
                             <div class="loading-title" v-if="!loading" @click="more">更多>></div>
                         </template>
+                        <template v-if="activeIndex==6">
+                            <el-row :gutter="12">
+                                <el-col :span="12" v-for="(item,index) in newsList" :key="index">
+                                    <el-card shadow="hover" style="margin-bottom: 20px;">
+                                        <div class="link" @click="select(item.url)">
+                                            <i class="el-icon-link"></i>
+                                            {{item.title}}
+                                        </div>
+                                    </el-card>
+                                </el-col>
+                            </el-row>
+                        </template>
                         <template v-if="activeIndex==7">
                             <el-row :gutter="12">
+                                <el-alert :title="time" type="info"></el-alert>
                                 <el-table :data="tableData" style="width: 100%">
+                                    <el-table-column prop="province" label="省份" align="center"></el-table-column>
                                     <el-table-column prop="city" label="城市" align="center">
                                     </el-table-column>
                                     <el-table-column label="本土新增" align="center">
@@ -135,6 +128,7 @@
     <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g6-3.7.1/dist/g6.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
     <script>
+        var week = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
         new Vue({
             el: '#app',
             // components: {
@@ -142,7 +136,7 @@
             // },
             data() {
                 return {
-                    activeIndex: '6',
+                    activeIndex: '1',
                     url: "../html/source.html",
                     sourceList: [],
                     count: 0,
@@ -150,9 +144,25 @@
                     articleList: [],
                     loading: false,
                     tableData: [],
+                    time: "",
+                    newsList: [],
+                    time: '',
+                    date: ''
                 }
             },
             methods: {
+                updateTime() {
+                    var cd = new Date();
+                    this.time = this.zeroPadding(cd.getHours(), 2) + ':' + this.zeroPadding(cd.getMinutes(), 2) + ':' + this.zeroPadding(cd.getSeconds(), 2);
+                    this.date = this.zeroPadding(cd.getFullYear(), 4) + '-' + this.zeroPadding(cd.getMonth() + 1, 2) + '-' + this.zeroPadding(cd.getDate(), 2) + ' ' + week[cd.getDay()];
+                },
+                zeroPadding(num, digit) {
+                    var zero = '';
+                    for (var i = 0; i < digit; i++) {
+                        zero += '0';
+                    }
+                    return (zero + num).slice(-digit);
+                },
                 select(url) {
                     console.log(url)
                     window.location.href = url;
@@ -210,12 +220,24 @@
                         }).catch(err => {
                             _this.$message.error('请求失败');
                         })
-                    } else if (key === '7') {
+                    } else if (key === '6') {
+                        //新闻专区
+                        const _this = this;
+                        const url = 'https://i.news.qq.com/trpc.qqnews_web.kv_srv.kv_srv_http_proxy/list?sub_srv_id=world&srv_id=pc&offset=0&limit=20&strategy=1&ext={%22pool%22:[%22top%22],%22is_filter%22:10,%22check_type%22:true}';
+                        axios.get(url).then(res => {
+                            _this.newsList = res.data.data.list;
+                        }).catch(err => {
+                            _this.$message.error('请求失败');
+                        })
+                    }
+
+                    else if (key === '7') {
                         //疫情专区
                         const _this = this;
                         const url = 'https://covid.myquark.cn/quark/covid/data?format=json&method=Huoshenshan.ncov2022&type=latest&news_type=ncp&is_gray=1&uc_param_str=dsdnfrpfbivesscpgimibtbmnijblaupogpintnwktprchmtut';
                         axios.get(url).then(res => {
                             _this.tableData = res.data.chinaTopCity;
+                            _this.time = res.data.time;
                         }).catch(err => {
                             _this.$message.error('请求失败');
                         })
@@ -225,7 +247,9 @@
                 }
             },
             mounted() {
+                var timerID = setInterval(this.updateTime, 1000);
 
+                this.updateTime();
             }
         })
     </script>
