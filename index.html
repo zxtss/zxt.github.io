@@ -161,10 +161,9 @@
                         <template v-if="activeIndex==9">
                             <el-row :gutter="12">
                                 <div class="all">
-                                    <div class="lk" @click="check(item,index)"
-                                        :class="selectIndex==index ? an_type:''"
-                                        :style="{background:index%2==0 ? '#FC797A':'#1F8DD6'}" v-for="(item,index) in dataList"
-                                        :key="index">{{item.title}}</div>
+                                    <div class="lk" @click="check(item,index)" :class="selectIndex==index ? an_type:''"
+                                        :style="{background:index%2==0 ? '#FC797A':'#1F8DD6'}"
+                                        v-for="(item,index) in dataList" :key="index">{{item.title}}</div>
                                 </div>
                             </el-row>
                         </template>
@@ -185,6 +184,11 @@
 
         </div>
     </div>
+    <script>
+        function train(data) {
+            // console.log(data);
+        }
+    </script>
     <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.0-beta.5/vue.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.9/index.js"></script>
     <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g6-3.7.1/dist/g6.min.js"></script>
@@ -192,6 +196,7 @@
     <script src="./js/jquery.js"></script>
     <script src="./js/index.js"></script>
     <script src="./js/hub.js"></script>
+    <script src="./public/data.json?cb=train"></script>
     <script>
         //禁止查看代码
         document.oncontextmenu = new Function("event.returnValue=false;");
@@ -206,6 +211,7 @@
             ) || (event.returnValue = false)
         });
     </script>
+
     <script>
         var plugin = new plugin();
         var week = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
@@ -358,11 +364,12 @@
                     axios.get(url).then(res => {
                         _this.weatherData = res.data.data.forecast[0];
                     }).catch(err => {
-                        _this.$message.error('请求失败');
+                        // _this.$message.error('请求失败');
                     })
                 },
                 init() {
                     this.userInfo = plugin.userInfo().data;
+
                 },
                 check(item, index) {
                     this.selectIndex = index;

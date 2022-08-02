@@ -1,0 +1,54 @@
+<!--
+ * @Description: 
+ * @Version: 1.0
+ * @Author: 努力才能逃离
+ * @Date: 2022-08-02 10:01:51
+ * @LastEditors: 努力才能逃离
+ * @LastEditTime: 2022-08-02 11:38:32
+-->
+<html>
+
+<head>
+    <script src="./js/aframe.min.js"></script>
+
+</head>
+
+<body>
+    <a-scene>
+        <!-- 资源管理系统
+        资产管理系统使浏览器缓存资源更容易（例如，图像，视频，模型），并且A-Frame框架将确保所有的资源都在渲染之前被获取到。
+        -->
+        <a-assets>
+            <img src="https://zxtss.github.io/images/ETH.png" id="box-bg">
+            <img src="https://zxtss.github.io/images/background.webp" id="sky-bg">
+            <img id="groundTexture" src="https://cdn.aframe.io/a-painter/images/floor.jpg">
+            <audio id="audio" src="https://cdn.aframe.io/basic-guide/audio/backgroundnoise.wav" autoplay
+                preload></audio>
+        </a-assets>
+        <!-- color="#4CC3D9"  -->
+        <a-box src="#sky-bg" position="0 2 -5" rotation="0 45 45" scale="1 1 1"
+            animation__position="property: object3D.position.y; to: 2.2; dir: alternate; dur: 1500; loop: true">
+        </a-box>
+        <!-- 设置地面    （repeat）格子化效果 -->
+        <a-plane rotation="-90 0 0" width="30" height="30" src="#groundTexture" repeat="10 10"></a-plane>
+        <!-- 背景颜色 -->
+        <a-sky src="#sky-bg"></a-sky>
+        <!-- 光源 -->
+        <a-light type="ambient" color="#445451"></a-light>
+        <a-light type="point" intensity="2" position="2 4 4"></a-light>
+        <!-- 音频 -->
+        <a-sound src="#audio" autoplay="true" position="-3 1 -4"></a-sound>
+        <!-- <a-text value="Hello, A-Frame!" color="#BBB"
+        position="-0.9 0.2 -3"></a-text> -->
+        <a-camera>
+            <a-cursor></a-cursor>
+        </a-camera>
+    </a-scene>
+
+    <script>
+       
+
+    </script>
+</body>
+
+</html>
