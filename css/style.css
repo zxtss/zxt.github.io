@@ -55,11 +55,14 @@
 .el-menu--horizontal>.el-menu-item {
   color: #ffffff;
 }
+.el-menu--horizontal>.el-submenu:hover{
+  background: none !important;
+}
 
 .el-menu--horizontal>.el-menu-item.is-active {
-  color: #ffffff;
+  color: #ffffff !important;
   border-bottom: 2px solid #ffffff;
-  background: none;
+  background: none !important;
 }
 
 #clock {
@@ -160,4 +163,7 @@
   font-size: 15px;
   margin: 0 20px 50px 0;
   cursor: pointer;
+}
+.el-submenu__title,.el-submenu__icon-arrow,.el-icon-arrow-down{
+  color: #0aafe6 !important;
 }

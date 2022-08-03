@@ -33,6 +33,10 @@
                             <el-menu-item index="4">文章</el-menu-item>
                             <el-menu-item index="9">动画专区</el-menu-item>
                             <!-- <el-menu-item index="5">小工具</el-menu-item> -->
+                            <el-submenu index="5">
+                                <template slot="title">技术栈</template>
+                                <el-menu-item index="2-4" @click="go(1)">A-frame</el-menu-item>
+                            </el-submenu>
                             <el-menu-item index="6">新闻资讯</el-menu-item>
                             <el-menu-item index="7">疫情专区</el-menu-item>
                             <el-menu-item index="8">联系我</el-menu-item>
@@ -89,7 +93,7 @@
                                     </el-card>
                                 </el-col>
                             </el-row>
-                            <div class="loading-title" v-if="!loading" @click="more">更多>></div>
+                            <!-- <div class="loading-title" v-if="!loading" @click="more">更多>></div> -->
                         </template>
                         <template v-if="activeIndex==5">
                             <el-row :gutter="12">
@@ -187,7 +191,7 @@
     <script>
         function train(data) {
             // console.log(data);
-        }
+        } 
     </script>
     <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.0-beta.5/vue.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.9/index.js"></script>
@@ -278,6 +282,11 @@
                         _this.$message.error('请求失败');
                     })
                 },
+                go(type){
+                    if(type===1){
+                        window.location.href='webVR.html';
+                    }
+                },
                 handleSelect(key) {
                     const _this = this;
                     if (_this.activeIndex == key) return;
@@ -308,7 +317,7 @@
                         axios.get(url).then(res => {
                             if (res.data.code === 200) {
                                 _this.articleList = _this.articleList.concat(res.data.data.list);
-                                if (res.data.data.list.length == 0) {
+                                // if (res.data.data.list.length == 0) {
                                     axios.get(url2).then(res2 => {
                                         if (res2.data.code === 200) {
                                             _this.articleList = _this.articleList.concat(res2.data.data.list);
@@ -322,7 +331,7 @@
                                     }).catch(err => {
                                         _this.$message.error('请求失败');
                                     })
-                                }
+                                // }
                             } else {
                                 _this.$message({
                                     message: res.data.message,

@@ -4,13 +4,15 @@
  * @Author: 努力才能逃离
  * @Date: 2022-08-02 10:01:51
  * @LastEditors: 努力才能逃离
- * @LastEditTime: 2022-08-02 11:38:32
+ * @LastEditTime: 2022-08-03 10:48:33
 -->
 <html>
 
 <head>
-    <script src="./js/aframe.min.js"></script>
-
+    <!-- <script src="./js/aframe.min.js"></script> -->
+    <script src="https://aframe.io/releases/1.1.0/aframe.min.js"></script>
+    <script src="https://npmcdn.com/aframe-animation-component@3.0.1"></script>
+    <script src="https://npmcdn.com/aframe-event-set-component@3.0.1"></script>
 </head>
 
 <body>
@@ -26,8 +28,12 @@
                 preload></audio>
         </a-assets>
         <!-- color="#4CC3D9"  -->
-        <a-box src="#sky-bg" position="0 2 -5" rotation="0 45 45" scale="1 1 1"
+        <a-box id="box" hide-on-click="target:#box2" src="#sky-bg" position="0 2 -5" rotation="0 45 45" scale="1 1 1"
             animation__position="property: object3D.position.y; to: 2.2; dir: alternate; dur: 1500; loop: true">
+        </a-box>
+        <a-box id="box2" src="#sky-bg" position="2 5 -5" rotation="0 45 45" scale="1 1 1"
+            animation__position="property: object3D.position.y; to: 2.2; dir: alternate; dur: 1500; loop: true"
+            handle-events>
         </a-box>
         <!-- 设置地面    （repeat）格子化效果 -->
         <a-plane rotation="-90 0 0" width="30" height="30" src="#groundTexture" repeat="10 10"></a-plane>
@@ -41,13 +47,62 @@
         <!-- <a-text value="Hello, A-Frame!" color="#BBB"
         position="-0.9 0.2 -3"></a-text> -->
         <a-camera>
-            <a-cursor></a-cursor>
+            <a-cursor animation__click="property: scale; startEvents: click; from: 0.1 0.1 0.1; to: 1 1 1; dur: 150"
+                event-set__1="_event: mouseenter; color: #0092d8" event-set__2="_event: mouseleave; color: black">
+            </a-cursor>
         </a-camera>
+        <a-entity log="Hello A-Frame">
+            <a-entity position="2 2 -10" geometry="primitive: sphere" material="color: red"></a-entity>
+            <a-animation attribute="rotation" dur="10000" fill="forwards" to="0 360 0" repeat="indefinite">
+            </a-animation>
+        </a-entity>
     </a-scene>
 
     <script>
-       
-
+        //注册隐藏事件
+        AFRAME.registerComponent('hide-on-click', {
+            dependencies: ['raycaster'],
+            schema: {
+                target: { type: 'selector' }
+            },
+            init: function () {
+                var data = this.data;
+                var el = this.el;
+                el.addEventListener('click', function () {
+                    el.setAttribute('visible', false);
+                    data.target.setAttribute('visible', true);
+                    // setTimeout(function () {
+                    //     window.location.reload();
+                    // }, 5000);
+                });
+            }
+        });
+        //注册log事件
+        AFRAME.registerComponent('log', {
+            schema: { type: 'string' },
+            init: function () {
+                var stringLog = this.data;
+                console.log(stringLog);
+            }
+        })
+        AFRAME.registerComponent('handle-events', {
+            init: function () {
+                var el = this.el;
+                el.addEventListener('mouseenter', function () {
+                    el.setAttribute('color', '#24CAFF');
+                });
+                el.addEventListener('mouseleave', function () {
+                    el.setAttribute('color', '#EF2D5E');
+                });
+                el.addEventListener('click', function () {
+                    el.setAttribute('scale', {
+                        x: 2,
+                        y: 1,
+                        z: 2
+                    });
+                });
+            }
+        });
     </script>
 </body>
 
