@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://pyscript.net/alpha/pyscript.css" />
+    <script defer src="https://pyscript.net/alpha/pyscript.js"></script>
+    <title>pyscript</title>
+    <py-env>
+        - numpy
+        - matplotlib
+    </py-env>
+</head>
+
+<body>
+    <b><p>Today is <u><label id='today'></label></u></p></b>
+    <br>
+    <div id="pi" class="alert alert-primary"></div>
+    <div id="plot"></div>
+    <div id="plot2"></div>
+    <py-script>
+        print("Hello PyScript!")
+    </py-script>
+    <py-script>
+        import datetime as dt
+        pyscript.write('today', dt.date.today().strftime('%A %B %d, %Y'))
+        
+        def compute_pi(n):
+            pi = 2
+            for i in range(1,n):
+                pi *= 4 * i ** 2 / (4 * i ** 2 - 1)
+            return pi
+        
+        pi = compute_pi(100000)
+        pyscript.write('pi', f'π is approximately {pi:.3f}')
+    </py-script>
+    <py-script>
+        import matplotlib.pyplot as plt
+        import numpy as np
+
+        x=np.random.randn(100)
+        y=np.random.randn(100)
+
+        fig, ax=plt.subplots()
+        ax.scatter(x, y)#散点图
+        ax.set_title("demo")
+        pyscript.write("plot",fig)
+
+    </py-script>
+    <py-script>
+        x=[1, 2, 3, 4]
+        y=[1, 4, 9, 16]
+        fig, ax=plt.subplots()
+        ax.plot(x, y)#折线图
+        ax.set_title("line-chart")
+        pyscript.write("plot2",fig)
+    </py-script>
+</body>
+
+</html>

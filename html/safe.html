@@ -1,0 +1,589 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>安全问题</title>
+    <link rel="icon" href="../images/ETH.png" sizes="50x50">
+</head>
+<style>
+    body{
+        margin: 0 100px;
+    }
+</style>
+<body>
+    <article>
+        <h2>
+            <span style="color:#333333;">1.&nbsp;CSRF（跨站请求伪造）</span>
+        </h2>
+        <h3>
+            <span style="color:#333333;">（1）什么是CSRF&nbsp;</span>
+        </h3>
+        <p>
+            <span style="color:#333333;">你可以这么理解 CSRF 攻击：攻击者盗用了你的身份，以你的名义进行恶意请求。它能做的事情有很多包括：以你的名义发送邮件、发信息、盗取账号、购买商品、虚拟货币转账等。总结起来就是：个人隐私暴露及财产安全问题。</span>
+        </p>
+        <p style="text-align:center;">
+            <img alt="图片" src="https://img-blog.csdnimg.cn/img_convert/781d1c2c530733cccc942a4cea12cbe0.png"/>
+        </p>
+        <p>
+            <span style="color:#333333;"><strong>完成 CSRF 攻击必须要有三个条件：</strong></span>
+        </p>
+        <ul class=" list-paddingleft-2">
+            <li>
+                <p>
+                    <span style="color:#333333;">用户已经登录了站点 A，并在本地记录了 cookie</span>
+                </p>
+            </li>
+            <li>
+                <p>
+                    <span style="color:#333333;">在用户没有登出站点 A 的情况下（也就是 cookie 生效的情况下），访问了恶意攻击者提供的引诱危险站点 B (B 站点要求访问站点A)。</span>
+                </p>
+            </li>
+            <li>
+                <p>
+                    <span style="color:#333333;">站点 A 没有做任何 CSRF 防御</span>
+                </p>
+            </li>
+        </ul>
+        <h3>
+            <span style="color:#333333;">（2）防御CSRF攻击</span>
+        </h3>
+        <blockquote>
+            <p>
+                <span style="color:#333333;">&nbsp; &nbsp;目前防御 CSRF 攻击主要有四种策略：</span>
+            </p>
+            <ol class=" list-paddingleft-2">
+                <li>
+                    <p>
+                        <span style="color:#333333;"><strong>加验证码</strong>（如滑动图片）。能确保是用户行为，不是黑客行为，除非黑客可以破解验证码。因为 CSRF 攻击是在用户无意识的情况下发生的，所以要求用户输入验证码可以让用户知道自己正在做的操作；</span>
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        <span style="color:#333333;"><strong>验证 HTTP请求头中的 Referer 字段</strong>。其<strong>记录了当前请求的来源地址，但是</strong>对于某些浏览器，比如 <strong>IE6 或 FF2，可以篡改 Referer 值</strong>。</span>
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        <span style="color:#333333;"><strong>cookie 哈希值。c</strong>srf与xss不同，<strong>csrf不能获取到明文cookie的</strong>。1）经过用户名密码验证的用户才有明文cookie的；2）客户端用md5对cookie计算，得到哈希值。把cookie和哈希值一起发给服务端；3）服务端收到cookie和哈希值，也会用相同的算法对cookie计算，得到其哈希值。与客户端发过来的哈希值进行对比，如果匹配，说明是验证了身份的用户发起的请求；</span>
+                    </p>
+                    <p>
+                        <span style="color:#333333;"><strong>缺点</strong>：黑客使用xss获取cookie明文，再用md5计算，可以得到这样一个哈希值，从而成功发起请求 。</span>
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        <span style="color:#333333;"><strong>在请求地址中添加 token 并验证</strong>。用户向服务端发送请求时，服务端产生一个token传给用户，并在session中保留该token值。<strong>发送请求时在HTTP 请求中以参数的形式加入token</strong>，<strong>并在服务器建立一个拦截器来验证这个token</strong>。服务器把token从session中拿出，与本次请求中的token进行比对，如果请求中没有 token 或者 token 内容不正确，则认为可能是 CSRF 攻击而拒绝该请求（要确保token的保密性和随机性）。</span>
+                    </p>
+                </li>
+            </ol>
+            <p>
+                <span style="color:#333333;"><strong>缺点：</strong>黑客的网站也同样可以通过 Referer 的值来得到这个 token 值以发动 CSRF 攻击。这也是一些用户喜欢手动关闭浏览器 Referer 功能的原因。</span>
+            </p>
+            <ul class=" list-paddingleft-2">
+                <li>
+                    <p>
+                        <span style="color:#333333;">对于 <strong>GET </strong>请求，token 将附在请求地址之后，这样 URL 就变成 http://url？<strong>csrftoken=tokenvalue</strong> 。</span>
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        <span style="color:#333333;">而对于 <strong>POST </strong>请求，要在 form 表单加上：&lt;input type=”hidden” name=”csrftoken” <strong>value=”tokenvalue</strong>”/&gt;</span>
+                    </p>
+                </li>
+            </ul>
+            <p style="text-align:justify;">
+                <span style="color:#333333;">&nbsp; &nbsp; 5<strong>.&nbsp;anti-CSRF token：</strong>token是作为一个<strong>hidden字段加在form表单里</strong>的，或者是加在某些link里。使黑客<strong>无法读取和提交。</strong></span>
+            </p>
+            <p style="text-align:justify;">
+                <span style="color:#333333;"><strong>&nbsp; &nbsp; 6. 在 HTTP 头中自定义字段加入token并验证。</strong>这里并不是把 token 以参数的形式置于 HTTP 请求之中，而是<strong>把token放到 HTTP 头中自定义的属性</strong>里。<strong>通过 XMLHttpRequest 对象，可以一次性给所有该类请求加上 csrftoken 这个 HTTP 头属性</strong>，并把 token 值放入其中。<strong>通过 XMLHttpRequest 请求的地址不会被记录到浏览器的地址栏</strong>，也不用担心 token 会透过 Referer 泄露到其他网站中去。</span>
+            </p>
+            <p style="text-align:justify;">
+                <span style="color:#333333;"><strong>缺点：</strong></span>
+            </p>
+            <ul class=" list-paddingleft-2">
+                <li>
+                    <p>
+                        <span style="color:#333333;">XMLHttpRequest 请求通常用于 Ajax 对页面局部的异步刷新。通过该类请求得到的页面不能被浏览器所记录，影响前进、后退、刷新、收藏等操作，给用户带来了不便；</span>
+                    </p>
+                </li>
+                <li>
+                    <p>
+                        <span style="color:#333333;">如果采用这种方法来进行防护，需要把所有请求都改为 XMLHttpRequest 请求，这样几乎是要重写整个网站，工作量无疑是巨大的；</span>
+                    </p>
+                </li>
+            </ul>
+            <ol class=" list-paddingleft-2">
+                <li>
+                    <p>
+                        <span style="color:#333333;">token值是随机不可预测的，</span>
+                    </p>
+                </li>
+            </ol>
+        </blockquote>
+        <h3>
+            <span style="color:#333333;">对于方案4：类似于anti-CSRF token(反csrf的token)</span>
+        </h3>
+        <p>
+            <span style="color:#333333;">anti-CSRF token的原理，在实际应用的时候，往往这个token是作为一个hidden字段加在form表单里的，或者是加在某些link里。</span>
+        </p>
+        <p>
+            <span style="color:#333333;"><strong>这个token最怕的就是泄露</strong>，XSS后之所以会让这个方案失效的原因就在于XSS可以读到这个token。</span>
+        </p>
+        <p>
+            <span style="color:#333333;">该<strong>token的部署应该是自己站点才能读取和提交</strong>，<strong>第三方站点无法读取和提交</strong>，否则该token第三方站点也可以伪造，那么依赖该token的CSRF防范措施就会失效，所以<strong>token一般不能直接使用已有的cookie，因为这样的话，</strong><strong>该cookie也会被浏览器自动带给目标站点</strong>，<strong>t</strong></span><span style="color:#be191c;"><strong>oken也不能显示的写在URL链接的地方</strong></span><span style="color:#333333;">并且是多次有效的，因为这样的话，第三方站点也可以直接拷贝该token后直接赋值到第三方站点的某个URL，通过诱导用户打开某个链接而自动提交该token，<strong>但可以依赖某个salt，该salt存储在cookie</strong>，如用户登录态key等，<strong>然后在自己站点动态执行脚本，对salt进行某种算法变换成一个token</strong>，并且<strong>该token通过脚本在自己站点提交的时候动态增加该参数进行提交</strong>，这样只所以成功是因为：对第三方站点，虽然发送CSRF请求浏览器会自动通过cookie带salt过去目标站点，<strong>但第三方站点无法通过脚本读取该cookie并进行按照某种算法转换成token</strong>，另<strong>外一方面我们的token是动态在自己站点附加到提交操作</strong>的）。<br/><br/> 所以我们在布署CSRF token的时候，需要注意的一点，就是在一些页面里，需要慎重的加这个token，<strong>因为可能会存在其他途径，导致这个token的泄露</strong>。</span>
+        </p>
+        <p>
+            <span style="color:#333333;">正确的做法是，<strong>将anti-CSRF Token加到form里，尽量减少加到link里的时候，重要操作都用form来完成</strong>。特别需要注意的是那些展示页面的<strong>url尽量不要加token.</strong></span>
+        </p>
+        <p>
+            <br/>
+        </p>
+        <h3>
+            <span style="color:#333333;">补充：token</span>
+        </h3>
+        <p>
+            <span style="color:#333333;"><strong>基于token的请求过程：&nbsp;</strong></span>
+        </p>
+        <ul class=" list-paddingleft-2">
+            <li>
+                <p>
+                    <span style="color:#333333;">用户使用用户名和密码登录时，服务器会下发给用户一个随机的token字段，并且服务端把这个字段保存在session中；</span>
+                </p>
+            </li>
+            <li>
+                <p>
+                    <span style="color:#333333;">客户端收到token中，将其保存在隐藏字段中（如html页面中有一个字段是不显示的，把token赋给该字段、或者作为url参数）；</span>
+                </p>
+            </li>
+            <li>
+                <p>
+                    <span style="color:#333333;">用户在登录状态下，每次访问服务器都要携带隐藏的token字段值；</span>
+                </p>
+            </li>
+            <li>
+                <p>
+                    <span style="color:#333333;">服务器从session中拿出token值进行对比，如果一致，则请求合法；</span>
+                </p>
+            </li>
+            <li>
+                <p>
+                    <span style="color:#333333;">用户退出，session销毁，token失效；</span>
+                </p>
+            </li>
+        </ul>
+        <p>
+            <span style="color:#333333;"><strong>token的存储位置：</strong></span>
+        </p>
+        <ul class=" list-paddingleft-2">
+            <li>
+                <p>
+                    <span style="color:#333333;">get方法的url参数中：<a href="http://url/?csrftoken=tokenvalue" title="http://url?csrftoken=tokenvalue">http://url?csrftoken=tokenvalue</a>&nbsp;；</span>
+                </p>
+            </li>
+            <li>
+                <p>
+                    <span style="color:#333333;">post方法，存在于隐藏的表单项中：&lt;input type=”hidden”&nbsp; value=”tokenvalue”/&gt;；</span>
+                </p>
+            </li>
+            <li>
+                <p>
+                    <span style="color:#333333;">cookie中；</span>
+                </p>
+            </li>
+        </ul>
+        <p>
+            <span style="color:#333333;">参考：<a href="https://blog.csdn.net/xiaoxinshuaiga/article/details/80766369?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522162994393216780357259661%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=162994393216780357259661&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-2-80766369.pc_search_result_control_group&utm_term=CSRF&spm=1018.2226.3001.4187" title="(23条消息) CSRF攻击与防御（写得非常好）_xiaoxinshuaiga的博客-CSDN博客_csrf">(23条消息) CSRF攻击与防御（写得非常好）_xiaoxinshuaiga的博客-CSDN博客_csrf</a></span>
+        </p>
+        <h2>
+            <span style="color:#333333;">2.&nbsp;XSS（跨站脚本攻击）</span>
+        </h2>
+        <h3>
+            <span style="color:#333333;"><strong>（1）什么是XSS&nbsp;</strong></span>
+        </h3>
+        <blockquote>
+            <p>
+                <span style="color:#333333;"><strong>&nbsp;XSS又叫CSS</strong>（Cross Site Script），跨站脚本攻击。攻击者在目标网站植入恶意脚本（js / html），用户在浏览器上运行时可以获取用户敏感信息（<strong>cookie </strong>/ session）、修改web页面以欺骗用户、与其他漏洞相结合形成蠕虫等。</span>
+            </p>
+            <p>
+                <span style="color:#333333;"><strong>原理</strong>：攻击者在Web页面中<strong>插入恶意脚本</strong>，<strong>当用户浏览页面时，嵌入其中的脚本代码会被执行，从而可以达到攻击目的</strong>（盗取用户信息或其他侵犯用户安全隐私）</span>
+            </p>
+            <p>
+                <span style="color:#333333;"><strong>例如：</strong>利用虚假输入表单骗取用户个人信息；利用脚本窃取用户的Cookie值，被害者在不知情的情况下，帮助攻击者发送恶意请求；</span>
+            </p>
+        </blockquote>
+        <h3>
+            <span style="color:#333333;"><strong>（2）XSS的类型</strong></span>
+        </h3>
+        <p>
+            <span style="color:#333333;">&nbsp;最常见的几种分类：<strong>反射型（非持久型）XSS</strong>、<strong>存储型（持久型）XSS</strong>、<strong>DOM型XSS</strong>、<strong>通用型XSS</strong>、<strong>突变型XSS</strong>。</span>
+        </p>
+        <p>
+            <span style="color:#0d0016;"><strong>XSS 攻击有两大要素： 1. 攻击者提交恶意代码。 2. 浏览器执行恶意代码。</strong></span>
+        </p>
+        <p>
+            <strong>XSS的种类非常多，大致可以分为两种：</strong>1.&nbsp;<span style="color:#333333;"><strong>反射型（非持久型）XSS</strong>。2.<strong>存储型（持久型）XSS</strong></span>
+        </p>
+        <p>
+            <span style="color:#333333;"><strong>1）反射型（非持久型）&nbsp;XSS</strong></span>
+        </p>
+        <p>
+            <span style="color:#333333;">反射型XSS通常出现在搜索等功能中，攻击者可直接</span><span style="color:#be191c;"><strong>通过URL </strong>(类似：https://xxx.com/xxx<strong>?default=&lt;script&gt;alert(document.cookie)&lt;/script&gt;</strong>) <strong>注入可执行的脚本代码</strong></span><span style="color:#333333;"><strong>。</strong>不过一些浏览器如Chrome其内置了一些XSS过滤器(如XSS Auditor)，可以防止大部分反射型XSS攻击。</span>
+        </p>
+        <p>
+            <br/>
+        </p>
+        <p>
+            <span style="color:#333333;"><strong>2） 存储型（持久型）XSS</strong></span>
+        </p>
+        <p>
+            <span style="color:#333333;">一般存在于 Form 表单提交等交互功能，如文章留言，提交文本信息等，</span><span style="color:#be191c;"><strong>黑客利用的 XSS 漏洞，将内容经正常功能提交进入数据库持久保存</strong></span><span style="color:#333333;">，</span><span style="color:#be191c;">当前端页面获得后端从数据库中读出的注入代码时，恰好将其渲染执行。&nbsp;</span>
+        </p>
+        <p>
+            <span style="color:#333333;"><strong>与反射型的根源类似</strong>，<strong>不同的是恶意代码会被保存在服务器中</strong>，导致其它用户（前端）和管理员（前后端）在访问资源时执行了恶意代码</span>
+        </p>
+        <p>
+            <span style="color:#333333;">举个例子，对于评论功能来说，就得防范持久型 XSS 攻击，因为我可以在评论中输入以下内容</span>
+        </p>
+        <p style="text-align:center;">
+            <img alt="图片" src="https://img-blog.csdnimg.cn/img_convert/cfe7ee7384b014cfd6bd0b0a0029b7a7.png"/>
+        </p>
+        <p>
+            <br/>
+        </p>
+        <p>
+            <span style="color:#333333;"><strong>3）DOM型XSS</strong></span>
+        </p>
+        <p>
+            <strong>通过修改页面的DOM节点形成</strong>的XSS。利用步骤和反射型很类似，唯一区别就是，构造的URL参数不用发送到服务器端，可以躲避服务端的检测效果。
+        </p>
+        <p>
+            例如，提交按钮的onclick事件调用了xsstest()函数。而在xsstest()中，修改了页面的DOM节点，通过innerHTML把一段用户输入数据当作HTML写入到页面中，造成了DOM XSS。
+        </p>
+        <pre>&lt;body&gt;&lt;div id=&quot;output&quot;&gt;&lt;/div&gt;&lt;input type=&quot;text&quot; id=&quot;input&quot; value=&quot;&quot; /&gt;&lt;input type=&quot;button&quot; onclick=&quot;xsstest()&quot; /&gt; 通过点击事件，
+            修改dom&lt;/body&gt;function xsstest(){var str = document.getElementById(&quot;input&quot;).value;document.getElementById(&quot;output&quot;).innerHTML = &quot;&lt;imgsrc=&#39;&quot;+str+&quot;&#39;&gt;&lt;/img&gt;&quot;;}</pre>
+        <p>
+            <span style="color:#333333;"><strong>4）通用型XSS</strong></span>
+        </p>
+        <ul class=" list-paddingleft-2">
+            <li>
+                <p>
+                    <strong>上面三种XSS攻击</strong>的是因为客户端或服务端的<strong>代码开发不严谨</strong>等问题而存在漏洞。&nbsp;
+                </p>
+            </li>
+            <li>
+                <p>
+                    而<strong>通用型XSS</strong>是<strong>利用浏览器或浏览器扩展漏洞</strong>，来制造产生XSS的条件并执行代码的一种攻击类型。是<strong>危险和最具破坏性</strong>的攻击类型之一。
+                </p>
+            </li>
+        </ul>
+        <p>
+            <span style="color:#0d0016;">不仅是浏览器本身的漏洞，现在主流浏览器都支持扩展程序的安装，而众多的浏览器扩展程序可能导致带来更多的漏洞和安全问题。</span>
+        </p>
+        <p>
+            <span style="color:#0d0016;"><strong>例如：Flash Player插件</strong>（当时的所有版本）中的缺陷使得攻击者通过使用构造的.swf文件，可以访问Gmail设置和添加转发地址。因此<strong>攻击者可以收到任意一个被攻破的Gmail帐号的所有邮件副本</strong>（发送的时候都会抄送份）。</span>
+        </p>
+        <p>
+            <span style="color:#0d0016;"><strong>5）突变型XSS</strong></span>
+        </p>
+        <p>
+            <span style="color:#0d0016;">将拼接的内容置于innerHTML这种操作。浏览器的渲染引擎会将本来没有任何危害的HTML代码渲染成具有潜在危险的XSS攻击代码。随后，该段攻击代码，可能会被JS代码中的其它一些流程输出到DOM中或是其它方式被再次渲染，从而导致XSS的执行。 这种<strong>由于HTML内容进入innerHTML后发生意外变化</strong>，而<strong>最终导致XSS的攻击流程。</strong></span>
+        </p>
+        <h3>
+            <span style="color:#333333;"><strong>（3）如何防御XSS（五种方式）</strong></span>
+        </h3>
+        <ul class=" list-paddingleft-2">
+            <li>
+                <p>
+                    <span style="color:#333333;"><strong>（1）</strong>DOM 型 XSS 攻击，实际上就是网站前端 JavaScript 代码本身不够严谨，把不可信的数据当作代码执行了。在使用<strong> .innerHTML、.outerHTML、document.write()</strong>时<strong>要特别小心</strong>，不要把不可信的数据作为 HTML 插到页面上，而应<strong>尽量使用.textContent、.setAttribute</strong>() 等（DOM XSS）。</span>
+                </p>
+            </li>
+            <li>
+                <p>
+                    <span style="color:#333333;"><strong>（2）</strong>DOM 中的内联事件监听器，如 <strong>location、onclick、onerror、onload、onmouseover等标签的href属性</strong>，JavaScript 的eval()、setTimeout()、setInterval()等，<strong>都能把字符串作为代码运行</strong>。如果不可信的数据拼接到字符串中传递给这些 API，</span>很容易 产生安全隐患，<strong>请务必避免(DOM XSS)</strong>。
+                </p>
+            </li>
+            <li>
+                <p>
+                    <span style="color:#333333;"><strong>（3）</strong></span><strong>前端渲染把代码和数据分隔开。</strong>在前端渲染中，我们会明确的告诉浏览器：下面要设置的内容是文本（.innerText），还是属性（.setAttribute），还是样式 （.style）等等。浏览器不会被轻易的被欺骗，执行预期外的代码了。
+                </p>
+            </li>
+        </ul>
+        <ol class=" list-paddingleft-2">
+            <li>
+                <p>
+                    Javascript：可以使用textContent或者innerText的地方，尽量不使用innerHTML；
+                </p>
+            </li>
+            <li>
+                <p>
+                    query：可以使用text()得地方，尽量不使用html()；
+                </p>
+            </li>
+        </ol>
+        <ul class=" list-paddingleft-2">
+            <li>
+                <p>
+                    <strong>（4）拼接HTML时对其进行转义。</strong>如果拼接 HTML 是必要的，就需要采用合适的转义库，对 HTML 模板各处插入点进行充分的转义<strong>（</strong><span style="color:#333333;">vue/react等主流框架已经避免类似问题，vue举例：不能在template中写script标签，无法在js中通过ref或append等方式动态改变或添加script标签）</span><strong>。</strong><span style="color:#0d0016;"><strong>这里推荐一个前端防止XSS攻击的插件: js-xss。其</strong>通过白名单保留部分标签和属性，再进行过滤。除了白名单内的标签和属性，白名单外的都要进行过滤。</span>当然也可以通过黑名单过滤，但是考虑到需要过滤的标签和标签属性实在太多，更加推荐使用白名单的方式。<span style="color:#0d0016;">例如，指定白名单：</span>
+                </p>
+            </li>
+        </ul>
+        <pre>var xssFilter =function(html){if(!html) return ‘’;var xss = require(‘xss’);var ret = xss(html, { whiteList:{ img: [‘src’], a: [‘href’], font: [‘size’, ‘color’] },onIgnoreTag: function(){ return ‘’; } });console.log(html, ret); return ret;};</pre>
+        <p>
+            <strong>补充：</strong>最普遍的做法就是转义输入输出的内容，对于引号、尖括号、斜杠进行转义：
+        </p>
+        <p>
+            <img alt="" height="189" src="https://img-blog.csdnimg.cn/20211005074040545.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAQy4mSC4=,size_13,color_FFFFFF,t_70,g_se,x_16" width="319"/>
+        </p>
+        <p>
+            但是对于显示富文本来说，显然不能通过上面的办法来转义所有字符，因为这样会把需要的格式也过滤掉。因此采用白名单过滤的办法，可以看到使用白名单过滤富文本，在输出中保留了 h1 标签且过滤了 script 标签：
+        </p>
+        <p>
+            <img alt="" height="77" src="https://img-blog.csdnimg.cn/20211005074241887.png?x-oss-process=image/watermark,type_ZHJvaWRzYW5zZmFsbGJhY2s,shadow_50,text_Q1NETiBAQy4mSC4=,size_20,color_FFFFFF,t_70,g_se,x_16" width="622"/>
+        </p>
+        <p>
+            <img alt="" src="https://img-blog.csdnimg.cn/20210329162422929.png?x-oss-process=image/watermark,type_ZmFuZ3poZW5naGVpdGk,shadow_10,text_aHR0cHM6Ly9ibG9nLmNzZG4ubmV0L3FxXzM5NTE3ODIw,size_16,color_FFFFFF,t_70"/>
+        </p>
+        <ul class=" list-paddingleft-2">
+            <li>
+                <p>
+                    <span style="color:#0d0016;"><strong>（5）建立白名单(CSP </strong></span>Content-Security-Policy<span style="color:#0d0016;"><strong>)。</strong>通过</span>建立白名单，开发者明确<strong>告诉浏览器哪些外部资源可以加载和执行</strong>。我们只需要配置规则，如何拦截是由浏览器自己实现的。通常可以通过两种方式来开启 CSP：
+                </p>
+            </li>
+        </ul>
+        <ol class=" list-paddingleft-2">
+            <li>
+                <p>
+                    设置 HTTP Header 中的 Content-Security-Policy
+                </p>
+            </li>
+            <li>
+                <p>
+                    设置 meta 标签的方式
+                </p>
+            </li>
+        </ol>
+        <p>
+            <strong>以设置 HTTP Header 来举例：</strong>
+        </p>
+        <ul class=" list-paddingleft-2">
+            <li>
+                <p>
+                    只允许加载本站资源：
+                </p>
+                <pre>Content-Security-Policy: default-src &#39;self&#39;</pre>
+            </li>
+            <li>
+                <p>
+                    只允许加载 HTTPS 协议图片
+                </p>
+                <pre>Content-Security-Policy: img-src https://*</pre>
+            </li>
+            <li>
+                <p>
+                    允许加载任何来源框架
+                </p>
+                <pre>Content-Security-Policy: child-src &#39;none&#39;</pre>
+            </li>
+        </ul>
+        <p>
+            <span style="color:#333333;">参考：<a href="https://blog.csdn.net/qq_33929420/article/details/112003122?ops_request_misc=%257B%2522request%255Fid%2522%253A%2522162995557816780262559140%2522%252C%2522scm%2522%253A%252220140713.130102334..%2522%257D&request_id=162995557816780262559140&biz_id=0&utm_medium=distribute.pc_search_result.none-task-blog-2~all~top_positive~default-1-112003122.pc_search_result_control_group&utm_term=XSS&spm=1018.2226.3001.4187" title="(23条消息) 这一次，彻底理解XSS攻击_Tz-CSDN博客">(23条消息) 这一次，彻底理解XSS攻击_Tz-CSDN博客</a></span>
+        </p>
+        <h2>
+            <span style="color:#333333;">3. DDoS（</span>Distributed Denial of Service，分布式拒绝服务<span style="color:#333333;">）</span>
+        </h2>
+        <h3>
+            （1）什么是DDoS
+        </h3>
+        <p>
+            <span style="color:#0d0016;"><strong>原理：</strong>攻击者通过大量恶意流量占用带宽和计算资源，以达到瘫痪对方网络的目的。</span>
+        </p>
+        <p>
+            <span style="color:#0d0016;">一般<strong>DDoS攻击的目的就两个：</strong></span>
+        </p>
+        <ol class=" list-paddingleft-2">
+            <li>
+                <p>
+                    <span style="color:#0d0016;">敲诈勒索，逼你花钱买平安</span>
+                </p>
+            </li>
+            <li>
+                <p>
+                    <span style="color:#0d0016;">打击竞争对手</span>
+                </p>
+            </li>
+        </ol>
+        <p>
+            <span style="color:#0d0016;">DDoS攻击可以针对网络通讯协议的各层，<strong>分为两类：</strong></span>
+        </p>
+        <ul class=" list-paddingleft-2">
+            <li>
+                <p>
+                    <strong><span style="color:#0d0016;">网络层DDoS</span></strong>
+                </p>
+            </li>
+        </ul>
+        <p>
+            <span style="color:#0d0016;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; # 包括<strong>SYN Flood</strong>、ACK Flood、UDP Flood、ICMP Flood</span>
+        </p>
+        <p>
+            <span style="color:#0d0016;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; # 防御：本质上其实是无法防御的，只能不断优化服务本身部署的网络架构，以及提升网络带宽</span>
+        </p>
+        <ul class=" list-paddingleft-2">
+            <li>
+                <p>
+                    <strong><span style="color:#0d0016;">应用层DDoS</span></strong>
+                </p>
+            </li>
+        </ul>
+        <p>
+            <span style="color:#0d0016;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; # 包括CC、DNS Flood、HTTP慢速连接攻击</span>
+        </p>
+        <p>
+            <span style="color:#0d0016;">&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; &nbsp; # 防御：核心就是区分人与机器（爬虫），因为大量的请求不可能是人为的。如果能有效区分人与爬虫行为，就能很好防御应用层DDoS攻击。</span>
+        </p>
+        <h3>
+            <span style="color:#0d0016;">（2）如何防御DDoS</span>
+        </h3>
+        <p>
+            <strong>DDOS 特别难防的原因：</strong>真正的 DDOS 攻击是没有特征的，它的请求看上去跟正常请求一样，而且来自不同的 IP 地址，所以没法拦截。&nbsp;
+        </p>
+        <ol class=" list-paddingleft-2">
+            <li>
+                <p>
+                    <strong>防范 DDOS 的第一步</strong>，就是你<strong>要有一个备份网站</strong>，或者最低限度有一个临时主页。生产服务器万一下线了，可以立刻切换到备份网站，不至于毫无办法。
+                </p>
+            </li>
+            <li>
+                <p>
+                    <strong>带宽扩容。设法把这些请求都消化掉</strong>。一口气买了5个，每个主机保 5G 流量以下的攻击。网站架设在其中一个主机上面，不暴露给用户；其他主机都是镜像，用来面对用户。DNS 会把访问量均匀分配到这四台镜像服务器，一旦出现攻击，这种架构就可以防住 20G 的流量。如果有更大的攻击，那就买更多的临时主机，不断扩容镜像。
+                </p>
+            </li>
+            <li>
+                <p>
+                    <strong>CDN。</strong>把网站的静态内容分发到多个服务器，<strong>用户就近访问，提高速度</strong>。网站内容存放在源服务器，CDN 上面是内容的缓存。用户只允许访问 CDN，如果内容不在 CDN 上，CDN 再向源服务器发出请求。这样的话，只要 CDN 够大，就可以抵御很大的攻击。不过，这种方法有一个<strong>前提，网站的大部分内容必须可以静态缓存</strong>。注意用了 CDN，<strong>千万不要泄露源服务器的 IP 地址</strong>，否则攻击者可以绕过 CDN 直接攻击源服务器。
+                </p>
+            </li>
+            <li>
+                <p>
+                    <strong>HTTP 请求的拦截。</strong>如果<strong>恶意请求有特征</strong>，直接拦截它就行了。HTTP 请求的特征<strong>一般有两种：IP 地址和 User Agent 字段</strong>。比如，恶意请求都是从某个 IP 段发出的，那么把这个 IP 段封掉就行了。或者，它们的 User Agent 字段有特征（包含某个特定的词语），那就把带有这个词语的请求拦截。拦截可以在三个层次做：
+                </p>
+            </li>
+        </ol>
+        <p>
+            <span style="color:#0d0016;"><strong>（1）专用硬件</strong>：Web 服务器的前面可以<strong>架设硬件防火墙，专门过滤请求</strong>。这种<strong>效果最好</strong>，但是<strong>价格也最贵。</strong></span>
+        </p>
+        <p>
+            <span style="color:#0d0016;"><strong>（2）本机防火墙</strong>：<strong>操作系统都带有软件防火墙</strong>，Linux 服务器一般使用&nbsp;<a href="https://wiki.archlinux.org/index.php/Iptables_%28%E7%AE%80%E4%BD%93%E4%B8%AD%E6%96%87%29" title="iptables">iptables</a>。比如，拦截 IP 地址<code>1.2.3.4</code>的请求，可以执行命令：$ iptables -A INPUT -s 1.2.3.4 -j DROP。它对服务器性能有一定影响，也防不住大型攻击。</span>
+        </p>
+        <p>
+            <span style="color:#0d0016;"><strong>（3）Web 服务器</strong>：Web 服务器也可以过滤请求，有Apache 和nginx 写法。拦截 IP 地址<code>1.2.3.4</code>，nginx 的写法为：location / {&nbsp;deny 1.2.3.4; }。但是Web 服务器的拦截非常消耗性能，尤其是 Apache。稍微大一点的攻击，这种方法就没用了。</span>
+        </p>
+        <h2>
+            <span style="color:#0d0016;">4、SQL注入</span>
+        </h2>
+        <h3>
+            <span style="color:#0d0016;">（1）什么是SQL注入</span>
+        </h3>
+        <p>
+            <span style="color:#0d0016;"><strong>原理：</strong>程序<strong>没有有效的转义过滤用户的输入</strong>，使<strong>攻击者</strong>成功地<strong>向服务器提交恶意的SQL查询代码</strong>。程序在接收后，错误的将攻击者的输入作为查询语句的部分内容，<strong>额外执行了攻击者构造的恶意代码。</strong></span>
+        </p>
+        <p>
+            <span style="color:#0d0016;"><strong>举例：</strong>用户在输入用户名的时候直接输入<strong>万能密码：xxx&#39; or 1 #</strong>，那么最后拼接的SQL会变为：select * from user </span><strong><span style="color:#0d0016;">where name =</span><span style="color:#1a439c;"> &#39;xxx&#39; </span>or<span style="color:#1a439c;"> 1 # and password = &#39;123456&#39;</span></strong><span style="color:#0d0016;">; #符号代表SQL语法中的注释，上面的SQL就如同select * from user <strong>where name = &#39;xxx&#39; or 1 </strong>。这样是<strong>可以查询到用户信息的，所以用户就登录了系统。</strong></span>
+        </p>
+        <h3>
+            <span style="color:#0d0016;"><strong>（2）防御SQL注入</strong></span>
+        </h3>
+        <ol class=" list-paddingleft-2">
+            <li>
+                <p>
+                    <strong>预编译语句</strong>。在执行时会把&quot;select name from user where id=<strong> ?</strong>&quot;语句事先编译好，这样当执行时仅仅需要用传入的参数替换掉？占位符即可。
+                </p>
+            </li>
+            <li>
+                <p>
+                    <strong>过滤非法字符</strong>。保证传来的字符串作为一个参数,而不是语句拼接的一部分。所以需要对特殊字符进行转义，可以使用<code>addslashes</code>函数。
+                </p>
+            </li>
+            <li>
+                <p>
+                    <strong>确保正确的数据类型。</strong>判断url或表单中<strong>传来的数据是否为想要的数据类型</strong>，如果不是，进行相应的数据类型转换。
+                </p>
+            </li>
+            <li>
+                <p>
+                    <strong>后端代码检查输入的数据是否符合预期</strong>，严格限制变量的类型，例如使用正则表达式进行一些匹配处理，设置用户的输入规则，限制用户不安规则瞎输。
+                </p>
+            </li>
+            <li>
+                <p>
+                    严格<strong>限制</strong>Web应用的<strong>数据库操作权限。</strong>
+                </p>
+            </li>
+        </ol>
+        <h2>
+            5、点击劫持
+        </h2>
+        <h3>
+            （1）什么是点击劫持
+        </h3>
+        <p>
+            点击劫持是一种<strong>视觉上的欺骗手段</strong>。攻击者使用一个或多个<strong>透明的 iframe 覆盖在一个正常的网页上，然后诱使用户在该网页上进行操作</strong>，当用户在不知情的情况下点击透明的 iframe 页面时，用户的<strong>操作已经被劫持到</strong>攻击者<strong>事先设计好的恶意按钮或链接上</strong>。
+        </p>
+        <h3>
+            （2）如何防御点击劫持
+        </h3>
+        <p>
+            <strong>2.1）服务端防御：</strong>
+        </p>
+        <ol class=" list-paddingleft-2">
+            <li>
+                <p>
+                    <strong>使用 FrameBusting 代码。</strong>针对 iframe 的特性提出的，<strong>使用 JavaScript 脚本阻止恶意网站载入网页。</strong>如果检测到网页被非法网页载入，就执行自动跳转功能。如果用户浏览器禁用JavaScript脚本，那么FrameBusting代码也无法正常运行。
+                </p>
+            </li>
+            <li>
+                <p>
+                    <strong>X-FRAME-OPTIONS 机制</strong>。X-FRAME-OPTIONS是一个<strong> HTTP 响应头</strong>，就是为了防御用 iframe 嵌套的点击劫持攻击。如果浏览器使用了这个安全机制，在网站发现可疑行为时，会提示用户正在浏览 网页存在安全隐患，并建议用户在新窗口中打开。这样攻击者就无法通过 iframe 隐藏目标的网页。<strong>该响应头有三个值可选</strong>，分别是
+                </p>
+            </li>
+        </ol>
+        <ul class=" list-paddingleft-2">
+            <li>
+                <p>
+                    <strong>DENY：</strong>表示页面<strong>不允许</strong>通过 <strong>iframe </strong>的方式展示。
+                </p>
+            </li>
+            <li>
+                <p>
+                    <strong>SAMEORIGIN：</strong>表示页面可以在<strong>相同域名下</strong>通过 <strong>iframe </strong>的方式展示。
+                </p>
+            </li>
+            <li>
+                <p>
+                    <strong>ALLOW-FROM：</strong>表示页面可以在<strong>指定来源的 iframe</strong> 中展示。
+                </p>
+            </li>
+        </ul>
+        <p>
+            <strong>2.2）客户端防御：</strong>
+        </p>
+        <ol class=" list-paddingleft-2">
+            <li>
+                <p>
+                    <strong>升级浏览器。</strong>最新版本的浏览器提供很多防御点击劫持漏洞的安全机制，对于普通的互联网用户，经常更新修复浏览器的安全漏洞，能够最有效的防止恶意攻击。
+                </p>
+            </li>
+            <li>
+                <p>
+                    <strong>NoScript 扩展。</strong>对于Firefox的用户，使用 NoScript 扩展能够在一定程度上检测和阻止点击劫持攻击。利用 <strong>NoScript 中 ClearClick 组件能够检测和警告潜在的点击劫持攻击</strong>，自动<strong>检测页面中可能不安全的页面。</strong>
+                </p>
+            </li>
+        </ol>
+        <p>
+            <br/>
+        </p>
+    </article>
+</body>
+</html>

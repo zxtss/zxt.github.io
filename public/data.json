@@ -1,17 +1,5 @@
 train([
     {
-        "name": "公众号",
-        "sex": "男",
-        "email": "badao@123.com"
-    },
-    {
-        "name": "霸道的程序猿",
-        "sex": "男",
-        "email": "badao@123.com"
-    },
-    {
-        "name": "欢迎关注",
-        "sex": "女",
-        "email": "badao@123.com"
+       "security":"",
     }
 ] )

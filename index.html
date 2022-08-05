@@ -36,6 +36,8 @@
                             <el-submenu index="5">
                                 <template slot="title">技术栈</template>
                                 <el-menu-item index="2-4" @click="go(1)">A-frame</el-menu-item>
+                                <el-menu-item index="2-4" @click="go(2)">安全问题</el-menu-item>
+                                <el-menu-item index="2-4" @click="go(3)">pyscript</el-menu-item>
                             </el-submenu>
                             <el-menu-item index="6">新闻资讯</el-menu-item>
                             <el-menu-item index="7">疫情专区</el-menu-item>
@@ -189,8 +191,9 @@
         </div>
     </div>
     <script>
+        var dataSource=void 0;
         function train(data) {
-            // console.log(data);
+            dataSource=data;
         } 
     </script>
     <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.0-beta.5/vue.min.js"></script>
@@ -285,6 +288,11 @@
                 go(type){
                     if(type===1){
                         window.location.href='webVR.html';
+                    }else if(type===2){
+                        // window.location.href=dataSource[0].security;
+                        window.location.href='./html/safe.html';
+                    }else if(type===3){
+                        window.location.href='python.html';
                     }
                 },
                 handleSelect(key) {
