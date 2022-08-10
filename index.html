@@ -41,7 +41,7 @@
                             </el-submenu>
                             <el-menu-item index="6">新闻资讯</el-menu-item>
                             <el-menu-item index="7">疫情专区</el-menu-item>
-                            <el-menu-item index="9">影视大全</el-menu-item>
+                            <el-menu-item index="99">影视大全</el-menu-item>
                             <el-menu-item index="8">联系我</el-menu-item>
                             <!-- <el-menu-item index="4"><a href="https://blog.csdn.net/m0_46361270?type=blog"
                                 target="_blank">我的博客</a></el-menu-item> -->
@@ -371,7 +371,7 @@
                         }).catch(err => {
                             _this.$message.error('请求失败');
                         })
-                    }else if(key==='9'){
+                    }else if(key==='99'){
                         //影视大全
                         window.location.href='./html/film.html';
                     }
