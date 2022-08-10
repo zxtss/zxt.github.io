@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>影视大全</title>
+    <link rel="icon" href="../images/ETH.png" sizes="50x50">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <style>
+        .time {
+            font-size: 13px;
+            color: #999;
+        }
+
+        .bottom {
+            margin-top: 13px;
+            line-height: 12px;
+        }
+
+        .button {
+            padding: 0;
+            float: right;
+        }
+
+        .image {
+            width: 100%;
+            display: block;
+        }
+
+        .clearfix:before,
+        .clearfix:after {
+            display: table;
+            content: "";
+        }
+
+        .clearfix:after {
+            clear: both
+        }
+
+        #app {
+            padding: 0 30px;
+        }
+
+        .top {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 30px 0;
+        }
+    </style>
+</head>
+
+<body style="background: url('../images/background.webp');">
+    <div id="app">
+        <div class="top">
+            <div style="width: 300px;">
+                <el-input placeholder="请输入内容" left suffix-icon="el-icon-search" v-model="name" @change="change">
+                </el-input>
+            </div>
+        </div>
+        <div class="bottom">
+            <el-row>
+                <el-col :span="3" v-for="(o, index) in sourceList" :key="o" :offset="index > 0 ? 1 : 0" @click="go(item.name)">
+                    <el-card :body-style="{ padding: '0px' }">
+                        <img :src="o.pic"
+                            class="image">
+                        <div style="padding: 14px;">
+                            <span>{{o.name}}</span>
+                            <div class="bottom clearfix">
+                                <el-button type="text" class="button">立即观看</el-button>
+                            </div>
+                        </div>
+                    </el-card>
+                </el-col>
+            </el-row>
+        </div>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.0-beta.5/vue.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.9/index.js"></script>
+    <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g6-3.7.1/dist/g6.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    name: '',
+                    sourceList:[],
+                }
+            },
+            methods: {
+                change(e) {
+                   const _this=this;
+                    const url = `http://www.xjznzm.com/index.php/ajax/suggest?mid=1&wd=${e}&limit=10&timestamp=${new Date().getTime()}`;
+                    axios.get(url).then(res => {
+                        if (res.data.code === 1) {
+                            _this.sourceList = res.data.list;
+                        } else {
+                            _this.$message({
+                                message: res.data.message,
+                                type: 'warning'
+                            });
+                        }
+                    }).catch(err => {
+                        _this.$message.error('请求失败');
+                    })
+                },
+                go(name){
+                    window.location.href=`http://www.xjznzm.com/vodsearch/${name}-------------.html`;
+                },
+            },
+        })
+    </script>
+</body>
+
+</html>
