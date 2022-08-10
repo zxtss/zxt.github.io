@@ -8,7 +8,13 @@
     <title>影视大全</title>
     <link rel="icon" href="../images/ETH.png" sizes="50x50">
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+
     <style>
+        * {
+            margin: 0;
+            padding: 0;
+        }
+
         .time {
             font-size: 13px;
             color: #999;
@@ -40,7 +46,7 @@
         }
 
         #app {
-            padding: 0 30px;
+            /* padding: 0 30px; */
         }
 
         .top {
@@ -49,23 +55,39 @@
             justify-content: center;
             margin: 30px 0;
         }
+
+        #header-top {
+            display: none !important;
+        }
+        .tt{
+            /* width: 500px; */
+            height: 58px;
+            background: #222;
+            position: fixed;
+            top: 0;
+            left: 0;
+        }
+        body{
+            overflow: hidden;
+        }
     </style>
 </head>
 
-<body style="background: url('../images/background.webp');">
+<body>
     <div id="app">
-        <div class="top">
+        <!-- <div class="top">
             <div style="width: 300px;">
                 <el-input placeholder="请输入内容" left suffix-icon="el-icon-search" v-model="name" @change="change">
                 </el-input>
             </div>
-        </div>
-        <div class="bottom">
+        </div> -->
+        <!-- 
+        <div class="bottom" v-loading="loading">
             <el-row>
-                <el-col :span="3" v-for="(o, index) in sourceList" :key="o" :offset="index > 0 ? 1 : 0" @click="go(item.name)">
+                <el-col :span="3" v-for="(o, index) in sourceList" :key="o" :offset="index > 0 ? 1 : 0"
+                    @click="go(item.name)">
                     <el-card :body-style="{ padding: '0px' }">
-                        <img :src="o.pic"
-                            class="image">
+                        <img :src="o.pic" class="image">
                         <div style="padding: 14px;">
                             <span>{{o.name}}</span>
                             <div class="bottom clearfix">
@@ -75,28 +97,53 @@
                     </el-card>
                 </el-col>
             </el-row>
-        </div>
+        </div> -->
+        <!-- <iframe src="http://www.xjznzm.com" :width="width" :height="height"></iframe> -->
+        <div align="center" style="margin:0 auto;">
+                <div :style="{'width':width+'px','height':height+'px','overflow':'hidden','border':'0px'}">
+                     <div :style="{'width':width+'px','height':height+'px','margin':'-44px 0px 0px -10px'}">
+                <div class="tt" :style="{'width':((width-1200)/2+760)+'px'}"></div>
+                          <iframe src="http://www.xjznzm.com" :width="width" :height="height">
+                         </iframe>
+                     </div>
+                 </div>
+            </div>
     </div>
     <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.0-beta.5/vue.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.9/index.js"></script>
     <script src="https://gw.alipayobjects.com/os/antv/pkg/_antv.g6-3.7.1/dist/g6.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
+    <script src="../js/jquery.js"></script>
+
     <script>
         new Vue({
             el: '#app',
             data() {
                 return {
                     name: '',
-                    sourceList:[],
+                    sourceList: [],
+                    loading: false,
+                    width: document.body.clientWidth,
+                    height: document.documentElement.clientHeight
                 }
             },
             methods: {
                 change(e) {
-                   const _this=this;
+                    const _this = this;
+                    _this.loading = true;
+                    axios.defaults.withCredentials = true;
                     const url = `http://www.xjznzm.com/index.php/ajax/suggest?mid=1&wd=${e}&limit=10&timestamp=${new Date().getTime()}`;
-                    axios.get(url).then(res => {
+                    const cookies = `_referrer=t; Hm_lvt_46946981d9d78b17f5aa72ee7d6fbfb9=1660094138; PHPSESSID=ji1qngmc5tg2ahvpgh7074cao4; history=%5B%7B%22name%22%3A%22%E6%AD%A6%E6%9E%97%E5%A4%96%E4%BC%A0%22%2C%22pic%22%3A%22https%3A%2F%2Fpic.wujinpp.com%2Fupload%2Fvod%2F20210928-1%2F2aec90c08d9ac27060a01a6c1e9f3fa1.jpg%22%2C%22link%22%3A%22http%3A%2F%2Fwww.xjznzm.com%2Fgo%2F28046%2F3%2F4.html%22%2C%22part%22%3A%22%E7%AC%AC04%E9%9B%86%22%7D%2C%7B%22name%22%3A%22%E4%B8%80%E5%BF%B5%E6%B0%B8%E6%81%92%22%2C%22pic%22%3A%22https%3A%2F%2Fpic.wujinpp.com%2Fupload%2Fvod%2F20220403-1%2F3187e4830c0cb1e996055ceba813c1cf.jpg%22%2C%22link%22%3A%22http%3A%2F%2Fwww.xjznzm.com%2Fgo%2F3275%2F1%2F1.html%22%2C%22part%22%3A%22%E7%AC%AC01%E9%9B%86%22%7D%5D; BD_UPN=43; Hm_lpvt_46946981d9d78b17f5aa72ee7d6fbfb9=${new Date().getTime()}`
+                    axios.get(url, {
+                        headers: {
+                            "content-type": "application/x-www-form-urlencoded",
+                            "Cookie": cookies,
+                            "Authorization": cookies
+                        }
+                    }).then(res => {
                         if (res.data.code === 1) {
                             _this.sourceList = res.data.list;
+                            _this.loading = false;
                         } else {
                             _this.$message({
                                 message: res.data.message,
@@ -107,9 +154,13 @@
                         _this.$message.error('请求失败');
                     })
                 },
-                go(name){
-                    window.location.href=`http://www.xjznzm.com/vodsearch/${name}-------------.html`;
+                go(name) {
+                    window.location.href = `http://www.xjznzm.com/vodsearch/${name}-------------.html`;
                 },
+            },
+            mounted() {
+                // this.change("诛仙")
+                
             },
         })
     </script>
