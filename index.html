@@ -38,6 +38,7 @@
                                 <el-menu-item index="2-4" @click="go(1)">A-frame</el-menu-item>
                                 <el-menu-item index="2-4" @click="go(2)">安全问题</el-menu-item>
                                 <el-menu-item index="2-4" @click="go(3)">pyscript</el-menu-item>
+                                <el-menu-item index="2-4" @click="go(4)">正则表达式</el-menu-item>
                             </el-submenu>
                             <el-menu-item index="6">新闻资讯</el-menu-item>
                             <el-menu-item index="7">疫情专区</el-menu-item>
@@ -295,6 +296,8 @@
                         window.location.href='./html/safe.html';
                     }else if(type===3){
                         window.location.href='python.html';
+                    }else if(type===4){
+                        window.location.href='./html/regular.html';
                     }
                 },
                 handleSelect(key) {
