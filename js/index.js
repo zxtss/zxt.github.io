@@ -22,8 +22,8 @@
             "code": 200,
             "data": {
                 "name":"patton",
-                "QQ":"1020965670",
-                "email":"1020965670@qq.com"
+                "QQ":"-------",
+                "email":"----------"
             },
             "message": "success"
         }

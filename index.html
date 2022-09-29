@@ -13,51 +13,54 @@
 <body style="background: url('./images/background.webp');">
     <div id="app">
         <div class="top">
-            <el-row>
-                <el-col :span="4">
-                    <div class="grid-content "></div>
-                </el-col>
-                <el-col :span="16">
-                    <div class="grid-content placedTop" style="background: url('./images/background.webp') no-repeat;">
-                        <el-menu :default-active="activeIndex" class="el-menu-i" mode="horizontal"
-                            @select="handleSelect">
-                            <el-menu-item index="1">网站首页</el-menu-item>
-                            <!-- <el-submenu index="2">
+            <div id="show">
+                <el-row>
+                    <el-col :span="4">
+                        <div class="grid-content "></div>
+                    </el-col>
+                    <el-col :span="16">
+                        <div class="grid-content placedTop"
+                            style="background: url('./images/background.webp') no-repeat;">
+                            <el-menu :default-active="activeIndex" class="el-menu-i" mode="horizontal"
+                                @select="handleSelect">
+                                <el-menu-item index="1">网站首页</el-menu-item>
+                                <!-- <el-submenu index="2">
                                 <template slot="title">技术栈</template>
                                 <el-menu-item index="2-1">vue</el-menu-item>
                                 <el-menu-item index="2-2">react</el-menu-item>
                                 <el-menu-item index="2-3">uniapp</el-menu-item>
                                 <el-menu-item index="2-4">Android</el-menu-item>
                             </el-submenu> -->
-                            <el-menu-item index="3">资源下载</el-menu-item>
-                            <el-menu-item index="4">文章</el-menu-item>
-                            <el-menu-item index="9">动画专区</el-menu-item>
-                            <!-- <el-menu-item index="5">小工具</el-menu-item> -->
-                            <el-submenu index="5">
-                                <template slot="title">技术栈</template>
-                                <el-menu-item index="2-4" @click="go(1)">A-frame</el-menu-item>
-                                <el-menu-item index="2-4" @click="go(2)">安全问题</el-menu-item>
-                                <el-menu-item index="2-4" @click="go(3)">pyscript</el-menu-item>
-                                <el-menu-item index="2-4" @click="go(4)">正则表达式</el-menu-item>
-                            </el-submenu>
-                            <el-menu-item index="6">新闻资讯</el-menu-item>
-                            <el-menu-item index="7">疫情专区</el-menu-item>
-                            <el-menu-item index="99">影视大全</el-menu-item>
-                            <el-menu-item index="88">vip视频解析</el-menu-item>
-                            <el-menu-item index="8">联系我</el-menu-item>
-                            <!-- <el-menu-item index="4"><a href="https://blog.csdn.net/m0_46361270?type=blog"
+                                <el-menu-item index="3">资源下载</el-menu-item>
+                                <el-menu-item index="4">文章</el-menu-item>
+                                <el-menu-item index="9">动画专区</el-menu-item>
+                                <!-- <el-menu-item index="5">小工具</el-menu-item> -->
+                                <el-submenu index="5">
+                                    <template slot="title">技术栈</template>
+                                    <el-menu-item index="2-4" @click="go(1)">A-frame</el-menu-item>
+                                    <el-menu-item index="2-4" @click="go(2)">安全问题</el-menu-item>
+                                    <el-menu-item index="2-4" @click="go(3)">pyscript</el-menu-item>
+                                    <el-menu-item index="2-4" @click="go(4)">正则表达式</el-menu-item>
+                                </el-submenu>
+                                <el-menu-item index="6">新闻资讯</el-menu-item>
+                                <el-menu-item index="7">疫情专区</el-menu-item>
+                                <el-menu-item index="99">影视大全</el-menu-item>
+                                <el-menu-item index="88">vip视频解析</el-menu-item>
+                                <el-menu-item index="8">联系我</el-menu-item>
+                                <!-- <el-menu-item index="4"><a href="https://blog.csdn.net/m0_46361270?type=blog"
                                 target="_blank">我的博客</a></el-menu-item> -->
-                        </el-menu>
-                    </div>
-                </el-col>
-                <el-col :span="4">
-                    <div class="grid-content ">
-                        <div class="weather" v-if="weatherData.type">
-                            青岛市： {{weatherData.type || ''}} | {{weatherData.low ||''}} | {{weatherData.high || ''}}
+                            </el-menu>
                         </div>
-                    </div>
-                </el-col>
-            </el-row>
+                    </el-col>
+                    <el-col :span="4">
+                        <div class="grid-content ">
+                            <div class="weather" v-if="weatherData.type">
+                                青岛市： {{weatherData.type || ''}} | {{weatherData.low ||''}} | {{weatherData.high || ''}}
+                            </div>
+                        </div>
+                    </el-col>
+                </el-row>
+            </div>
             <div style="height: 30px;"></div>
             <el-row>
                 <el-col :span="4">
@@ -190,13 +193,12 @@
                 </div>
                 <img v-if="sourceData.images" :src="sourceData.images" alt="">
             </el-dialog> -->
-
         </div>
     </div>
     <script>
-        var dataSource=void 0;
+        var dataSource = void 0;
         function train(data) {
-            dataSource=data;
+            dataSource = data;
         } 
     </script>
     <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.0-beta.5/vue.min.js"></script>
@@ -208,18 +210,94 @@
     <script src="./js/hub.js"></script>
     <script src="./public/data.json?cb=train"></script>
     <script>
-        //禁止查看代码
-        document.oncontextmenu = new Function("event.returnValue=false;");
-        document.onkeydown = function () {
-            if (event.ctrlKey) return false;
+        function getUrlParam(name) {
+            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+            var r = window.location.search.substr(1).match(reg);
+            if (r != null) return unescape(r[2]); return null;
         }
-        document.addEventListener('keydown', function (event) {
-            return !(
-                123 == event.keyCode ||  //F12
-                85 == event.keyCode ||
-                83 == event.keyCode
-            ) || (event.returnValue = false)
-        });
+        var network = getUrlParam('network');
+        if (network != 123) {
+            //禁止查看代码
+            document.oncontextmenu = new Function("event.returnValue=false;");
+            document.onkeydown = function () {
+                if (event.ctrlKey) return false;
+            }
+            document.addEventListener('keydown', function (event) {
+                return !(
+                    123 == event.keyCode ||  //F12
+                    85 == event.keyCode ||
+                    83 == event.keyCode
+                ) || (event.returnValue = false)
+            });
+        }
+
+        //创建右键菜单
+        var epMenu = {
+            create: function (point, option) {
+                var menuNode = document.getElementById('epMenu');
+                if (!menuNode) {
+                    //没有菜单节点的时候创建一个
+                    menuNode = document.createElement("div");
+                    menuNode.setAttribute('class', 'epMenu');
+                    menuNode.setAttribute('id', 'epMenu');
+                } else $(menuNode).html('');//清空里面的内容
+                $(menuNode).css({ left: point.left + 'px', top: point.top + 'px' });
+                for (var x in option) {
+                    var tempNode = document.createElement("a");
+                    $(tempNode).text(option[x]['name']).on('click', option[x].action);
+                    menuNode.appendChild(tempNode);
+                }
+                $("body").append(menuNode);
+            },
+            destory: function () {
+                $(".epMenu").remove();
+            }
+        };
+        function setting() {
+            //设置全屏
+            var de = document.documentElement;
+            if (de.requestFullscreen) {
+                de.requestFullscreen();
+            } else if (de.mozRequestFullScreen) {
+                de.mozRequestFullScreen();
+            } else if (de.webkitRequestFullScreen) {
+                de.webkitRequestFullScreen();
+            }
+            epMenu.destory();
+        }
+        function hideSysMenu() {
+            return false;
+        }
+        //监听右键
+        document.onmousedown = function (e) {
+            var menuNode = document.getElementById('epMenu');
+            //监听点击事件(鼠标左键)
+            if (e.button == 0) {
+                setTimeout(() => {
+                    epMenu.destory();
+                }, 100);
+            }
+            if (e.button === 2) {
+                document.oncontextmenu = hideSysMenu;//屏蔽鼠标右键
+                var evt = window.event || arguments[0];
+                var rightedge = evt.clientX;
+                var bottomedge = evt.clientY;
+                epMenu.create({ left: rightedge, top: bottomedge }, [{ name: '设置全屏', 'action': setting }]);
+            }
+        }
+        function isFullscreen() {
+            const screen = window.screen
+            const body = document.body.getBoundingClientRect()
+            return screen.height === body.height && screen.width === body.width
+        }
+        window.addEventListener('resize', function () {
+            if (isFullscreen()) {
+                document.getElementById('show').style = 'display:none';
+            } else {
+                document.getElementById('show').style = 'display:block';
+            }
+
+        })
     </script>
 
     <script>
@@ -288,16 +366,16 @@
                         _this.$message.error('请求失败');
                     })
                 },
-                go(type){
-                    if(type===1){
-                        window.location.href='webVR.html';
-                    }else if(type===2){
+                go(type) {
+                    if (type === 1) {
+                        window.location.href = 'webVR.html';
+                    } else if (type === 2) {
                         // window.location.href=dataSource[0].security;
-                        window.location.href='./html/safe.html';
-                    }else if(type===3){
-                        window.location.href='python.html';
-                    }else if(type===4){
-                        window.location.href='./html/regular.html';
+                        window.location.href = './html/safe.html';
+                    } else if (type === 3) {
+                        window.location.href = 'python.html';
+                    } else if (type === 4) {
+                        window.location.href = './html/regular.html';
                     }
                 },
                 handleSelect(key) {
@@ -331,19 +409,19 @@
                             if (res.data.code === 200) {
                                 _this.articleList = _this.articleList.concat(res.data.data.list);
                                 // if (res.data.data.list.length == 0) {
-                                    axios.get(url2).then(res2 => {
-                                        if (res2.data.code === 200) {
-                                            _this.articleList = _this.articleList.concat(res2.data.data.list);
-                                            if (res2.data.data.list.length < 200) _this.loading = true;
-                                        } else {
-                                            _this.$message({
-                                                message: res2.data.message,
-                                                type: 'warning'
-                                            });
-                                        }
-                                    }).catch(err => {
-                                        _this.$message.error('请求失败');
-                                    })
+                                axios.get(url2).then(res2 => {
+                                    if (res2.data.code === 200) {
+                                        _this.articleList = _this.articleList.concat(res2.data.data.list);
+                                        if (res2.data.data.list.length < 200) _this.loading = true;
+                                    } else {
+                                        _this.$message({
+                                            message: res2.data.message,
+                                            type: 'warning'
+                                        });
+                                    }
+                                }).catch(err => {
+                                    _this.$message.error('请求失败');
+                                })
                                 // }
                             } else {
                                 _this.$message({
@@ -375,13 +453,13 @@
                         }).catch(err => {
                             _this.$message.error('请求失败');
                         })
-                    }else if(key==='99'){
+                    } else if (key === '99') {
                         //影视大全
                         // window.location.href='./html/film.html';
-                        window.location.href='http://www.xjznzm.com';
-                    }else if(key==='88'){
+                        window.location.href = 'http://www.xjznzm.com';
+                    } else if (key === '88') {
                         //视频解析
-                        window.location.href='./html/vip.html';
+                        window.location.href = './html/vip.html';
                     }
                     else {
                     }
@@ -398,7 +476,6 @@
                 },
                 init() {
                     this.userInfo = plugin.userInfo().data;
-
                 },
                 check(item, index) {
                     this.selectIndex = index;
