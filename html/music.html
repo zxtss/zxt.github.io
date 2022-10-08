@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="icon" href="../images/ETH.png" sizes="50x50">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+
+</head>
+<body>
+    <div id="app">
+        <div></div>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.0-beta.5/vue.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.9/index.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
+    <script>
+        // https://www.likecs.com/show-333702.html
+        new Vue({
+            el: '#app',
+            data(){
+                return{
+
+                }
+            },
+            methods:{
+                init(){
+                    const url='https://v0.yiketianqi.com/api?unescape=1&version=v91&appid=43656176&appsecret=I42og6Lm';
+                     axios.get(url).then(res => {
+                        console.log(res)
+                        }).catch(err => {
+                            this.$message.error('请求失败');
+                        })
+                },
+            },
+            mounted(){
+                this.init();
+            }
+        })
+    </script>
+</body>
+</html>

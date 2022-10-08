@@ -42,6 +42,10 @@
                                     <el-menu-item index="2-4" @click="go(3)">pyscript</el-menu-item>
                                     <el-menu-item index="2-4" @click="go(4)">正则表达式</el-menu-item>
                                 </el-submenu>
+                                <el-submenu index="99">
+                                    <template slot="title">专区</template>
+                                    <el-menu-item index="2-4" @click="goPRO(1)">音乐专区</el-menu-item>
+                                </el-submenu>
                                 <el-menu-item index="6">新闻资讯</el-menu-item>
                                 <el-menu-item index="7">疫情专区</el-menu-item>
                                 <el-menu-item index="99">影视大全</el-menu-item>
@@ -54,8 +58,8 @@
                     </el-col>
                     <el-col :span="4">
                         <div class="grid-content ">
-                            <div class="weather" v-if="weatherData.type">
-                                青岛市： {{weatherData.type || ''}} | {{weatherData.low ||''}} | {{weatherData.high || ''}}
+                            <div class="weather" v-if="weatherData.date">
+                                青岛市：{{weatherData.tem2 ||''}}°C - {{weatherData.tem1 ||''}}°C | {{weatherData.wea || ''}}
                             </div>
                         </div>
                     </el-col>
@@ -137,12 +141,12 @@
                                     </el-table-column>
                                     <el-table-column label="本土新增" align="center">
                                         <template slot-scope="scope">
-                                            <p style="color:#F56C6C">{{scope.row.sure_new_cnt}}</p>
+                                            <p style="color:#F56C6C">{{scope.row.conadd_str}}</p>
                                         </template>
                                     </el-table-column>
-                                    <el-table-column prop="sure_new_hid" align="center" label="无症状" sortable>
-                                    </el-table-column>
-                                    <el-table-column prop="present" align="center" label="现有确诊" sortable>
+                                    <!-- <el-table-column prop="sure_new_hid" align="center" label="无症状" sortable>
+                                    </el-table-column> -->
+                                    <el-table-column prop="econNum" align="center" label="现有确诊" sortable>
                                     </el-table-column>
                                 </el-table>
                             </el-row>
@@ -197,9 +201,17 @@
     </div>
     <script>
         var dataSource = void 0;
+        var YIQING=void 0;
+        var TTIME=void 0;
         function train(data) {
             dataSource = data;
         } 
+        function callbacklocation(data){
+            YIQING=data.result.data;
+        }
+        function beijingChartData(data){
+            TTIME=data.data.times;
+        }
     </script>
     <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.0-beta.5/vue.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.9/index.js"></script>
@@ -209,6 +221,8 @@
     <script src="./js/index.js"></script>
     <script src="./js/hub.js"></script>
     <script src="./public/data.json?cb=train"></script>
+    <script src="https://news.sina.com.cn/project/fymap/ncp2020_feiyan_procity_loc_data.jsonp?callback=callbacklocation"></script>
+    <script src="https://gwpre.sina.cn/interface/news/ncp/data.d.json?mod=province&province=beijing&&callback=beijingChartData&_=1665196104970"></script>
     <script>
         function getUrlParam(name) {
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
@@ -378,6 +392,11 @@
                         window.location.href = './html/regular.html';
                     }
                 },
+                goPRO(type){
+                    if (type === 1) {
+                        window.location.href = './html/music.html';
+                    } 
+                },
                 handleSelect(key) {
                     const _this = this;
                     if (_this.activeIndex == key) return;
@@ -445,14 +464,16 @@
 
                     else if (key === '7') {
                         //疫情专区
-                        const _this = this;
-                        const url = 'https://covid.myquark.cn/quark/covid/data?format=json&method=Huoshenshan.ncov2022&type=latest&news_type=ncp&is_gray=1&uc_param_str=dsdnfrpfbivesscpgimibtbmnijblaupogpintnwktprchmtut';
-                        axios.get(url).then(res => {
-                            _this.tableData = res.data.chinaTopCity;
-                            _this.time = res.data.time;
-                        }).catch(err => {
-                            _this.$message.error('请求失败');
-                        })
+                        // const _this = this;
+                        // const url = 'https://covid.myquark.cn/quark/covid/data?format=json&method=Huoshenshan.ncov2022&type=latest&news_type=ncp&is_gray=1&uc_param_str=dsdnfrpfbivesscpgimibtbmnijblaupogpintnwktprchmtut';
+                        // axios.get(url).then(res => {
+                        //     _this.tableData = res.data.chinaTopCity;
+                        //     _this.time = res.data.time;
+                        // }).catch(err => {
+                        //     _this.$message.error('请求失败');
+                        // })
+                        _this.tableData=YIQING ?? [];
+                        _this.time=TTIME || '最近时间~'
                     } else if (key === '99') {
                         //影视大全
                         // window.location.href='./html/film.html';
@@ -467,9 +488,10 @@
                 //天气预报
                 weather() {
                     const _this = this;
-                    const url = 'https://tenapi.cn/wether/?city=青岛';
+                    const url = 'https://v0.yiketianqi.com/api?unescape=1&version=v91&appid=43656176&appsecret=I42og6Lm';
                     axios.get(url).then(res => {
-                        _this.weatherData = res.data.data.forecast[0];
+                        _this.weatherData = res.data.data[0];
+
                     }).catch(err => {
                         // _this.$message.error('请求失败');
                     })
