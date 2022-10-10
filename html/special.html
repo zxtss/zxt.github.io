@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="icon" href="../images/ETH.png" sizes="50x50">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <link href="https://cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
+
+</head>
+
+<body>
+    <div id="app">
+        <div>
+            <el-tabs v-model="activeName" @tab-click="handleClick">
+                <el-tab-pane label="打字机" name="first">
+                    <div class="center">
+                        <el-button-group>
+                            <el-button type="primary" v-for="(item,index) in dataList" :key="index"
+                                @click="setting(item.value)">{{item.title}}</el-button>
+                        </el-button-group>
+                    </div>
+                    <div class="text" style="padding: 30px;" ref="content"></div>
+                </el-tab-pane>
+            </el-tabs>
+        </div>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.0-beta.5/vue.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.9/index.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
+    <script src="../js/jquery.js"></script>
+    <script src="../js/parameter.js"></script>
+    <script>
+        var text = '没有什么比时间更具有说服力了，因为时间无需通知我们就可以改变一切。最初我们来到这个世界，是因为不得不来；最终我们离开这个世界，是因为不得不走。以笑的方式哭，在死亡的伴随下活着。作为一个词语，“活着”在我们中国的语言里充满了力量，它的力量不是来自于喊叫，也不是来自于进攻，而是忍受，去忍受生命赋予我们的责任，去忍受现实给予我们的幸福和苦难、无聊和平庸。人是为活着本身而活着，而不是为了活着之外的任何事物所活着。人类无法忍受太多的真实。做人不能忘记四条，话不要说错，床不要睡错，门槛不要踏错，口袋不要摸错。一个人命再大，要是自己想死，那就怎么也活不了。生的终止不过一场死亡，死的意义不过在于重生或永眠。死亡不是失去生命，而是走出时间。做人还是平常点好，争这个争那个，争来争去赔了自己的命。像我这样，说起来是越混越没出息，可寿命长，我认识的人一个挨着一个死去，我还活着。作家的使命不是发泄，不是控诉或者揭露，他应该向人们展示高尚。这里所说的高尚不是那种单纯的美好，而是对一切事物理解之后的超然，对善与恶一视同仁，用同情的目光看待世界。检验一个人的标准，就是看他把时间放在了哪儿。别自欺欺人；当生命走到尽头，只有时间不会撒谎。只要一家人天天在一起，也就不在乎什么福分了。人老了也是人，是人就得干净些。人要是累得整天没力气，就不会去乱想了。人都是一样的，手伸进别人口袋里掏钱时那个眉开眼笑，轮到自己给钱了一个个都跟哭丧一样。人死像熟透的梨，离树而落，梨者，离也。生活是属于每个人自己的感受，不属于任何别人的看法。被命运碾压过，才懂时间的慈悲。凭什么让我放着好端端的日子不过，去想光宗耀祖这些累人的事。在中国人所说的盖棺定论之前，在古罗马人所说的出生之前和死去之前，我们谁也不知道在前面的时间里等待我们的是什么。只要人活的高兴，就不怕穷。'
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    activeName: 'first',
+                    dataList: [
+                        { title: "正常", value: "normal" },
+                        { title: "近右", value: "right" },
+                        { title: "近左", value: "left" },
+                        { title: "近下", value: "down" },
+                        { title: "近上", value: "up" },
+                        { title: "随机", value: "random" },
+                        { title: "远右", value: "rightBig" },
+                        { title: "远左", value: "leftBig" },
+                        { title: "远下", value: "downBig" },
+                        { title: "远上", value: "upBig" },
+                    ],
+                }
+            },
+            methods: {
+                handleClick(tab, event) {
+                    console.log(tab, event);
+                },
+                setting(value) {
+                    let $text = $('.text');
+                    $text.typewriter('clear').typewriter({
+                        text: text,
+                        effect: value,
+                        excute: function (timer) {
+                        },
+                        complete: function () {
+                        }
+                    })
+                },
+            },
+            mounted() {
+                this.setting('normal');
+            }
+        })
+        
+    </script>
+</body>
+
+</html>
