@@ -1,0 +1,58 @@
+{
+    "code": 200,
+    "page": 1,
+    "total": 4,
+    "data": {
+        "data": [
+            {
+                "name": "张三",
+                "sex": 1,
+                "age": 20,
+                "weight": 50,
+                "value": 11,
+                "address": "山东省青岛市市北区",
+                "remark": "知者不惑，仁者不忧，勇者不惧"
+            },
+            {
+                "name": "李四",
+                "sex": 1,
+                "age": 20,
+                "weight": 50,
+                "value": 11,
+                "address": "北京市东城区",
+                "remark": "得道者多助，失道者寡助"
+            },
+            {
+                "name": "王五",
+                "sex": 1,
+                "age": 20,
+                "weight": 50,
+                "value": 11,
+                "address": "北京市西城区",
+                "remark": "物有本末，事有终始。知所先后，则近道矣"
+            },
+            {
+                "name": "王佳佳",
+                "sex": 2,
+                "age": 20,
+                "weight": 50,
+                "value": 15,
+                "address": "山东省青岛市市南区",
+                "remark": "学而时习之，不亦说乎？有朋自远方来，不亦乐乎？人不知而不愠，不亦君子乎？"
+            }
+        ],
+        "richText": "<p><span class='bjh-p'>未来三天，降水依旧集中在我国西部地区，整体强度较弱。预计西藏中东部、川西高原、西北地区东部、云南等地有小雨，其中，西藏东南部有中到大雨，西藏北部、青海大部、川西高原北部有雨转雨夹雪或小到中雪，局地大雪；13日夜间至14日白天，受热带扰动影响，海南岛部分地区有中到大雨，局地暴雨。</span></p><p><img src='https://pics6.baidu.com/feed/e850352ac65c1038ffc027e373a68b18b17e899c.jpeg@f_auto?token=71d6d493a8fc13e1024339d8cc3f4a64' width='640' class='index-module_large_1mscr'/></p>",
+        "bannerList": [
+            {
+                "imgUrl": "https://img2.woyaogexing.com/2022/07/22/cb23fe8dbf9d5762!360x640.jpg"
+            },
+            {
+                "imgUrl": "https://img2.woyaogexing.com/2022/07/22/09b956bca1ab4a5e!360x640.jpg"
+            },
+            {
+                "imgUrl": "https://img2.woyaogexing.com/2022/07/21/77ddf484e22daf70!360x640.jpg"
+            }
+        ],
+        "status": "1"
+    }
+}

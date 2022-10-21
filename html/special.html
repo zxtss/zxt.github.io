@@ -9,7 +9,7 @@
     <link rel="icon" href="../images/ETH.png" sizes="50x50">
     <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
     <link href="https://cdn.bootcss.com/animate.css/3.5.2/animate.min.css" rel="stylesheet">
-
+    <link rel="stylesheet" href="../css/table.css">
 </head>
 
 <body>
@@ -25,6 +25,65 @@
                     </div>
                     <div class="text" style="padding: 30px;" ref="content"></div>
                 </el-tab-pane>
+                <el-tab-pane label="语音播报" name="second">
+                    <el-button type="primary" @click="initAudio">播放</el-button>
+                    <el-button type="primary" @click="stopSpeech">暂停</el-button>
+                    <div>
+                        <a target="_blank"
+                            href="https://www.w3cschool.cn/fetch_api/fetch_api-9sz32th2.html">window的新属性(SpeechSynthesisUtterance)</a>
+                    </div>
+                </el-tab-pane>
+                <el-tab-pane label="表格生成器" name="three">
+                    <div class="center">
+                        <el-form>
+                            <div class="setting">
+                                <div class="li">
+                                    <el-form-item label="宽度：">
+                                        <div class="input">
+                                            <el-input placeholder="请输入" v-model="params.width"></el-input>
+                                        </div>
+                                    </el-form-item>
+                                </div>
+                                <div class="li">
+                                    <el-form-item label="表格行数：">
+                                        <div class="input">
+                                            <el-input placeholder="请输入" v-model="params.line"></el-input>
+                                        </div>
+                                    </el-form-item>
+                                </div>
+                                <div class="li">
+                                    <el-form-item label="表格列数：">
+                                        <div class="input">
+                                            <el-input placeholder="请输入" v-model="params.column" type="number">
+                                            </el-input>
+                                        </div>
+                                    </el-form-item>
+                                </div>
+                                <div class="li">
+                                    <el-form-item label="开启表头">
+                                        <div class="input">
+                                            <el-switch v-model="params.header"></el-switch>
+                                        </div>
+                                    </el-form-item>
+                                </div>
+                                <div class="li">
+                                    <div class="input">
+                                        <el-button type="primary" @click="go">生成</el-button>
+                                    </div>
+                                </div>
+                            </div>
+                        </el-form>
+                        <table border>
+                            <tr v-if="params.header" :style="{width:params.width+'px'}">
+                                <th v-for="(jitem,jindex) in params.column" :key="jindex">表头{{jindex+1}}</th>
+                            </tr>
+                            <tr v-for="(item,index) in params.line" :key="index">
+                                <td v-for="(jitem,jindex) in params.column" :key="jindex"
+                                    :style="{width:params.width+'px'}">params{{index+1}}</td>
+                            </tr>
+                        </table>
+                    </div>
+                </el-tab-pane>
             </el-tabs>
         </div>
     </div>
@@ -39,7 +98,7 @@
             el: '#app',
             data() {
                 return {
-                    activeName: 'first',
+                    activeName: 'three',
                     dataList: [
                         { title: "正常", value: "normal" },
                         { title: "近右", value: "right" },
@@ -52,11 +111,29 @@
                         { title: "远下", value: "downBig" },
                         { title: "远上", value: "upBig" },
                     ],
+                    params: {
+                        column: 5,
+                        line: 5,
+                        width: 200,
+                        header: undefined,
+                    },
+                    dataList: [
+                        { name: "params", },
+                        { name: "params", },
+                        { name: "params", },
+                    ],
                 }
             },
             methods: {
+                go() {
+                    this.params.column = Number(this.params.column || 0);
+                    this.params.line = Number(this.params.line || 0);
+                },
                 handleClick(tab, event) {
-                    console.log(tab, event);
+                    this.stopSpeech();
+                    if (this.activeName == 'first') {
+                        this.setting('normal');
+                    }
                 },
                 setting(value) {
                     let $text = $('.text');
@@ -69,12 +146,43 @@
                         }
                     })
                 },
+                //语音播报
+                initAudio() {
+                    this.startSpeech(text)
+                },
+                startSpeech(text) {
+                    const speech = new SpeechSynthesisUtterance()
+                    // 设置播放内容
+                    speech.text = text
+                    // 设置话语的音调(0-2 默认1，值越大越尖锐,越低越低沉)
+                    speech.pitch = 0.8
+                    // 设置说话的速度(0.1-10 默认1，值越大语速越快,越小语速越慢)
+                    speech.rate = 1
+                    // 设置说话的音量
+                    speech.volume = 10
+                    // 设置播放语言
+                    speech.lang = 'zh-CN'
+                    // 播放结束后调用
+                    speech.onend = (event) => {
+                    }
+                    // 加入播放队列
+                    window.speechSynthesis.speak(speech)
+                },
+                /**
+                 * 停止播报，停止所有播报队列里面的语音
+                 */
+                stopSpeech() {
+                    window.speechSynthesis.cancel()
+                },
             },
             mounted() {
-                this.setting('normal');
+                if (this.activeName == 'first') {
+                    this.setting('normal');
+                }
+                console.log(window.history)
             }
         })
-        
+
     </script>
 </body>
 

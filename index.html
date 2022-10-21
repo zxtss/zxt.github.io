@@ -33,7 +33,7 @@
                             </el-submenu> -->
                                 <el-menu-item index="3">资源下载</el-menu-item>
                                 <el-menu-item index="4">文章</el-menu-item>
-                                <el-menu-item index="9">动画专区</el-menu-item>
+                                <!-- <el-menu-item index="9">动画专区</el-menu-item> -->
                                 <!-- <el-menu-item index="5">小工具</el-menu-item> -->
                                 <el-submenu index="5">
                                     <template slot="title">技术栈</template>
@@ -42,6 +42,7 @@
                                     <el-menu-item index="2-4" @click="go(3)">pyscript</el-menu-item>
                                     <el-menu-item index="2-4" @click="go(4)">正则表达式</el-menu-item>
                                     <el-menu-item index="2-4" @click="go(5)">特效大全</el-menu-item>
+                                    <el-menu-item index="2-4" @click="go(6)">动画专区</el-menu-item>
                                 </el-submenu>
                                 <el-submenu index="99">
                                     <template slot="title">专区</template>
@@ -51,7 +52,7 @@
                                 <el-menu-item index="7">疫情专区</el-menu-item>
                                 <el-menu-item index="99">影视大全</el-menu-item>
                                 <el-menu-item index="88">vip视频解析</el-menu-item>
-                                <el-menu-item index="8">联系我</el-menu-item>
+                                <!-- <el-menu-item index="8">联系我</el-menu-item> -->
                                 <!-- <el-menu-item index="4"><a href="https://blog.csdn.net/m0_46361270?type=blog"
                                 target="_blank">我的博客</a></el-menu-item> -->
                             </el-menu>
@@ -393,6 +394,8 @@
                         window.location.href = './html/regular.html';
                     }else if (type === 5) {
                         window.location.href = './html/special.html';
+                    }else if(type===6){
+                        this.activeIndex='9';
                     }
                 },
                 goPRO(type){
@@ -480,7 +483,7 @@
                     } else if (key === '99') {
                         //影视大全
                         // window.location.href='./html/film.html';
-                        window.location.href = 'http://www.xjznzm.com';
+                        window.location.href = 'http://www.dahua.cc';
                     } else if (key === '88') {
                         //视频解析
                         window.location.href = './html/vip.html';
