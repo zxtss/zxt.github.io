@@ -215,6 +215,24 @@
         function beijingChartData(data) {
             TTIME = data.data.times;
         }
+        //动态加载css
+        function loadStyles(url) {
+            var link = document.createElement("link");
+            link.rel = "stylesheet";
+            link.type = "text/css";
+            link.href = url;
+            var head = document.getElementsByTagName("head")[0];
+            head.appendChild(link);
+        }
+        //编程黑白网页
+        function init() {
+            var date = new Date().getTime();
+            if (date < 1670346000000) {
+                loadStyles('css/html.css')
+            }
+        }
+        init();
+        
     </script>
     <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.0-beta.5/vue.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.9/index.js"></script>
@@ -522,22 +540,6 @@
                 this.init();
                 this.updateTime();
                 this.weather();
-                const url = 'http://www.songe.cc';
-                axios.post(url, {
-                    'input': '陈奕迅',
-                    'filter': 'name',
-                    'type': 'netease',
-                    'page': 1
-                },{
-                    headers:{
-			'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'
-		},
-                }).then(res => {
-                    console.log(res)
-
-                }).catch(err => {
-                    // _this.$message.error('请求失败');
-                })
             }
         })
     </script>
