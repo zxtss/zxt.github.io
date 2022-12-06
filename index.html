@@ -61,7 +61,8 @@
                     <el-col :span="4">
                         <div class="grid-content ">
                             <div class="weather" v-if="weatherData.date">
-                                青岛市：{{weatherData.tem2 ||''}}°C - {{weatherData.tem1 ||''}}°C | {{weatherData.wea || ''}}
+                                青岛市：{{weatherData.tem2 ||''}}°C - {{weatherData.tem1 ||''}}°C | {{weatherData.wea ||
+                                ''}}
                             </div>
                         </div>
                     </el-col>
@@ -203,16 +204,16 @@
     </div>
     <script>
         var dataSource = void 0;
-        var YIQING=void 0;
-        var TTIME=void 0;
+        var YIQING = void 0;
+        var TTIME = void 0;
         function train(data) {
             dataSource = data;
-        } 
-        function callbacklocation(data){
-            YIQING=data.result.data;
         }
-        function beijingChartData(data){
-            TTIME=data.data.times;
+        function callbacklocation(data) {
+            YIQING = data.result.data;
+        }
+        function beijingChartData(data) {
+            TTIME = data.data.times;
         }
     </script>
     <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.0-beta.5/vue.min.js"></script>
@@ -223,8 +224,10 @@
     <script src="./js/index.js"></script>
     <script src="./js/hub.js"></script>
     <script src="./public/data.json?cb=train"></script>
-    <script src="https://news.sina.com.cn/project/fymap/ncp2020_feiyan_procity_loc_data.jsonp?callback=callbacklocation"></script>
-    <script src="https://gwpre.sina.cn/interface/news/ncp/data.d.json?mod=province&province=beijing&&callback=beijingChartData&_=1665196104970"></script>
+    <script
+        src="https://news.sina.com.cn/project/fymap/ncp2020_feiyan_procity_loc_data.jsonp?callback=callbacklocation"></script>
+    <script
+        src="https://gwpre.sina.cn/interface/news/ncp/data.d.json?mod=province&province=beijing&&callback=beijingChartData&_=1665196104970"></script>
     <script>
         function getUrlParam(name) {
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
@@ -392,16 +395,16 @@
                         window.location.href = 'python.html';
                     } else if (type === 4) {
                         window.location.href = './html/regular.html';
-                    }else if (type === 5) {
+                    } else if (type === 5) {
                         window.location.href = './html/special.html';
-                    }else if(type===6){
-                        this.activeIndex='9';
+                    } else if (type === 6) {
+                        this.activeIndex = '9';
                     }
                 },
-                goPRO(type){
+                goPRO(type) {
                     if (type === 1) {
                         window.location.href = './html/music.html';
-                    } 
+                    }
                 },
                 handleSelect(key) {
                     const _this = this;
@@ -478,8 +481,8 @@
                         // }).catch(err => {
                         //     _this.$message.error('请求失败');
                         // })
-                        _this.tableData=YIQING ?? [];
-                        _this.time=TTIME || '最近时间~'
+                        _this.tableData = YIQING ?? [];
+                        _this.time = TTIME || '最近时间~'
                     } else if (key === '99') {
                         //影视大全
                         // window.location.href='./html/film.html';
@@ -519,6 +522,22 @@
                 this.init();
                 this.updateTime();
                 this.weather();
+                const url = 'http://www.songe.cc';
+                axios.post(url, {
+                    'input': '陈奕迅',
+                    'filter': 'name',
+                    'type': 'netease',
+                    'page': 1
+                },{
+                    headers:{
+			'Content-Type':'application/x-www-form-urlencoded; charset=UTF-8'
+		},
+                }).then(res => {
+                    console.log(res)
+
+                }).catch(err => {
+                    // _this.$message.error('请求失败');
+                })
             }
         })
     </script>
