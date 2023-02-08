@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name=referrer content=no-referrer>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="icon" href="../images/ETH.png" sizes="50x50">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        video {
+            width: 100%;
+            height: 90vh;
+        }
+
+        .center {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 10vh;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="container">
+            <video :src="videos" controls autoplay :poster="poster" v-if="loading">
+
+            </video>
+            <div class="center">
+                <el-button-group>
+                    <el-button type="primary" icon="el-icon-arrow-left" @click="up('up')">上一页</el-button>
+                    <el-button type="primary" @click="up('down')">下一页<i class="el-icon-arrow-right el-icon--right"></i>
+                    </el-button>
+                </el-button-group>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.0-beta.5/vue.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.9/index.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
+    <script>
+        // https://www.likecs.com/show-333702.html
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    dataList: [],
+                    page: 1,
+                    size: 5,
+                    index: 0,
+                    videos: '',
+                    poster: '',
+                    loading: false,
+                    type: 'down',
+                }
+            },
+            methods: {
+                init() {
+                    var _this = this;
+                    const url = `https://api.apiopen.top/api/getHaoKanVideo?page=${_this.page}&size=${this.size}`;//好看
+                    // const url = `https://api.apiopen.top/api/getShortVideo?page=${_this.page}&size=${this.size}`;//快手
+                    axios.get(url).then(res => {
+                        let data = res.data.result.list.sort(function () {
+                            return Math.random() - 0.5
+                        })
+                        _this.dataList = _this.dataList.concat(data);
+                        if (_this.index === 0) {
+                            _this.poster = data[0].coverUrl;
+                            _this.videos = data[0].playUrl;
+                        }
+                        _this.page++;
+                        _this.loading = true;
+
+                    }).catch(err => {
+                        _this.$message.error('请求失败' + err);
+                    })
+                },
+                handleScroll() {
+                    // 页面滚动距顶部距离
+                    var scrollTop = window.pageYOffset || document.documentElement.scrollTop ||
+                        document.body.scrollTop
+                    var scroll = scrollTop - this.index;
+                    if (scroll < 0) {
+                        this.update('up');
+                    } else if (scroll > 10) {
+                        this.update('down');
+                    }
+                },
+                //更新视图
+                update() {
+                    this.poster = this.dataList[this.index].coverUrl;
+                    this.videos = this.dataList[this.index].playUrl;
+                    this.init();
+                },
+                up(type) {
+                    if (type == 'down') {
+                        this.index++;
+                    } else {
+                        if (this.index === 0) return;
+                        --this.index;
+                    }
+                    this.update();
+                },
+            },
+            mounted() {
+                this.init();
+                window.addEventListener('scroll', this.handleScroll, true);
+            },
+            beforeDestroy() {
+                window.removeEventListener('scroll', this.handleScroll, true);
+            },
+        })
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name=referrer content=no-referrer>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="icon" href="../images/ETH.png" sizes="50x50">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+
+        .list {
+            display: flex;
+            flex-wrap: wrap;
+            margin: 10px;
+            align-items: flex-start;
+            justify-content: center;
+        }
+
+        .list .li {
+            margin: 0 10px 20px 0;
+        }
+
+        .list .li img {
+            width: 200px;
+            height: 200px;
+            object-fit: cover;
+            border-radius: 10px;
+        }
+
+        .list .li .title {
+            font-size: 14px;
+            color: #333;
+        }
+        .search{
+            position: fixed;
+            right: 50px;
+            bottom: 100px;
+        }
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="container">
+            <div class="list">
+                <div class="li" v-for="(item,index) in dataList" v-key="index">
+                    <el-image :src="item.url" :preview-src-list="[item.url]">
+                    </el-image>
+                    <div class="title">{{item.title}}</div>
+                </div>
+            </div>
+            <div class="search">
+                <el-button type="success" @click="init">更新壁纸</el-button>
+            </div>
+        </div>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.0-beta.5/vue.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.9/index.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
+    <script>
+        // https://www.likecs.com/show-333702.html
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    dataList: [],
+                    page: 1,
+                    size: 20,
+                }
+            },
+            methods: {
+                init() {
+                    var _this = this;
+                    const url = `https://api.apiopen.top/api/getImages?page=${_this.page}&size=${this.size}`;
+                    axios.get(url).then(res => {
+                        let data = res.data.result.list
+                        _this.dataList = _this.dataList.concat(data);
+                        _this.page++;
+                        if (_this.page < 3) {
+                            _this.init();
+                        }
+                    }).catch(err => {
+                        _this.$message.error('请求失败' + err);
+                    })
+                },
+            },
+            mounted() {
+                this.init();
+            },
+        })
+    </script>
+</body>
+
+</html>

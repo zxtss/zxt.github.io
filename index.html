@@ -43,10 +43,13 @@
                                     <el-menu-item index="2-4" @click="go(4)">正则表达式</el-menu-item>
                                     <el-menu-item index="2-4" @click="go(5)">特效大全</el-menu-item>
                                     <el-menu-item index="2-4" @click="go(6)">动画专区</el-menu-item>
+                                    <el-menu-item index="2-4" @click="go(7)">threejs</el-menu-item>
                                 </el-submenu>
                                 <el-submenu index="99">
                                     <template slot="title">专区</template>
                                     <el-menu-item index="2-4" @click="goPRO(1)">音乐专区</el-menu-item>
+                                    <el-menu-item index="2-4" @click="goPRO(2)">视频专区</el-menu-item>
+                                    <el-menu-item index="2-4" @click="goPRO(3)">图片专区</el-menu-item>
                                 </el-submenu>
                                 <el-menu-item index="6">新闻资讯</el-menu-item>
                                 <el-menu-item index="7">疫情专区</el-menu-item>
@@ -232,7 +235,7 @@
             }
         }
         init();
-        
+
     </script>
     <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.0-beta.5/vue.min.js"></script>
     <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.9/index.js"></script>
@@ -417,11 +420,17 @@
                         window.location.href = './html/special.html';
                     } else if (type === 6) {
                         this.activeIndex = '9';
+                    } else if (type === 7) {
+                        window.location.href = './3D/index.html';
                     }
                 },
                 goPRO(type) {
                     if (type === 1) {
                         window.location.href = './html/music.html';
+                    }else if(type===2){
+                        window.location.href = './html/video.html';
+                    }else if(type===3){
+                        window.location.href = './html/photo.html';
                     }
                 },
                 handleSelect(key) {
