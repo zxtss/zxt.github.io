@@ -47,9 +47,10 @@
                                 </el-submenu>
                                 <el-submenu index="99">
                                     <template slot="title">专区</template>
-                                    <el-menu-item index="2-4" @click="goPRO(1)">音乐专区</el-menu-item>
-                                    <el-menu-item index="2-4" @click="goPRO(2)">视频专区</el-menu-item>
-                                    <el-menu-item index="2-4" @click="goPRO(3)">图片专区</el-menu-item>
+                                    <el-menu-item index="2-5" @click="goPRO(1)">音乐专区</el-menu-item>
+                                    <el-menu-item index="2-5" @click="goPRO(2)">视频专区</el-menu-item>
+                                    <el-menu-item index="2-5" @click="goPRO(3)">图片专区</el-menu-item>
+                                    <el-menu-item index="2-5" @click="goPRO(4)">PDF预览</el-menu-item>
                                 </el-submenu>
                                 <el-menu-item index="6">新闻资讯</el-menu-item>
                                 <el-menu-item index="7">疫情专区</el-menu-item>
@@ -431,6 +432,8 @@
                         window.location.href = './html/video.html';
                     }else if(type===3){
                         window.location.href = './html/photo.html';
+                    }else if(type===4){
+                        window.location.href = './html/canvas.html';
                     }
                 },
                 handleSelect(key) {

@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8">
+    <title></title>
+    <style type="text/css">
+        *{
+            padding: 0;
+            margin: 0;
+        }
+        body {
+            display: grid;
+            place-content: center;
+        }
+        .loader {
+            width: 200px;
+            aspect-ratio: 1;
+            display: grid;
+            background: linear-gradient(135deg, #00A8C6, #8FBE00);
+            clip-path: inset(10%);
+        }
+        .loader:before {
+            content: "";
+            padding: 10%;
+            --_g: no-repeat content-box radial-gradient(50% 50%, #000 95%, #0000);
+            background: var(--_g), var(--_g), var(--_g), var(--_g), #fff;
+            background-size: 20% 20%;
+            filter: blur(5px) contrast(20);
+            mix-blend-mode: lighten;
+            animation: l 3s infinite, s 3s infinite;
+        }
+        @keyframes l {
+
+            0%,
+            100% {
+                background-position: top, right, bottom, left
+            }
+
+            20% {
+                background-position: center, right, bottom, left
+            }
+
+            40% {
+                background-position: center, center, bottom, left
+            }
+
+            60% {
+                background-position: center, center, center, left
+            }
+
+            80% {
+                background-position: center, center, center, center
+            }
+        }
+        @keyframes s {
+
+            0%,
+            25%,
+            90% {
+                background-size: 20% 20%
+            }
+
+            40%,
+            45% {
+                background-size: 30% 30%, 20% 20%, 20% 20%, 20% 20%
+            }
+
+            60%,
+            65% {
+                background-size: 40% 40%, 20% 20%, 20% 20%, 20% 20%
+            }
+
+            80% {
+                background-size: 50% 50%, 20% 20%, 20% 20%, 20% 20%
+            }
+        }
+        #pdf-pagination {
+            font-size: 14px;
+            z-index: 100;
+            position: fixed;
+            right: 50px;
+            bottom: 100px;
+        }
+        span {
+            margin-right: 10px;
+            cursor: pointer;
+        }
+        #showCanvas {
+            display: none;
+        }
+        #before,#next{
+            width: 70px;
+            height: 30px;
+            background: #000;
+            color: #fff;
+            font-size: 13px;
+            border-radius: 5px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+        }
+        #pdf-pagination{
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        #current{
+            margin: 0 30px;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="loader" id="loader"></div>
+    <div id="showCanvas">
+        <canvas id="pdfBD"></canvas>
+        <div id="pdf-pagination">
+            <div id="before" onclick="paginationClick(-1)">上一页</div>
+            <div id="current">1</div>
+            <div id="next" onclick="paginationClick(1)">下一页</div>
+        </div>
+    </div>
+</body>
+<script src="https://lib.baomitu.com/pdf.js/2.7.570/pdf.js" type="text/javascript" charset="utf-8"></script>
+<script type="text/javascript">
+    let pdfValue = null;
+    let pageContent = {
+        currentPage: 1,//当前页
+        countPage: 0,//总页数 
+    }
+    window.onload = function () {
+        methodsTwo()
+    }
+    function methodsTwo() { //法二
+        var loadingTask = pdfjsLib.getDocument('../public/测试.pdf');
+        loadingTask.promise.then(function (pdf) {
+            console.log(pdf)
+            pdfValue = pdf;
+            if (pdf) {
+                document.getElementById('showCanvas').style.display = 'block';
+                document.getElementById('loader').style.display = 'none';
+            }
+            pageContent.countPage = pdf.numPages;
+            changePage(pdf, 1)
+        });
+        document.getElementById("pdf-pagination").display = 'block'; //显示分页器
+    }
+
+    //翻页 type：1 下一页；-1：上一页
+    function paginationClick(type) {
+        if (type == 1) {
+            //下一页
+            pageContent.currentPage == pageContent.countPage ? "" : pageContent.currentPage += 1
+        } else {
+            //上一页
+            pageContent.currentPage == 1 ? "" : pageContent.currentPage -= 1
+        }
+        document.getElementById("current").innerHTML = pageContent.currentPage
+        changePage(pdfValue, pageContent.currentPage)
+    }
+    function changePage(pdf, pageNum) {
+        if (pdf == null) return;
+        pdf.getPage(pageNum).then(function (page) {
+            var scale = 1.6;
+            var viewport = page.getViewport({
+                scale: scale,
+            });
+            var outputScale = window.devicePixelRatio || 1;
+            var canvas = document.getElementById('pdfBD');
+            var context = canvas.getContext('2d');
+            canvas.width = Math.floor(viewport.width * outputScale);
+            canvas.height = Math.floor(viewport.height * outputScale);
+            canvas.style.width = (document.documentElement.clientWidth  || document.body.clientWidth )/3* outputScale + "px";
+            canvas.style.height = ((document.documentElement.clientHeight || document.body.clientHeight)-10) * outputScale + "px";
+
+            var transform = outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] :
+                null;
+            var renderContext = {
+                canvasContext: context,
+                transform: transform,
+                viewport: viewport
+            };
+            page.render(renderContext);
+        });
+    }
+</script>
+
+</html>
