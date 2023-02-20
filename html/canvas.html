@@ -1,17 +1,21 @@
 <!DOCTYPE html>
 <html>
+
 <head>
     <meta charset="utf-8">
     <title></title>
+    <link href="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.css" rel="stylesheet">
     <style type="text/css">
-        *{
+        * {
             padding: 0;
             margin: 0;
         }
+
         body {
             display: grid;
             place-content: center;
         }
+
         .loader {
             width: 200px;
             aspect-ratio: 1;
@@ -19,6 +23,7 @@
             background: linear-gradient(135deg, #00A8C6, #8FBE00);
             clip-path: inset(10%);
         }
+
         .loader:before {
             content: "";
             padding: 10%;
@@ -29,6 +34,7 @@
             mix-blend-mode: lighten;
             animation: l 3s infinite, s 3s infinite;
         }
+
         @keyframes l {
 
             0%,
@@ -52,6 +58,7 @@
                 background-position: center, center, center, center
             }
         }
+
         @keyframes s {
 
             0%,
@@ -74,6 +81,7 @@
                 background-size: 50% 50%, 20% 20%, 20% 20%, 20% 20%
             }
         }
+
         #pdf-pagination {
             font-size: 14px;
             z-index: 100;
@@ -81,14 +89,18 @@
             right: 50px;
             bottom: 100px;
         }
+
         span {
             margin-right: 10px;
             cursor: pointer;
         }
+
         #showCanvas {
             display: none;
         }
-        #before,#next{
+
+        #before,
+        #next {
             width: 70px;
             height: 30px;
             background: #000;
@@ -100,12 +112,14 @@
             justify-content: center;
             cursor: pointer;
         }
-        #pdf-pagination{
+
+        #pdf-pagination {
             display: flex;
             align-items: center;
             justify-content: center;
         }
-        #current{
+
+        #current {
             margin: 0 30px;
         }
     </style>
@@ -122,6 +136,7 @@
         </div>
     </div>
 </body>
+<script src="https://cdn.bootcdn.net/ajax/libs/nprogress/0.2.0/nprogress.min.js"></script>
 <script src="https://lib.baomitu.com/pdf.js/2.7.570/pdf.js" type="text/javascript" charset="utf-8"></script>
 <script type="text/javascript">
     let pdfValue = null;
@@ -130,9 +145,10 @@
         countPage: 0,//总页数 
     }
     window.onload = function () {
+        NProgress.start();  // 开始加载
         methodsTwo()
     }
-    function methodsTwo() { //法二
+    function methodsTwo() {
         var loadingTask = pdfjsLib.getDocument('../public/测试.pdf');
         loadingTask.promise.then(function (pdf) {
             console.log(pdf)
@@ -140,6 +156,7 @@
             if (pdf) {
                 document.getElementById('showCanvas').style.display = 'block';
                 document.getElementById('loader').style.display = 'none';
+                NProgress.done();  // 加载完成
             }
             pageContent.countPage = pdf.numPages;
             changePage(pdf, 1)
@@ -171,8 +188,8 @@
             var context = canvas.getContext('2d');
             canvas.width = Math.floor(viewport.width * outputScale);
             canvas.height = Math.floor(viewport.height * outputScale);
-            canvas.style.width = (document.documentElement.clientWidth  || document.body.clientWidth )/3* outputScale + "px";
-            canvas.style.height = ((document.documentElement.clientHeight || document.body.clientHeight)-10) * outputScale + "px";
+            canvas.style.width = (document.documentElement.clientWidth || document.body.clientWidth) / 3 * outputScale + "px";
+            canvas.style.height = ((document.documentElement.clientHeight || document.body.clientHeight) - 10) * outputScale + "px";
 
             var transform = outputScale !== 1 ? [outputScale, 0, 0, outputScale, 0, 0] :
                 null;
