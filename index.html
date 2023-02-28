@@ -51,6 +51,7 @@
                                     <el-menu-item index="2-5" @click="goPRO(2)">视频专区</el-menu-item>
                                     <el-menu-item index="2-5" @click="goPRO(3)">图片专区</el-menu-item>
                                     <el-menu-item index="2-5" @click="goPRO(4)">PDF预览</el-menu-item>
+                                    <el-menu-item index="2-5" @click="goPRO(5)">vip视频链接解析</el-menu-item>
                                 </el-submenu>
                                 <el-menu-item index="6">新闻资讯</el-menu-item>
                                 <el-menu-item index="7">疫情专区</el-menu-item>
@@ -428,12 +429,14 @@
                 goPRO(type) {
                     if (type === 1) {
                         window.location.href = './html/music.html';
-                    }else if(type===2){
+                    } else if (type === 2) {
                         window.location.href = './html/video.html';
-                    }else if(type===3){
+                    } else if (type === 3) {
                         window.location.href = './html/photo.html';
-                    }else if(type===4){
+                    } else if (type === 4) {
                         window.location.href = './html/canvas.html';
+                    } else if (type === 5) {
+                        window.location.href = 'https://quanmin.iiilab.com';
                     }
                 },
                 handleSelect(key) {
