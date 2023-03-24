@@ -13,7 +13,7 @@
     plugin.prototype.mul = function (a, b) { return a * b }//The multiplication
     plugin.prototype.div = function (a, b) { return a / b }//division
     plugin.prototype.rem = function (a, b) { return a % b }//remainder
-    plugin.prototype.getParameter = function () { return getQueryVariable() }//Get all URL parameters
+    plugin.prototype.getUrlParam = function (name) { return getUrlParam(name) }//Get all URL parameters
     plugin.prototype.copy = function (text) { return copyContent(text) }//copy content
     plugin.prototype.toast = function (text) { return showToast(text) }//Pop-up prompts
     plugin.prototype.stamp = function (type, time) { return stamp(type, time) }//time<=>timestamp
@@ -21,9 +21,9 @@
         return {
             "code": 200,
             "data": {
-                "name":"patton",
-                "QQ":"-------",
-                "email":"----------"
+                "name": "patton",
+                "QQ": "-------",
+                "email": "----------"
             },
             "message": "success"
         }
@@ -49,19 +49,6 @@
     //The rolling distance
     window.onscroll = function () {
         // console.log(document.documentElement.scrollTop || document.body.scrollTop)
-    }
-    //Gets the parameters after the URL
-    function getQueryVariable() {
-        var url = location.search;
-        var theRequest = new Object();
-        if (url.indexOf("?") != -1) {
-            var str = url.substring(1);
-            var strs = str.split("&");
-            for (var i = 0; i < strs.length; i++) {
-                theRequest[strs[i].split("=")[0]] = unescape(strs[i].split("=")[1]);
-            }
-        }
-        return theRequest;
     }
 
     //showToast
@@ -109,6 +96,12 @@
             return y + '-' + (M < 9 ? '0' + M : M) + '-' + (d < 9 ? '0' + d : d) + ' ' + (h < 9 ? '0' + h : h) + ':' + (m <
                 9 ? '0' + m : m) + ':' + (s < 9 ? '0' + s : s);
         }
+    }
+    //Gets the parameters after the URL
+    function getUrlParam(name) {
+        var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+        var r = window.location.search.substr(1).match(reg);
+        if (r != null) return unescape(r[2]); return null;
     }
     //Exposed to global objects(plugin)
     _global = (function () { return this || (0, eval)('this'); }())
