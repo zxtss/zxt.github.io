@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="icon" href="../images/ETH.png" sizes="50x50">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+
+</head>
+
+<body>
+    <div id="app">
+        <div>
+            <el-alert title="javascript的特殊用法总结" type="success">
+            </el-alert>
+            <el-divider></el-divider>
+            <el-collapse v-model="activeNames">
+                <el-collapse-item v-for="(item,index) in dataList" :key="index" :title="item.title" :name="index">
+                    <div>
+                        {{item.html}}
+                    </div>
+                </el-collapse-item>
+            </el-collapse>
+        </div>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.0-beta.5/vue.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.9/index.js"></script>
+    <script>
+        //禁止查看代码
+        document.oncontextmenu = new Function("event.returnValue=false;");
+        document.onkeydown = function () {
+            if (event.ctrlKey) return false;
+        }
+        document.addEventListener('keydown', function (event) {
+            return !(
+                123 == event.keyCode ||  //F12
+                85 == event.keyCode ||
+                83 == event.keyCode
+            ) || (event.returnValue = false)
+        });
+    </script>
+    <script>
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    activeNames: [0],
+                    dataList: [
+                        { title: "引用的script的url链接加载失败后怎样重新请求新的链接？(loadingError.html)", html: "" },
+                    ],
+                }
+            },
+            methods: {
+                init() {
+                    this.dataList[0].html = `const domain = ['222.com', 'backup.com', '333.com'];//重试的url
+        const maxRetry = 3;//最大请求次数
+        const retryInfo = {};
+        //不参与冒泡，所以需要使用true在捕获阶段进行监听
+        window.addEventListener('error', (e) => {
+            const target = e.target;
+            if (target.tagName === 'SCRIPT' && !(e instanceof ErrorEvent)) {
+                const url = new URL(target.src);
+                if (!retryInfo[url.pathname]) {
+                    retryInfo[url.pathname] = {
+                        times: 0,
+                        nextIndex: 0
+                    }
+                }
+                const info = retryInfo[url.pathname];
+                const script = document.createElement('script');
+                if (info.times >= maxRetry) return;
+                url.host = domain[info.nextIndex];
+                script.src = url.toString();
+                document.write('<script src="'+url.toString()+'">\<\/script>');//阻塞后续加载，并且需要转义script
+                info.times++;
+                info.nextIndex = (info.nextIndex + 1) % domain.length;
+            }
+        }, true)`;
+                },
+            },
+            mounted() {
+                this.init();
+            }
+        })
+    </script>
+</body>
+
+</html>

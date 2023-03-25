@@ -44,6 +44,7 @@
                                     <el-menu-item index="2-4" @click="go(5)">特效大全</el-menu-item>
                                     <el-menu-item index="2-4" @click="go(6)">动画专区</el-menu-item>
                                     <el-menu-item index="2-4" @click="go(7)">threejs</el-menu-item>
+                                    <el-menu-item index="2-4" @click="go(8)">javascript</el-menu-item>
                                 </el-submenu>
                                 <el-submenu index="99">
                                     <template slot="title">专区</template>
@@ -424,6 +425,8 @@
                         this.activeIndex = '9';
                     } else if (type === 7) {
                         window.location.href = './3D/index.html';
+                    } else if (type === 8) {
+                        window.location.href = './script_html/index.html';
                     }
                 },
                 goPRO(type) {
