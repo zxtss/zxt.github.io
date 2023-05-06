@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -28,7 +29,7 @@
                 if (info.times >= maxRetry) return;
                 url.host = domain[info.nextIndex];
                 script.src = url.toString();
-                document.write('<script src="'+url.toString()+'">\<\/script>');//阻塞后续加载，并且需要转义script
+                document.write('<script src="' + url.toString() + '">\<\/script>');//阻塞后续加载，并且需要转义script
                 info.times++;
                 info.nextIndex = (info.nextIndex + 1) % domain.length;
             }

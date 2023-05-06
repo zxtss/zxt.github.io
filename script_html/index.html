@@ -50,35 +50,48 @@
                     activeNames: [0],
                     dataList: [
                         { title: "script标签中的url加载失败后重新请求新的url？", html: "" },//(loadingError.html)
+                        { title: "async与await哪个先执行？", html: "" },
                     ],
                 }
             },
             methods: {
                 init() {
                     this.dataList[0].html = `const domain = ['222.com', 'backup.com', '333.com'];//重试的url
-        const maxRetry = 3;//最大请求次数
-        const retryInfo = {};
-        //不参与冒泡，所以需要使用true在捕获阶段进行监听
-        window.addEventListener('error', (e) => {
-            const target = e.target;
-            if (target.tagName === 'SCRIPT' && !(e instanceof ErrorEvent)) {
-                const url = new URL(target.src);
-                if (!retryInfo[url.pathname]) {
-                    retryInfo[url.pathname] = {
-                        times: 0,
-                        nextIndex: 0
-                    }
-                }
-                const info = retryInfo[url.pathname];
-                const script = document.createElement('script');
-                if (info.times >= maxRetry) return;
-                url.host = domain[info.nextIndex];
-                script.src = url.toString();
-                document.write('<script src="'+url.toString()+'">\<\/script>');//阻塞后续加载，并且需要转义script
-                info.times++;
-                info.nextIndex = (info.nextIndex + 1) % domain.length;
-            }
-        }, true)`;
+                                            const maxRetry = 3;//最大请求次数
+                                            const retryInfo = {};
+                                            //不参与冒泡，所以需要使用true在捕获阶段进行监听
+                                            window.addEventListener('error', (e) => {
+                                                const target = e.target;
+                                                if (target.tagName === 'SCRIPT' && !(e instanceof ErrorEvent)) {
+                                                    const url = new URL(target.src);
+                                                    if (!retryInfo[url.pathname]) {
+                                                        retryInfo[url.pathname] = {
+                                                            times: 0,
+                                                            nextIndex: 0
+                                                        }
+                                                    }
+                                                    const info = retryInfo[url.pathname];
+                                                    const script = document.createElement('script');
+                                                    if (info.times >= maxRetry) return;
+                                                    url.host = domain[info.nextIndex];
+                                                    script.src = url.toString();
+                                                    document.write('<script src="'+url.toString()+'">\<\/script>');//阻塞后续加载，并且需要转义script
+                                                    info.times++;
+                                                    info.nextIndex = (info.nextIndex + 1) % domain.length;
+                                                }
+                                            }, true)`;
+                    this.dataList[1].html = `
+                                            async function fetch() {
+                                                let res = await ajaxFn(1);
+                                                if (res) {
+                                                    console.log("第二步")
+                                                }
+                                            }
+                                            function ajaxFn(val) {
+                                                console.log("第一步")
+                                                return false;
+                                            }
+                                            fetch();`;
                 },
             },
             mounted() {

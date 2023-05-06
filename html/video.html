@@ -66,8 +66,8 @@
             methods: {
                 init() {
                     var _this = this;
-                    const url = `https://api.apiopen.top/api/getHaoKanVideo?page=${_this.page}&size=${this.size}`;//好看
-                    // const url = `https://api.apiopen.top/api/getShortVideo?page=${_this.page}&size=${this.size}`;//快手
+                    // const url = `https://api.apiopen.top/api/getHaoKanVideo?page=${_this.page}&size=${this.size}`;//好看
+                    const url = `https://api.apiopen.top/api/getShortVideo?page=${_this.page}&size=${this.size}`;//快手
                     axios.get(url).then(res => {
                         let data = res.data.result.list.sort(function () {
                             return Math.random() - 0.5

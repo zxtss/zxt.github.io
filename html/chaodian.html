@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name=referrer content=no-referrer>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title></title>
+    <link rel="icon" href="../images/ETH.png" sizes="50x50">
+    <link rel="stylesheet" href="https://unpkg.com/element-ui/lib/theme-chalk/index.css">
+    <style>
+        * {
+            padding: 0;
+            margin: 0;
+        }
+        .list{
+        	display: flex;
+        	flex-wrap: wrap;
+        	align-items: center;
+        	justify-content: space-between;
+        	padding: 30px;
+        }
+        .list .li{
+        	width: 300px;
+        	height: 200px;
+        	border-radius: 5px;
+        	cursor: pointer;
+        	position: relative;
+        	margin-bottom: 15px;
+        }
+        .list .li .content{
+        	font-size: 11px;
+        	color: #fff;
+        	position: absolute;
+        	background: rgb(0, 0, 0,0.5);
+        	width: 100%;
+        	height: 80px;
+        	z-index: 100;
+        	bottom: 0;
+        	border-radius: 5px;
+        	display: flex;
+        	align-items: center;
+        	justify-content: center;
+        	padding: 0 20px;
+        	box-sizing: border-box;
+
+
+        }
+        .list .li img{
+        	width: 300px;
+        	height: 200px;
+        	border-radius: 5px;
+        }
+        video{
+        	width: 100%;
+        	height: 100%;
+        }
+
+    </style>
+</head>
+
+<body>
+    <div id="app">
+        <div class="container" v-if="loading">
+            <div class="list">
+            	<div class="li" v-for="(item,index) in dataList" :key="index" @click="find(item)">
+            		<el-image :src="item.cover_video_detail"></el-image>
+            		<div class="content">{{item.display_tags}}</div>
+            	</div>
+            </div>
+        </div>
+        <el-dialog
+		  :title="sourceData.display_title"
+		  :visible.sync="dialogVisible"
+		  width="60%"
+		>
+		<video src="https://video.shipin520.com/videos/26/39/37/b_PJzvhT1gEpGy1565263937_10s.mp4" controls ></video>
+		  <span slot="footer" class="dialog-footer">
+		    <el-button @click="dialogVisible = false">取 消</el-button>
+		    <el-button type="primary" @click="dialogVisible = false">确 定</el-button>
+		  </span>
+		</el-dialog>
+    </div>
+    <script src="https://cdn.bootcdn.net/ajax/libs/vue/2.7.0-beta.5/vue.min.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/element-ui/2.15.9/index.js"></script>
+    <script src="https://cdn.bootcdn.net/ajax/libs/axios/1.0.0-alpha.1/axios.min.js"></script>
+    <script>
+        new Vue({
+            el: '#app',
+            data() {
+                return {
+                    dataList: [],
+                    loading:false,
+                    dialogVisible: false,
+                    sourceData:{},
+                }
+            },
+            methods: {
+            	 getUrlParam(name) {
+		            var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
+		            var r = window.location.search.substr(1).match(reg);
+		            if (r != null) return unescape(r[2]); return null;
+		        },
+                init() {
+                    var _this = this;
+                    var page=_this.getUrlParam('page') || 1;
+                    const url = `https://shipin520.com/v1/search?kid=&word=&type=all&order=&filters=&p_page=${page}&p_limit=100&from_code=23&sale_type=100`;
+                    axios.get(url).then(res => {
+                        _this.dataList = res.data.data.list;
+                        _this.page++;
+                        _this.loading = true;
+
+                    }).catch(err => {
+                        _this.$message.error('请求失败' + err);
+                    })
+                },
+                find(item){
+                	this.sourceData=item;
+                	this.dialogVisible=true;
+                },
+                
+            },
+            mounted() {
+                this.init();
+            },
+          
+        })
+    </script>
+</body>
+
+</html>

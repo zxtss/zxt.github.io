@@ -53,6 +53,8 @@
                                     <el-menu-item index="2-5" @click="goPRO(3)">图片专区</el-menu-item>
                                     <el-menu-item index="2-5" @click="goPRO(4)">PDF预览</el-menu-item>
                                     <el-menu-item index="2-5" @click="goPRO(5)">vip视频链接解析</el-menu-item>
+                                    <el-menu-item index="2-5" @click="goPRO(6)">潮点视频大全</el-menu-item>
+                                    <!-- <el-menu-item index="2-5" @click="goPRO(6)">网站模板下载</el-menu-item> -->
                                 </el-submenu>
                                 <el-menu-item index="6">新闻资讯</el-menu-item>
                                 <el-menu-item index="7">疫情专区</el-menu-item>
@@ -440,6 +442,9 @@
                         window.location.href = './html/canvas.html';
                     } else if (type === 5) {
                         window.location.href = 'https://quanmin.iiilab.com';
+                    } else if (type === 6) {
+                        // window.location.href = './html/muban.html';
+                        window.location.href = './html/chaodian.html';
                     }
                 },
                 handleSelect(key) {
