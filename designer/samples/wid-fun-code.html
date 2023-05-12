@@ -1,0 +1,118 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+		<script src="./js/visor.core.js" type="text/javascript" charset="utf-8"></script>
+		<script src="./js/visor.widgets.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<h4 style="margin: 10px;">运行结果</h4>
+		<div id="panel1" style="position: relative;"></div>
+		<div id="panel2" style="position: relative; margin-top: 20px;"></div>
+	</body>
+	<script type="text/javascript">
+		var panel1 = $.presenter({
+			width: 450,
+			height: 400,
+			dom: $("#panel1"),
+			background: {
+				filltype: "color",
+				color: "#eee"
+			}
+		});
+		
+		var control1 = $.widgets("widget", {
+			x: 20,
+		    y: 50,
+		    width: 400,
+		    height: 200,
+		    text: "try to edit me",
+		    editable: true,
+		    background: {
+		        filltype:"image",
+		        image: "./img/5.jpeg",
+				imageType: "fill"
+		    },
+		    font: {
+		    	style: "italic",
+		    	weight: "bold",
+		    	family: "Arial",
+		    	size: "20pt",
+		    	color: "red",
+		    	fill: true
+		    }
+		}).appendPresenter(panel1);
+		
+		var control2 = $.widgets("widget", {
+			x: 30,
+		    y: 50,
+		    width: 100,
+		    height: 80,
+		    editable: true,
+		    background: {
+		    	filltype: "color",
+		    	color: "yellow"
+		    },
+		    border: {
+		    	width: 2,
+    			type: "solid",
+   			 	color: "blue"
+		    }
+		});
+		
+		var control4 = $.widgets("widget", {
+			x: 20,
+			y: 220,
+			width: 150,
+			height: 100,
+			background: {
+				filltype: "color",
+				color: "pink"
+			}
+		});
+		
+		control1.appendWidget(control2);
+		
+		control1.appendWidget(control4);
+		control1.removeWidget(control4);
+		
+		var panel2 = $.presenter({
+			width: 450,
+			height: 400,
+			dom: $("#panel2"),
+			background: {
+				filltype: "color",
+				color: "#eee"
+			}
+		});
+		
+		var control3 = $.widgets("widget", {
+			x: 20,
+			y: 20,
+			width: 200,
+			height: 150,
+			background: {
+				filltype: "color",
+				color: "pink"
+			}
+		}).appendPresenter(panel2);
+		
+		var a = {
+			filltype: "image",
+			image: "./img/10.jpeg",
+			imageType: "fill"
+		}
+		control3.Background(a);
+		
+		var w = 300;
+		control3.Width(w);
+
+		var h = 200;
+		control3.Height(h);
+		
+		panel1.paint();
+		panel2.paint();
+	</script>
+</html>

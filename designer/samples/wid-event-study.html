@@ -1,0 +1,128 @@
+<h2>widget对象</h2>
+<h4 style="margin: 10px 0;">基于Canvas的基础控件对象</h4>
+<p style="margin: 10px 0;"><strong>事件说明</strong></p>
+<table class="table table-bordered">
+<thead>
+	<th>名称</th>
+	<th>说明</th>
+</thead>
+<tbody>
+    <tr>
+		<td>mousedown</td>
+		<td>
+			<p><strong>类型：</strong>function(e)</p>
+			<p><strong>作用：</strong>鼠标按下时触发事件</p>
+		</td>
+	</tr>
+	<tr>
+		<td>mouseup</td>
+		<td>
+			<p><strong>类型：</strong>function(e)</p>
+			<p><strong>作用：</strong>鼠标松开时触发事件</p>
+		</td>
+	</tr>
+	<tr>
+		<td>mousemove</td>
+		<td>
+			<p><strong>类型：</strong>function(e)</p>
+			<p><strong>作用：</strong>当鼠标指针在指定的元素中移动时触发</p>
+		</td>
+	</tr>
+	<tr>
+		<td>mouseover</td>
+		<td>
+			<p><strong>类型：</strong>function(e)</p>
+			<p><strong>作用：</strong>鼠标从一个元素移入另一个元素时触发</p>
+		</td>
+	</tr>
+	<tr>
+		<td>mouseout</td>
+		<td>
+			<p><strong>类型：</strong>function(e)</p>
+			<p><strong>作用：</strong>鼠标移出元素时触发</p>
+		</td>
+	</tr>
+	<tr>
+		<td>click</td>
+		<td>
+			<p><strong>类型：</strong>function(e)</p>
+			<p><strong>作用：</strong>点击鼠标左键时触发</p>
+		</td>
+	</tr>
+	<tr>
+		<td>dblclick</td>
+		<td>
+			<p><strong>类型：</strong>function(e)</p>
+			<p><strong>作用：</strong>迅速连续的两次点击鼠标时触发</p>
+		</td>
+	</tr>
+	<!--<tr>
+		<td>resize</td>
+		<td>
+			<p><strong>类型：</strong>function()</p>
+			<p><strong>作用：</strong> ?? </p>
+		</td>
+	</tr>-->
+	<tr>
+		<td>afterresize</td>
+		<td>
+			<p><strong>类型：</strong>function(e)
+<!--			<pre>
+				<code>
+var ev = {
+	offset: {
+		x: offsetX,
+		y: offsetY
+	},
+	point: this.point,
+	resizer: this.resizer,
+	originalEvent: e
+};
+				</code>
+			</pre></p>-->
+			<p><strong>作用：</strong>拖动控件使控件大小改变时触发</p>
+		</td>
+	</tr>
+	<tr>
+		<td>afterfunctionPoint</td>
+		<td>
+			<p>
+				<strong>类型：</strong>
+				function(e)
+			<!--<pre>
+				<code>
+var ev = {
+	offset: {
+		x: offsetX,
+		y: offsetY
+	},
+	point: this.point,
+	functionPoint: this.functionPoint,
+	originalEvent: e
+}
+				</code>
+			</pre>-->
+			</p>
+			<p><strong>作用：</strong>控件功能点改变时发生</p>
+		</td>
+	</tr>
+	<tr>
+		<td>imageload</td>
+		<td>
+			<p><strong>类型：</strong>function()</p>
+			<p><strong>作用：</strong>背景图片加载后发生</p>
+		</td>
+	</tr>
+	<tr>
+		<td>ondelete</td>
+		<td>
+			<p><strong>类型：</strong>function()</p>
+			<p><strong>作用：</strong>控件被删除时触发</p>
+		</td>
+	</tr>
+</tbody>
+</table>
+
+<p style="float: right;font-size: 14px;margin-top: 20px;">
+	<strong>自己动手试一试</strong>&nbsp;&nbsp;<img src="./img/finger.png">
+</p>

@@ -1,0 +1,56 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+		<script src="./js/visor.core.js" type="text/javascript" charset="utf-8"></script>
+		<script src="./js/visor.widgets.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<h4 style="margin: 10px;">运行结果</h4>
+		<p style="margin-top: 30px;">试试点击控件，拖动改变控件大小，会发生不可思议的效果哦！</p>
+		<div id="panel" style="position: relative;"></div>
+	</body>
+	<script type="text/javascript">
+		var panel = $.presenter({
+			width: 450,
+			height: 400,
+			dom: $("#panel"),
+			background: {
+				filltype: "color",
+				color: "#eee"
+			}
+		});
+		var control1 = $.widgets("widget", {
+			x: 50,
+			y: 50,
+			width: 200,
+			height: 150,
+			editable: true,
+			background: {
+				filltype: "color",
+				color: "pink"
+			},
+			mousedown: function(){
+				var a = {
+	            	filltype: "color",
+	            	color: "yellow"
+	            }
+	            control1.Background(a);
+			},
+			mousemove: function(){
+				var a = 200;
+				control1.Height(a);
+			},
+			afterresize: function(){
+				var a = {
+	            	filltype: "color",
+	            	color: "green"
+	            }
+	            control1.Background(a);
+			}
+		}).appendPresenter(panel);
+		panel.paint();
+	</script>
+</html>

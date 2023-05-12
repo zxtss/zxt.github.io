@@ -1,0 +1,74 @@
+html {
+	color:black;
+	height: 100%;
+	font-family: Serif,Sans,Arial,Tahoma,"宋体","微软雅黑";
+	font: 14px/1.5 "Helvetica Neue",Helvetica,Arial,"Microsoft Yahei","Hiragino Sans GB","Heiti SC","WenQuanYi Micro Hei",sans-serif
+    height: 100%;
+	background-color: white;
+}
+body{
+  color:black;
+}
+a,a:hover{
+	color: #4B4B4B;
+}
+.table > thead > tr > th{
+	border-bottom: 0px solid #DDDDDD;
+	vertical-align: middle;
+}
+.navbar-default .navbar-nav>.active>a, .navbar-default .navbar-nav>.open>a{
+    background: transparent;
+}
+.navbar-default .navbar-nav>li>a{
+   color: #FAD12C;
+}
+.navbar-default .navbar-nav>li>a:hover{
+   color: #FAD12C;
+}
+.panel.panel-form>.panel-heading .btn{
+	 color: #FFFFFF;
+}
+.logo-text-title{
+    font-size:20pt;
+    font-family:"微软雅黑","宋体","楷体","黑体",sans-serif,Sans,serif;
+    color: #fbd22c;	    
+    margin:0px 10px;
+    padding-top:10px;
+}
+.logo-text{
+   display:flex;
+   display: -webkit-flex; 
+   align-items:center;
+}
+
+
+.container {
+    padding-right: 17px;
+    padding-left: 17px;
+}
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .active > a:focus, .navbar-default .navbar-nav > .active > a:hover{
+	color: #FFD976;
+	background-color: transparent;
+}
+.navbar-default {
+    border-color: #E0DFDB;
+}
+.navbar-default .navbar-nav > .active > a, .navbar-default .navbar-nav > .open > a{
+	box-shadow: none;
+}
+.navbar-default .navbar-nav > li > a {
+    color: #000;
+}
+.navbar-default .navbar-nav > .open > a, .navbar-default .navbar-nav > .open > a:focus, .navbar-default .navbar-nav > .open > a:hover {
+    color: #FAD12C;
+    background-color: transparent;
+}
+body{
+	background-color: #FBF8F3;
+}
+.nav > li > a:focus, .nav > li > a:hover{
+	background-color: transparent;
+}
+a, a:hover, a:focus {
+    color: #999;
+}

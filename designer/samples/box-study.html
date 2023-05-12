@@ -1,0 +1,154 @@
+<h4 style="margin-bottom: 15px;"><strong>文本框box</strong></h4>
+<p><strong>用法： </strong> $.widgets("box", {})</p>
+<p><strong>描述： </strong> 定义一个名为"box"的widgets对象，在画布上绘制一个文本框box。
+	它继承了“note”的属性和方法，设置了功能点functionPoints的位置，将text值设置在box底边框外，使text值能跟随功能点的移动而移动。
+	下面是改写的一些属性和方法说明。</p>
+<p><strong>属性说明:</strong></p>
+<table class="table table-bordered">
+	<thead>
+		<th>名称</th>
+		<th>说明</th>
+	</thead>
+	<tbody>
+		<tr>
+			<td>width</td>
+			<td>
+				<p>box的宽度，默认为145，单位是PX</p>
+			</td>
+		</tr>
+		<tr>
+			<td>height</td>
+			<td>
+				<p>box的高度，默认为125，单位是PX</p>
+			</td>
+		</tr>
+		<tr>
+			<td>corner</td>
+			<td>
+				<p>设置为带圆角的box</p>
+				<p><strong>默认值： </strong>
+					<pre>
+corner: {
+	type: "round",
+	radius: 16
+},
+               </pre></p>
+			</td>
+		</tr>
+		<tr>
+			<td>border</td>
+			<td>
+				<p>给box添加宽度为1px的实线黑色边框</p>
+				<p><strong>默认值： </strong>
+					<pre>
+border:{
+    width:1,
+    type:"solid",
+    color:"black"
+},
+               </pre></p>
+			</td>
+		</tr>
+		<tr>
+			<td>background</td>
+			<td>
+				<p>给box添加背景</p>
+				<p><strong>默认值： </strong>
+					<pre>
+background: {
+	filltype: "none",
+	color: "white",
+	image: "",
+	imageType: "fill"
+},
+            </pre></p>
+			</td>
+		</tr>
+		<tr>
+			<td>paragraph</td>
+			<td>
+				<p>给box添加文字段落属性</p>
+				<p><strong>默认值： </strong>
+					<pre><code>
+paragraph: {
+	linespace: 10,
+	textalign: "center",
+	textvalign: "top"
+},
+              		</code></pre>
+				</p>
+			</td>
+		</tr>
+		<tr>
+			<td>functionPoints</td>
+			<td>
+				<p>给box添加一个功能点，位于box底边框中间偏下方位置，源码如下：</p>
+				<p>
+					<pre>
+						<code>
+this.functionPoints = [{
+	x: this.width / 2,
+	y: this.height + 12,
+	cursor: "pointer",
+	visible: true
+}];							
+						</code>
+					</pre>
+				</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p><strong>事件说明：</strong></p>
+<table class="table table-bordered">
+	<thead>
+		<th>名称</th>
+		<th>说明</th>
+	</thead>
+	<tbody>
+		<tr>
+			<td>afterresize</td>
+			<td>
+				<p><strong>说明： </strong>当box被拉动时，功能点的位置会根据box移动方向而发生位置偏移。其中，resizer的值1、2、3、4分别表示box边框的四个角，按照顺时针方向序号依次为1、2、3、4。</p>
+				<p><strong>源码如下：</strong>
+					<pre>
+						<code>
+afterresize: function(ev) {
+   if(ev.resizer == 4) {
+       this.functionPoints[0].x += ev.offset.x / 2;
+       this.functionPoints[0].y += ev.offset.y;
+   } else if(ev.resizer == 1) {
+       this.functionPoints[0].x -= ev.offset.x / 2;
+       this.functionPoints[0].y -= ev.offset.y;
+	} else if(ev.resizer == 2) {
+       this.functionPoints[0].x += ev.offset.x / 2;
+       this.functionPoints[0].y -= ev.offset.y;
+	} else if(ev.resizer == 3) {
+       this.functionPoints[0].x -= ev.offset.x / 2;
+       this.functionPoints[0].y += ev.offset.y;
+    }
+}
+						</code>
+					</pre>
+				</p>
+			</td>
+		</tr>
+		<tr>
+			<td>calculateSize</td>
+			<td>
+				重写该方法，设置为空，不做任何操作。文字默认在同一行显示
+			</td>
+		</tr>
+		<tr>
+			<td>drawTextTo</td>
+			<td>
+				重写该方法，将text值按照设置的属性绘制在功能点的下方
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p style="float: right;font-size: 14px；">
+	<strong>box效果见右侧，自己动手试一试</strong>&nbsp;&nbsp;<img src="./img/finger.png">
+</p>

@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+		<script src="./js/visor.core.js" type="text/javascript" charset="utf-8"></script>
+		<script src="./js/visor.widgets.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+
+	<body>
+		<h4 style="margin: 10px;">运行结果</h4>
+		<!-- 一定要加position:relative; -->
+		<div id="panel1" style="position: relative; margin: 20px;"></div>
+		<div id="panel2" style="position: relative; margin: 20px;"></div>
+		<div id="panel3" style="position: relative; margin: 20px;"></div>
+		<div id="panel4" style="position: relative; margin: 20px;"></div>
+	</body>
+	<script type="text/javascript">
+		var panel1 = $.presenter({
+			width: 300,
+			height: 200,
+			dom: $("#panel1"),
+			showgrid: true,
+			dpi: 5,
+			autoalign: false,
+			background: {
+				filltype: "color",
+				color: "#eee"
+			}
+		});
+		panel1.paint(); //渲染画布
+
+		var panel2 = $.presenter({
+			width: 300,
+			height: 200,
+			dom: $("#panel2"),
+			background: {
+				filltype: "image",
+				image: "./img/2.jpeg",
+				imageType: "fit"
+			},
+			border: {
+				width: 1,
+				type: "solid",
+				color: "red"
+			}
+		});
+		panel2.paint();
+
+		var panel3 = $.presenter({
+			width: 300,
+			height: 200,
+			dom: $("#panel3"),
+			background: {
+				filltype: "gradient"
+			},
+			gradient: {
+				type: "liner",
+				begincolor: "yellow",
+				endcolor: "red",
+				angle: 40,
+			}
+		});
+		panel3.paint();
+
+        var panel4 = $.presenter({
+            width: 300,
+            height: 200,
+            dom: $("#panel4"),
+            background: {
+                filltype: "gradient"
+            },
+            gradient: {
+                type: "radial",
+                begincolor: "yellow",
+                endcolor: "red",
+                radius: 50
+            }
+        });
+        panel4.paint();
+	</script>
+
+</html>

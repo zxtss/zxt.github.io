@@ -1,0 +1,44 @@
+<!DOCTYPE html>  
+<html>  
+<head>  
+    <meta charset="UTF-8">  
+    <title>Canvas Find Overlapping Shapes</title>  
+</head>  
+<body>  
+    <canvas id="myCanvas" width="500" height="500"></canvas>  
+  
+    <script>  
+        // 绘制要查找重叠部分的图形  
+        var canvas = document.getElementById("myCanvas");  
+        var ctx = canvas.getContext("2d");  
+        var x = 50;  
+        var y = 50;  
+        var width = 100;  
+        var height = 100;  
+        ctx.beginPath();  
+        ctx.moveTo(x, y);  
+        ctx.lineTo(x + width, y);  
+        ctx.lineTo(x + width, y + height);  
+        ctx.closePath();  
+        ctx.stroke();  
+  
+        // 查找所有与当前图形重叠的图形  
+        var shapes = [];  
+        function draw() {  
+            ctx.clearRect(0, 0, canvas.width, canvas.height);  
+            ctx.beginPath();  
+            ctx.moveTo(x, y);  
+            ctx.lineTo(x + width, y);  
+            ctx.lineTo(x + width, y + height);  
+            ctx.closePath();  
+            ctx.stroke();  
+            shapes.push(ctx.getImageData(0, 0, canvas.width, canvas.height));  
+        }  
+        setInterval(draw, 50);  
+  
+        // 找到与当前图形重叠的图形  
+        var overlaps = find_overlapping(shapes, x, y);  
+    //    `draw()` 函数每隔一段时间调用一次，将绘制的图形绘制到 Canvas 上，并将其转换为一个像素矩阵。`find_overlapping
+    </script>
+    </body>
+</html>

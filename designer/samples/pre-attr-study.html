@@ -1,0 +1,131 @@
+<h2>presenter对象</h2>
+<h4 style="margin: 10px 0;">展现和操作控制widget的画布对象</h4>
+<p style="margin: 10px 0;"><strong>属性说明</strong></p>
+<table class="table table-bordered">
+	<thead>
+		<th>名称</th>
+		<th>说明</th>
+	</thead>
+	<tbody>
+		<tr>
+			<td>name</td>
+			<td>
+				<p><strong>类型： </strong>String</p>
+				<p><strong>作用： </strong>设置画布唯一的name值，默认值为"presenter"</p>
+			</td>
+		</tr>
+		<tr>
+			<td>title</td>
+			<td>
+				<p><strong>类型： </strong>String</p>
+				<p><strong>作用： </strong>设置画布的title值，默认值为"presenter"</p>
+			</td>
+		</tr>
+		<tr>
+			<td>dom</td>
+			<td>
+				<p><strong>默认值： </strong>$("body")</p>
+				<p><strong>作用： </strong>设置画布渲染在哪个dom节点下，一般设置为ID值</p>
+			</td>
+		</tr>
+		<tr>
+			<td>type</td>
+			<td>
+				<p><strong>类型： </strong>String</p>
+				<p><strong>作用： </strong>设置画布的类型，默认为"panel"，不更改</p>
+			</td>
+		</tr>
+		<tr>
+			<td>width</td>
+			<td>
+				<p><strong>类型： </strong>int</p>
+				<p><strong>作用： </strong>设置画布的宽度，默认值1024PX</p>
+			</td>
+		</tr>
+		<tr>
+			<td>height</td>
+			<td>
+				<p><strong>类型： </strong>int</p>
+				<p><strong>作用： </strong>设置画布的高度，默认值800PX</p>
+			</td>
+		</tr>
+		<tr>
+			<td>showgrid</td>
+			<td>
+				<p><strong>类型： </strong>boolean</p>
+				<p><strong>作用： </strong>设置是否显示网格线，默认值为"false"</p>
+			</td>
+		</tr>
+		<tr>
+			<td>dpi</td>
+			<td>
+				<p><strong>类型： </strong>int</p>
+				<p><strong>作用： </strong>设置显示的每个网格的边长，默认值为8，单位是PX，可不写单位</p>
+			</td>
+		</tr>
+		<tr>
+			<td>scale</td>
+			<td>
+				<p><strong>类型： </strong>int</p>
+				<p><strong>作用： </strong>设置画布伸缩比例，默认值为1，不伸缩</p>
+			</td>
+		</tr>
+		<tr>
+			<td>autoalign</td>
+			<td>
+				<p><strong>类型： </strong>boolean</p>
+				<p><strong>作用： </strong>设置控件移动时，是否按网格线自动对齐，默认值为"true"</p>
+			</td>
+		</tr>
+		<tr>
+			<td>background</td>
+			<td>
+				<p><strong>作用： </strong>设置画布背景，具体属性和用法与widgets对象一致</p>
+				<p><strong>默认值： </strong>
+					<pre><code>
+background: {
+	filltype: "color",
+	color: "#ABABAB"
+},
+				</code></pre>
+				</p>
+			</td>
+		</tr>
+		<tr>
+			<td>gradient</td>
+			<td>
+				<p><strong>作用： </strong>当背景的filltype为渐变色gradient时，设置gradient的属性。具体用法与widgets对象一致。</p>
+				<p><strong>默认值： </strong>
+					<pre><code>
+gradient={
+    type:"liner",
+    begincolor:"white",
+    endcolor:"gray",
+    angle:90,
+    radius:45
+},
+				</code></pre>
+				</p>
+			</td>
+		</tr>
+		<tr>
+			<td>border</td>
+			<td>
+				<p><strong>作用： </strong>设置画布的边框样式，具体属性和用法与widgets对象一致。</p>
+				<p><strong>默认值： </strong>
+					<pre><code>
+border: {
+    width: 1,
+    type: "solid",
+    color: "none"
+},
+				</code></pre>
+				</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p style="float: right;font-size: 14px;margin-top: 20px;">
+	<strong>自己动手试一试</strong>&nbsp;&nbsp;<img src="./img/finger.png">
+</p>

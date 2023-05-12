@@ -1,0 +1,172 @@
+<h4 style="margin-bottom: 15px;"><strong>注释文本框note</strong></h4>
+<strong>用法：</strong> $.widgets("note", {})</p>
+<p><strong>描述：</strong>定义一个名为"note"的widgets对象，在画布上绘制一个注释文本框note。
+	它继承了“actionWidget”的属性和方法，增加了段落属性paragraph；根据字体和段落属性值来计算大小，使文字换行显示的方法calculateSize；
+	重写drawTextTo方法，将文字按照设置的属性和大小绘制在画布上。下面是改写的一些属性和方法说明。</p>
+<p><strong>属性说明:</strong></p>
+<table class="table table-bordered">
+	<thead>
+		<th>名称</th>
+		<th>说明</th>
+	</thead>
+	<tbody>
+		<tr>
+			<td>name</td>
+			<td>
+				<p>文本框的name值，默认为“name”</p>
+			</td>
+		</tr>
+		<tr>
+			<td>text</td>
+			<td>
+				<p>文本框内部显示的文字，默认为“note”</p>
+			</td>
+		</tr>
+		<tr>
+			<td>width</td>
+			<td>
+				<p>note的宽度，默认为160，单位是PX</p>
+			</td>
+		</tr>
+		<tr>
+			<td>height</td>
+			<td>
+				<p>note的高度，默认为140，单位是PX</p>
+			</td>
+		</tr>
+		<tr>
+			<td>corner</td>
+			<td>
+				<p><strong>设置为带圆角的note，默认值： </strong>
+					<pre>
+corner: {
+	type: "round",
+	radius: 16
+},
+               </pre></p>
+			</td>
+		</tr>
+		<tr>
+			<td>background</td>
+			<td>
+				<p><strong>给note添加背景，默认为黄色： </strong>
+					<pre>
+background:{
+    filltype: "color",
+    image: "",
+    imageType: "fill",
+    color: "yellow"
+},
+            </pre></p>
+			</td>
+		</tr>
+		<tr>
+			<td>font</td>
+			<td>
+				<p><strong>给note添加默认的字体样式</strong></p>
+				<p><strong>默认值： </strong>
+					<pre>
+font:{
+    style:"normal",
+    weight:"normal",
+    family:"Arial",
+    size:"10pt",
+    color:"blue",
+    fill:true
+},
+             </pre></p>
+			</td>
+		</tr>
+		<tr>
+			<td>paragraph</td>
+			<td>
+				<p>
+					note是注释文本框，新增一个段落的属性，用于改变文字间的样式。包括下列几个参数：
+					<table class="table table-bordered">
+						<thead>
+							<th>属性名</th>
+							<th>类型</th>
+							<th>说明</th>
+						</thead>
+						<tbody>
+							<tr>
+								<td>linespace</td>
+								<td>int</td>
+								<td>设置行间距</td>
+							</tr>
+							<tr>
+								<td>textalign</td>
+								<td>String</td>
+								<td>设置文字水平对齐方式，有三种，分别为：left-左对齐,center-中对齐,right-右对齐</td>
+							</tr>
+							<tr>
+								<td>textvalign</td>
+								<td>String</td>
+								<td>设置文字垂直对齐方式，有三种：top-上对齐,middle-中对齐,bottom-下对齐</td>
+							</tr>
+						</tbody>
+					</table>
+				</p>
+				<p><strong>默认值： </strong>
+					<pre><code>
+paragraph: {
+	linespace: 10,
+	textalign: "center",
+	textvalign: "middle"
+},
+              		</code></pre>
+				</p>
+			</td>
+		</tr>
+		<tr>
+			<td>autosize</td>
+			<td>
+				<p><strong>类型： </strong>boolean</p>
+				<p><strong>说明： </strong>大小自适应，默认为false</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p><strong>方法说明：</strong></p>
+<table class="table table-bordered">
+	<thead>
+	<th>名称</th>
+	<th>说明</th>
+	</thead>
+	<tbody>
+	<tr>
+		<td>persist</td>
+		<td>序列化要保存的"note"对象,并添加了属性paragraph的值
+			<pre>
+				<code>
+this.persist = function() {
+    var r = widget.persistproperty(this);
+    if(this.paragraph) {
+        r.paragraph = {};
+        $.extend(r.paragraph, this.paragraph);
+    }
+    return r;
+};
+				</code>
+			</pre>
+		</td>
+	</tr>
+	<tr>
+		<td>calculateSize</td>
+		<td>
+			根据字体和段落属性值来计算大小，使文字能够按照规则换行显示
+		</td>
+	</tr>
+	<tr>
+		<td>drawTextTo</td>
+		<td>
+			重写该方法，将文字按照设置的属性绘制在note边框内。若文字高度超过note本身高度，note的高度会随着文字增加。
+		</td>
+	</tr>
+	</tbody>
+</table>
+
+<p style="float: right;font-size: 14px；">
+	<strong>note效果见右侧，自己动手试一试</strong>&nbsp;&nbsp;<img src="./img/finger.png">
+</p>

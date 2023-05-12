@@ -1,0 +1,107 @@
+<h4 style="margin-bottom: 15px;"><strong>actionWidget</strong></h4>
+<p><strong>描述：</strong>继承widgets对象，添加了阴影效果、超链接属性和实现了可以点击超链接跳转的事件，作中间件，不可直接使用</p>
+<p><strong>属性说明:</strong></p>
+<table class="table table-bordered">
+	<thead>
+		<th>名称</th>
+		<th>说明</th>
+	</thead>
+	<tbody>
+		<tr>
+			<td>hyperlink</td>
+			<td>
+				<p><strong>作用：</strong>添加超链接，具体属性如下：
+					<table class="table table-bordered">
+						<thead>
+							<th>属性名</th>
+							<th>说明</th>
+						</thead>
+						<tbody>
+						<tr>
+							<td>type</td>
+							<td>超链接类型，有三种，分别为“url”、“window”和“command”</td>
+						</tr>
+						<tr>
+							<td>url</td>
+							<td>若type值为“url”，则需要添加该属性，填写跳转的url值</td>
+						</tr>
+						<tr>
+							<td>target</td>
+							<td>网页打开形式<br>1、“_blank”--在新窗口中打开被链接文档；<br>2、“_self”--在相同的框架中打开被链接文档；<br>
+								3、“_parent”--在父框架集中打开被链接文档；<br>4、“_top”--在整个窗口中打开被链接文档；<br>
+								5、“framename”--在指定的框架中打开被链接文档。</td>
+						</tr>
+						</tbody>
+					</table>
+				</p>
+				<p>
+					<strong>默认值：</strong>
+					<pre><code>
+hyperlink: {
+	window: "",
+	url: "",
+	command: "",
+	type: "url",
+	target: "_blank",
+},
+					</code></pre>
+				</p>
+			</td>
+		</tr>
+		<tr>
+			<td>shadow</td>
+			<td>
+				<p>给该控件添加黑色的阴影效果</p>
+				<p><strong>默认值： </strong>
+				<pre><code>
+shadow: {
+    color : "black",
+    offsetX : 4,
+    offsetY : 4,
+    blur : 4
+},
+				</code></pre>
+				</p>
+			</td>
+		</tr>
+	</tbody>
+</table>
+
+<p><strong>事件说明：</strong></p>
+<table class="table table-bordered">
+	<thead>
+	<th>名称</th>
+	<th>说明</th>
+	</thead>
+	<tbody>
+	<tr>
+		<td>click</td>
+		<td>
+		<p>
+			根据hyperlink的属性值，给控件添加一个可以点击超链接跳转的事件。其中，当editable的属性值为“false”时，点击事件才生效。</p>
+			<!--<p><strong>源码：</strong>
+			<pre>
+			<code>
+this.click = function(e) {
+	if(!this.editable && this.hyperlink) {
+		if(this.hyperlink.type === "url" && this.hyperlink.url != "")
+			window.open(this.hyperlink.url, this.hyperlink.target);
+		else if(this.hyperlink.type === "window" && this.hyperlink.window != "") {
+			if($.fn.fullpage != null && this.hyperlink.index) {
+				$.fn.fullpage.moveTo(this.hyperlink.index, 0);
+			} else if(this.presenters[0])
+				this.presenters[0].designer.setActive(this.hyperlink.window);
+			else
+				this.root.presenters[0].designer.setActive(this.hyperlink.window);
+		}
+	}
+	if(option.click)
+		option.click.call(this, e);
+	this.paint();
+};
+			</code>
+		</pre></p>-->
+		</td>
+	</tr>
+	</tbody>
+</table>

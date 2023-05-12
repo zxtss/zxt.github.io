@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+		<script src="./js/visor.core.js" type="text/javascript" charset="utf-8"></script>
+		<script src="./js/visor.widgets.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<h4 style="margin: 10px;">运行结果</h4>
+		<p style="margin-top: 20px;">点击画布查看效果</p>
+		<div id="panel1" style="position: relative;"></div>
+		
+		<p style="margin-top: 40px;">双击画布查看效果</p>
+		<div id="panel2" style="position: relative"></div>
+	</body>
+	<script type="text/javascript">
+		var panel1 = $.presenter({
+			width: 450,
+			height: 200,
+			text: "click me!",
+			dom: $("#panel1"),
+			background: {
+				filltype: "color",
+				color: "#c8e4fd"
+			},
+			click: function(){
+				alert("click event");
+			},
+			mouseup: function(){
+				alert("mouseup event");
+			},
+		});
+		
+		var panel2 = $.presenter({
+			width: 450,
+			height: 200,
+			dom: $("#panel2"),
+			background: {
+				filltype: "color",
+				color: "#f3d5e6"
+			},
+			dblclick: function(){
+				alert("dblclick");
+			}
+		});
+		
+		panel1.paint();
+		panel2.paint();
+	</script>
+</html>

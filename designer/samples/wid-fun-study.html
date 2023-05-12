@@ -1,0 +1,207 @@
+<h2>widget对象</h2>
+<h4 style="margin: 10px 0;">基于Canvas的基础控件对象</h4>
+<p style="margin: 10px 0;"><strong>方法说明</strong></p>
+<table class="table table-bordered">
+<thead>
+	<th>名称</th>
+	<th>说明</th>
+</thead>
+<tbody>
+	<tr>
+		<td>Background</td>
+		<td>
+			<p><strong>类型： </strong>function(a)，其中a为设置的背景值。例子：
+			<pre><code>
+var a = {
+	filltype: "color",
+	color: "yellow"
+}
+widgetsName.Background(a);
+			</code></pre>
+			</p>
+			<p><strong>作用： </strong>将自定义的背景对象设置为某个widgets的背景值</p>
+		</td>
+	</tr>
+	<tr>
+		<td>Scale</td>
+		<td>
+			<p><strong>类型： </strong>function(a)，其中a为控件伸缩值。例子：
+			<pre><code>
+var a = 2;
+widgetsName.Scale(a);
+			</code></pre>
+			</p>
+			<p><strong>作用： </strong>给某个widgets对象设置伸缩比例</p>
+		</td>
+	</tr>
+	<tr>
+		<td>Width</td>
+		<td>
+			<p><strong>类型： </strong>function(a)，a为指定的width值。例子：
+			<pre><code>
+var a = 100;
+widgetsName.Width(a);
+			</code></pre>
+			</p>
+			<p><strong>作用： </strong>给控件设置宽度，默认单位为PX</p>
+		</td>
+	</tr>
+	<tr>
+		<td>Height</td>
+		<td>
+			<p><strong>类型： </strong>function(a)，a为指定的Height值
+			<pre><code>
+var a = 100;
+widgetsName.Height(a);
+			</code></pre>
+			</p>
+			<p><strong>作用： </strong>给控件设置高度，默认单位为PX</p>
+		</td>
+	</tr>
+	<tr>
+		<td>fontSize</td>
+		<td>
+			<p><strong>类型： </strong>function()</p>
+			<p><strong>作用： </strong>获取控件字体大小</p>
+		</td>
+	</tr>
+	<!--<tr>
+		<td>equals ??</td>
+		<td>
+			<p><strong>类型： </strong>function(target),其中a为 ??</p>
+			<p><strong>作用： </strong>判断 ?? 为true or false</p>
+		</td>
+	</tr>-->
+	<tr>
+		<td>clean</td>
+		<td>
+			<p><strong>类型： </strong>function()</p>
+			<p><strong>作用： </strong>清空控件本身</p>
+		</td>
+	</tr>
+	<tr>
+		<td>persist</td>
+		<td>
+			<p><strong>类型： </strong>function()</p>
+			<p><strong>作用： </strong>序列化要保存的控件对象</p>
+		</td>
+	</tr>
+	<!--<tr>
+		<td>calculateSize</td>
+		<td>
+			<p><strong>类型： </strong>function(ctx)，ctx为某个控件对象</p>
+			<p><strong>作用： </strong>计算控件大小</p>
+		</td>
+	</tr>-->
+	<tr>
+		<td>paintTo</td>
+		<td>
+			<p><strong>类型： </strong>function(canvas, scaleX, scaleY)，canvas为某个canvas对象名，scaleX为该控件的水平伸缩比例，scaleY为
+			该控件的垂直伸缩比例</p>
+			<p><strong>作用： </strong>将指定控件按照一定的伸缩比例在画布canvas上画出来</p>
+		</td>
+	</tr>
+	<tr>
+		<td>paint</td>
+		<td>
+			<p><strong>类型： </strong>function()</p>
+			<p><strong>作用： </strong>将控件本身画出来</p>
+		</td>
+	</tr>
+	<tr>
+		<td>Widgets</td>
+		<td>
+			<p><strong>类型： </strong>function(a)，a为某个控件的name值、序号或者对象本身</p>
+			<p><strong>作用： </strong>根据a的值去获取到指定的子控件对象</p>
+		</td>
+	</tr>
+	<tr>
+		<td>Presenters</td>
+		<td>
+			<p><strong>类型： </strong>function(a)，a为某个presenter对象的name值或者序号</p>
+			<p><strong>作用： </strong>根据a的值去获取到控件所在的presenter对象</p>
+		</td>
+	</tr>
+	<tr>
+		<td>downDepth</td>
+		<td>
+			<p><strong>类型： </strong>function()</p>
+			<p><strong>作用： </strong>将当前控件置后一级</p>
+		</td>
+	</tr>
+	<tr>
+		<td>downStep</td>
+		<td>
+			<p><strong>类型： </strong>function()</p>
+			<p><strong>作用： </strong>将当前控件置前一级</p>
+		</td>
+	</tr>
+	<tr>
+		<td>topDepth</td>
+		<td>
+			<p><strong>类型： </strong>function()</p>
+			<p><strong>作用： </strong>将当前控件置底</p>
+		</td>
+	</tr>
+	<tr>
+		<td>topStep</td>
+		<td>
+			<p><strong>类型： </strong>function()</p>
+			<p><strong>作用： </strong>将当前控件置顶</p>
+		</td>
+	</tr>
+	<tr>
+		<td>appendPresenter</td>
+		<td>
+			<p><strong>类型： </strong>function(presenter)，presenter为某个画布对象</p>
+			<p><strong>作用： </strong>在当前控件上添加画布对象</p>
+		</td>
+	</tr>
+	<tr>
+		<td>appendWidget</td>
+		<td>
+			<p><strong>类型： </strong>function(widget)，widget为某个控件对象</p>
+			<p><strong>作用： </strong>在当前控件上添加控件对象</p>
+		</td>
+	</tr>
+	<tr>
+		<td>restoreChildren</td>
+		<td>
+			<p><strong>类型： </strong>function(_widgets,opt)，_widgets为序列化后的控件对象，opt为需要更新和添加的一些属性值</p>
+			<p><strong>作用： </strong>恢复_widgets对象的所有子控件</p>
+		</td>
+	</tr>
+	<tr>
+		<td>removeWidget</td>
+		<td>
+			<p><strong>类型： </strong>function(widget)，widget为某个控件对象</p>
+			<p><strong>作用： </strong>在当前控件上移除控件widget</p>
+		</td>
+	</tr>
+	<tr>
+		<td>RotatePoint</td>
+		<td>
+			<p><strong>类型： </strong>function(x,y)，x、y分别为x轴、y轴坐标值</p>
+			<p><strong>作用： </strong>设置控件的旋转点的位置</p>
+		</td>
+	</tr>
+	<tr>
+		<td>getImageData</td>
+		<td>
+			<p><strong>类型： </strong>function(x, y, width, height,targetwidth,targetheight)</p>
+			<p><strong>作用： </strong>获取当前控件指定位置和大小的图像，并根据tagetwidth和targetheight的值计算出的比例压缩成指定的大小，保存到“image/png”</p>
+		</td>
+	</tr>
+	<tr>
+		<td>getImageBlob</td>
+		<td>
+			<p><strong>类型： </strong>function(x, y, width, height,type)</p>
+			<p><strong>作用： </strong>获取当前控件指定位置和大小的图像,按照指定的图像type值，压缩并转化成一串图像编码</p>
+		</td>
+	</tr>
+</tbody>
+</table>
+
+<p style="float: right;font-size: 14px;margin-top: 20px;">
+	<strong>自己动手试一试</strong>&nbsp;&nbsp;<img src="./img/finger.png">
+</p>

@@ -1,0 +1,102 @@
+<h2>presenter对象</h2>
+<h4 style="margin: 10px 0;">展现和操作控制widget的画布对象</h4>
+<p style="margin: 10px 0;"><strong>方法说明</strong></p>
+<table class="table table-bordered">
+	<thead>
+		<th>名称</th>
+		<th>说明</th>
+	</thead>
+	<tbody>
+		<tr>
+			<td>Cursor</td>
+			<td>
+				<p><strong>类型：</strong>function(a)，参数a为cursor样式值</p>
+				<p><strong>作用：</strong>获取或者设置鼠标移动到画布时的样式</p>
+			</td>
+		</tr>
+		<tr>
+			<td>Scale</td>
+			<td>
+				<p><strong>类型：</strong>function(a)，参数a为伸缩比例</p>
+				<p><strong>作用：</strong>获取或者设置画布伸缩比例</p>
+			</td>
+		</tr>
+		<tr>
+			<td>persist</td>
+			<td>
+				<p><strong>类型：</strong>function()</p>
+				<p><strong>作用：</strong>序列化要保存的画布对象</p>
+			</td>
+		</tr>
+		
+		<tr>
+			<td>Widget</td>
+			<td>
+				<p><strong>类型：</strong>function(a)，a为某个画布的name值、序号或者对象本身</p>
+				<p><strong>作用：</strong>根据a的值去获取到指定的子对象</p>
+			</td>
+		</tr>
+		
+		<tr>
+			<td>appendWidget</td>
+			<td>
+				<p><strong>类型：</strong>function(widget)，参数widget为一个widget对象</p>
+				<p><strong>作用：</strong>添加widget对象到当前的画布上</p>
+			</td>
+		</tr>
+		<tr>
+			<td>removeWidget</td>
+			<td>
+				<p><strong>类型：</strong>function(widgets, skip)，参数widgets为一个widgets对象，skip为boolean值，确定是否在移除该对象前进行模拟删除操作，保存到“delete”状态的command中，用于步骤恢复等</p>
+				<p><strong>作用：</strong>移除在当前画布上的widgets对象</p>
+			</td>
+		</tr>
+		<tr>
+			<td>paint</td>
+			<td>
+				<p><strong>类型：</strong>function(opt),opt为一些新定义的参数</p>
+				<p><strong>作用：</strong>在页面上将定义的画布渲染出来</p>
+			</td>
+		</tr>
+		<!--<tr>
+			<td>fillSelectionRegion ??</td>
+			<td>
+				<p><strong>类型：</strong>function()</p>
+				<p><strong>作用：</strong>填充选择区</p>
+			</td>
+		</tr>-->
+		<!--<tr>
+			<td>calculateRect</td>
+			<td>
+				<p><strong>类型：</strong>function()</p>
+				<p><strong>作用：</strong>根据选中的widget，计算选择区域的大小</p>
+			</td>
+		</tr>
+		<tr>
+			<td>clearSelection</td>
+			<td>
+				<p><strong>类型：</strong>function()</p>
+				<p><strong>作用：</strong>清空选中区域</p>
+			</td>
+		</tr>-->
+		<!--<tr>
+			<td>deleteFocus</td>
+			<td>
+				<p><strong>类型：</strong>function()</p>
+				<p><strong>作用：</strong>删除获得焦点的widget</p>
+			</td>
+		</tr>-->
+		<tr>
+			<td>getName</td>
+			<td>
+				<p><strong>类型：</strong>function(prefix),prefix值为给画布取的name值</p>
+				<p><strong>作用：</strong>给画布上所有的widgets对象添加一个统一的带递增编号的name值</p>
+			</td>
+		</tr>
+		
+	</tbody>
+</table>
+
+<p style="float: right;font-size: 14px;margin-top: 20px;">
+	<strong>自己动手试一试</strong>&nbsp;&nbsp;<img src="./img/finger.png">
+</p>

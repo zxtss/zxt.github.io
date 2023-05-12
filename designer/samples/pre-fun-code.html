@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<title></title>
+		<script src="http://code.jquery.com/jquery-2.1.4.min.js"></script>
+		<script src="./js/visor.core.js" type="text/javascript" charset="utf-8"></script>
+		<script src="./js/visor.widgets.js" type="text/javascript" charset="utf-8"></script>
+	</head>
+	<body>
+		<h4 style="margin: 10px;">运行结果</h4>
+		<div id="panel" style="position: relative;"></div>
+	</body>
+	<script type="text/javascript">
+		var panel = $.presenter({
+			width: 450,
+			height: 400,
+			dom: $("#panel"),
+			background: {
+				filltype: "color",
+				color: "#eee"
+			}
+		});
+		
+		var control1 = $.widgets("widget", {
+			x: 20,
+			y: 30,
+			width: 200,
+			height: 150,
+			editable: true,
+			background: {
+				filltype: "color",
+				color: "pink"
+			}
+		});
+		
+		var control2 = $.widgets("widget", {
+			x: 20,
+			y: 220,
+			width: 200,
+			height: 150,
+			background: {
+				filltype: "color",
+				color: "yellow"
+			}
+		});
+		
+		panel.appendWidget(control1);
+		
+		panel.appendWidget(control2);
+		//panel.removeWidget(control2);
+		
+		//panel.Scale(2);
+		
+		panel.paint();
+		
+	</script>
+</html>
