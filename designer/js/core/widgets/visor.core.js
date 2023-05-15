@@ -742,7 +742,7 @@
 					// }
 	
 					//图形之间连线
-					var colorList=['#ff0000','#cc0099','#99ffcc',,'#99ffcc',,'#330066',,'#FF00FF',,'#7D26CD',];
+					var colorList=['#ff0000','#cc0099','#99ffcc',,'#99ffcc','#330066',,'#FF00FF',,'#7D26CD',];
 					for(var i=0;i<oList.length;i++){
 						if(this.option.name===oList[i].name){
 							continue
@@ -1556,6 +1556,7 @@
 	};
 	
 	presenter.prototype.paint=function(opt){
+		console.info(opt)
 		this.rootwidget.paint();
 		if(this.showgrid)
 			this.drawGrid();
@@ -1595,17 +1596,33 @@
 		}
 		return this;
 	};
-		
+	//长按选中
 	presenter.prototype.fillSelectionRegion=function(){
 		if(this.inSelection||this.selectwidgets.length>1){
 			var ctx=this.canvas.getContext("2d");
 			ctx.save();
 			ctx.beginPath();
 			ctx.globalAlpha = 0.5;
-			ctx.fillStyle = selectionColor;
-			ctx.strokeStyle= selectionColor;
+			// ctx.fillStyle = selectionColor;
+			// ctx.strokeStyle= selectionColor;
 			ctx.lineWidth = 1;			
-			ctx.fillRect(this.selectRect.x/this.scale,this.selectRect.y/this.scale,this.selectRect.width/this.scale,this.selectRect.height/this.scale);
+			// ctx.fillRect(this.selectRect.x/this.scale,this.selectRect.y/this.scale,this.selectRect.width/this.scale,this.selectRect.height/this.scale);
+			console.log(this.selectRect)
+			//绘制虚线
+			drawDashLine(ctx,this.selectRect.x,this.selectRect.y,this.selectRect.width+this.selectRect.x,this.selectRect.height+this.selectRect.y,2,'#8B1A1A')
+			ctx.font = "30px Verdana";
+			ctx.strokeStyle ='#CD0000';
+			if(this.selectRect.height===0){
+				//画的直线
+				let w=this.selectRect.x-Math.abs(this.selectRect.width)
+				ctx.fillText(w,this.selectRect.x-Math.abs(this.selectRect.width),this.selectRect.y)
+			}else{
+				var a = this.selectRect.x - (this.selectRect.x+this.selectRect.width);
+				var b = this.selectRect.y - (this.selectRect.y+this.selectRect.height);
+				var c = Math.sqrt( a*a + b*b );
+				ctx.fillText(c.toFixed(0),this.selectRect.x+this.selectRect.width,this.selectRect.y+this.selectRect.height)
+
+			}
 			ctx.restore();			
 		}		
 	};	
@@ -2283,7 +2300,7 @@
 			}
 		}
 		else if(type==="click" && e.button===0){	
-			console.log(e)
+			console.log("点击的坐标",e.x,e.y)
 			if (this.activewidget != null) {
 				if(e.ctrlKey){
 					if(this.activewidget.type.indexOf("Connector")>0)
