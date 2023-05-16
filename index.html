@@ -55,6 +55,7 @@
                                     <el-menu-item index="2-5" @click="goPRO(5)">vip视频链接解析</el-menu-item>
                                     <el-menu-item index="2-5" @click="goPRO(6)">潮点视频大全</el-menu-item>
                                     <el-menu-item index="2-5" @click="goPRO(7)">在线设计工具</el-menu-item>
+                                    <el-menu-item index="2-5" @click="goPRO(8)">收藏夹</el-menu-item>
                                     <!-- <el-menu-item index="2-5" @click="goPRO(6)">网站模板下载</el-menu-item> -->
                                 </el-submenu>
                                 <el-menu-item index="6">新闻资讯</el-menu-item>
@@ -448,6 +449,8 @@
                         window.location.href = './html/chaodian.html';
                     } else if (type === 7) {
                         window.location.href = './designer/index.html';
+                    }else if (type === 8) {
+                        window.location.href = './html/collection.html';
                     }
                 },
                 handleSelect(key) {
