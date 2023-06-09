@@ -11,12 +11,17 @@
 </head>
 
 <body style="background: url('./images/background.webp');">
+    <audio src="./public/思念滚烫.m4a" style="opacity: 0.01;"></audio>
     <div id="app">
+        <div class="music">
+            <img src="./images/music.png" @click="goPlay" class="music-img" alt="">
+        </div>
         <div class="top">
             <div id="show">
                 <el-row>
                     <el-col :span="4">
-                        <div class="grid-content "></div>
+                        <div class="grid-content ">
+                        </div>
                     </el-col>
                     <el-col :span="16">
                         <div class="grid-content placedTop"
@@ -60,7 +65,7 @@
                                 </el-submenu>
                                 <el-menu-item index="6">新闻资讯</el-menu-item>
                                 <el-menu-item index="7">疫情专区</el-menu-item>
-                                <el-menu-item index="99">影视大全</el-menu-item>
+                                <!-- <el-menu-item index="99">影视大全</el-menu-item> -->
                                 <el-menu-item index="88">vip视频解析</el-menu-item>
                                 <!-- <el-menu-item index="8">联系我</el-menu-item> -->
                                 <!-- <el-menu-item index="4"><a href="https://blog.csdn.net/m0_46361270?type=blog"
@@ -211,6 +216,58 @@
                 <img v-if="sourceData.images" :src="sourceData.images" alt="">
             </el-dialog> -->
         </div>
+        <div class="xz">
+            <!-- 外层最大容器 -->
+            <div class="wrap">
+                <!--包裹所有元素的容器-->
+                <div class="cube">
+                    <!--前面图片 -->
+                    <div class="out_front">
+                        <img src="./images/t1.png" class="pic">
+                    </div>
+                    <!--后面图片 -->
+                    <div class="out_back">
+                        <img src="./images/t2.png" class="pic">
+                    </div>
+                    <!--左面图片 -->
+                    <div class="out_left">
+                        <img src="./images/t3.png" class="pic">
+                    </div>
+                    <!--右面图片 -->
+                    <div class="out_right">
+                        <img src="./images/t4.png" class="pic">
+                    </div>
+                    <!--上面图片 -->
+                    <div class="out_top">
+                        <img src="./images/t5.png" class="pic">
+                    </div>
+                    <!--下面图片 -->
+                    <div class="out_bottom">
+                        <img src="./images/t5.png" class="pic">
+                    </div>
+    
+                    <!--小正方体 -->
+                    <span class="in_front">
+                        <img src="./images/t6.png" class="in_pic">
+                    </span>
+                    <span class="in_back">
+                        <img src="./images/t7.png" class="in_pic">
+                    </span>
+                    <span class="in_left">
+                        <img src="./images/t8.png" class="in_pic">
+                    </span>
+                    <span class="in_right">
+                        <img src="./images/t1.png" class="in_pic">
+                    </span>
+                    <span class="in_top">
+                        <img src="./images/t2.png" class="in_pic">
+                    </span>
+                    <span class="in_bottom">
+                        <img src="./images/t3.png" class="in_pic">
+                    </span>
+                </div>
+            </div>
+        </div>
     </div>
     <script>
         var dataSource = void 0;
@@ -257,6 +314,7 @@
     <script
         src="https://gwpre.sina.cn/interface/news/ncp/data.d.json?mod=province&province=beijing&&callback=beijingChartData&_=1665196104970"></script>
     <script>
+
         function getUrlParam(name) {
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
             var r = window.location.search.substr(1).match(reg);
@@ -345,9 +403,55 @@
             }
 
         })
+        //波浪纹特效
+        window.addEventListener('mousedown', function (e) {
+            //执行函数，并传入鼠标位置
+            box(e.clientX, e.clientY)
+
+            setTimeout(function () {
+                box(e.clientX, e.clientY)
+            }, 250)
+
+            setTimeout(function () {
+                box(e.clientX, e.clientY)
+            }, 500)
+
+        })
+
+        function box(left, top) {
+            //初始化样式
+            var box = document.createElement("div");
+            box.style.width = '5px';
+            box.style.height = '5px';
+            box.style.borderRadius = '50%';
+            box.style.border = 'rgb(94, 168, 252) 1px solid';
+            box.style.position = 'fixed';
+            box.style.top = top - 2.5 + 'px';          //减去元素的宽高，使元素中心位于鼠标点击位置
+            box.style.left = left - 2.5 + 'px';
+            box.style.opacity = 1;
+
+            //向body添加元素
+            document.body.appendChild(box);
+
+            //创建定时器，使波纹一圈圈放大并降低透明度
+            var timer = setInterval(function () {
+                box.style.opacity = box.style.opacity - 0.05;
+                box.style.width = parseInt(box.style.width) + 8 + 'px';
+                box.style.height = parseInt(box.style.height) + 8 + 'px';
+                box.style.left = parseInt(box.style.left) - 4 + 'px';
+                box.style.top = parseInt(box.style.top) - 4 + 'px';
+
+                if (box.style.opacity <= 0) {
+                    clearInterval(timer);
+                    box.parentNode.removeChild(box)
+                }
+            }, 50)
+        }
+
     </script>
 
     <script>
+        var audio = document.querySelector('audio')
         var plugin = new plugin();
         var week = ['星期日', '星期一', '星期二', '星期三', '星期四', '星期五', '星期六'];
         new Vue({
@@ -380,9 +484,21 @@
                     userInfo: {},
                     an_type: "",
                     selectIndex: -1,
+                    play: false,
                 }
             },
             methods: {
+                goPlay() {
+                    if (this.play) {
+                        audio.currentTime = 0;
+                        audio.pause();
+                        this.play = false;
+                    } else {
+                        audio.currentTime = 0;
+                        audio.play();
+                        this.play = true;
+                    }
+                },
                 updateTime() {
                     var cd = new Date();
                     this.dateTime = this.zeroPadding(cd.getHours(), 2) + ':' + this.zeroPadding(cd.getMinutes(), 2) + ':' + this.zeroPadding(cd.getSeconds(), 2);
@@ -449,7 +565,7 @@
                         window.location.href = './html/chaodian.html';
                     } else if (type === 7) {
                         window.location.href = './designer/index.html';
-                    }else if (type === 8) {
+                    } else if (type === 8) {
                         window.location.href = './html/collection.html';
                     }
                 },
@@ -569,6 +685,17 @@
                 this.init();
                 this.updateTime();
                 this.weather();
+                // axios.get('https://api.github.com/users/zxtss/repos').then(res => {
+                //     let data = [];
+                //     for (var i in res.data) {
+                //         if (res.data[i].name == 'public_music') {
+                //             data = res.data[i].description.split(',')
+                //         }
+                //     }
+                //     this.musicList=data;
+
+                // }).catch(err => {
+                // })
             }
         })
     </script>

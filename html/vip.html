@@ -15,7 +15,8 @@
 </head>
 
 <body>
-    <iframe id="vip" src="" frameborder="0" width="" height=""></iframe>
+    <iframe id="vip" webkitallowfullscreen="" mozallowfullscreen="" allowfullscreen="" src="" frameborder="0" width=""
+        height=""></iframe>
     <script src="../js/index.js"></script>
     <script>
         var plugin = new plugin();
@@ -24,7 +25,7 @@
         if (url) {
             document.getElementById('vip').width = document.body.clientWidth;
             document.getElementById('vip').height = document.body.clientHeight;
-            document.getElementById('vip').src = `${vip == 0 ? 'https://chaxun.truechat365.com' : vip == 1 ? 'https://okjx.cc' : vip == 2 ? 'https://www.weiserver.top/jiexi' : vip == 3 ? 'https://jiexi2.weiserver.top/jiexi' : vip == 4 ? 'https://jx.jsonplayer.com/player' : vip == 5 ? 'https://www.8090.la/8090' : 'https://jx.777jiexi.com/player'}/?url=${url}`;//路线
+            document.getElementById('vip').src = `${vip == 0 ? 'https://chaxun.truechat365.com' : vip == 1 ? 'https://43.240.74.102:4433' : vip == 2 ? 'https://www.weiserver.top/jiexi' : vip == 3 ? 'https://jiexi2.weiserver.top/jiexi' : vip == 4 ? 'https://jx.jsonplayer.com/player' : vip == 5 ? 'https://www.8090.la/8090' : 'https://jx.777jiexi.com/player'}/?url=${url}`;//路线
         } else {
             alert("请输入正确的地址命令")
         }
