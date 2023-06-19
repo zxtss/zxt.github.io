@@ -29,13 +29,7 @@
                             <el-menu :default-active="activeIndex" class="el-menu-i" mode="horizontal"
                                 @select="handleSelect">
                                 <el-menu-item index="1">网站首页</el-menu-item>
-                                <!-- <el-submenu index="2">
-                                <template slot="title">技术栈</template>
-                                <el-menu-item index="2-1">vue</el-menu-item>
-                                <el-menu-item index="2-2">react</el-menu-item>
-                                <el-menu-item index="2-3">uniapp</el-menu-item>
-                                <el-menu-item index="2-4">Android</el-menu-item>
-                            </el-submenu> -->
+                                <el-menu-item index="9" @click="go(10)">swiper</el-menu-item>
                                 <el-menu-item index="3">资源下载</el-menu-item>
                                 <el-menu-item index="4">文章</el-menu-item>
                                 <!-- <el-menu-item index="9">动画专区</el-menu-item> -->
@@ -245,7 +239,7 @@
                     <div class="out_bottom">
                         <img src="./images/t5.png" class="pic">
                     </div>
-    
+
                     <!--小正方体 -->
                     <span class="in_front">
                         <img src="./images/t6.png" class="in_pic">
@@ -547,6 +541,8 @@
                         window.location.href = './3D/index.html';
                     } else if (type === 8) {
                         window.location.href = './script_html/index.html';
+                    } else if (type === 10) {
+                        window.location.href = './script_html/s_index.html';
                     }
                 },
                 goPRO(type) {

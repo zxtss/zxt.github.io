@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="utf-8" />
+    <title></title>
+    <meta name="viewport" content="width=device-width, initial-scale=1, minimum-scale=1, maximum-scale=1" />
+    <link rel="stylesheet" href="https://unpkg.com/swiper@8/swiper-bundle.min.css">
+    <link rel="icon" href="../images/ETH.png" sizes="50x50">
+    <style>
+        html,
+        body {
+            position: relative;
+            height: 100%;
+        }
+
+        body {
+            background: #eee;
+            font-family: Helvetica Neue, Helvetica, Arial, sans-serif;
+            font-size: 14px;
+            color: #000;
+            margin: 0;
+            padding: 0;
+        }
+
+        .swiper {
+            width: 100%;
+            height: 100%;
+        }
+
+        .swiper-slide {
+            text-align: center;
+            font-size: 18px;
+            background: #fff;
+
+            /* Center slide text vertically */
+            display: -webkit-box;
+            display: -ms-flexbox;
+            display: -webkit-flex;
+            display: flex;
+            -webkit-box-pack: center;
+            -ms-flex-pack: center;
+            -webkit-justify-content: center;
+            justify-content: center;
+            -webkit-box-align: center;
+            -ms-flex-align: center;
+            -webkit-align-items: center;
+            align-items: center;
+        }
+
+        .swiper-slide img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            left: 0;
+            right: 0;
+            top: 0;
+            bottom: 0;
+            z-index: -1;
+        }
+
+        .swiper-slide iframe {
+            position: absolute;
+            left: 50px;
+        }
+
+        .swiper-slide .btn {
+            height: 100vh;
+            width: 100%;
+        }
+
+        /* 棱镜特效 */
+        figure {
+            width: 200px;
+            height: 60px;
+            cursor: pointer;
+            perspective: 500px;
+        }
+
+        figure div {
+            height: 100%;
+            transform-style: preserve-3d;
+            transition: 0.25s;
+        }
+
+        figure:hover div {
+            transform: rotateX(-90deg);
+        }
+
+        span {
+            width: 100%;
+            height: 100%;
+            position: absolute;
+            box-sizing: border-box;
+            border: 5px solid #fff;
+            font-family: 'Source Sans Pro', sans-serif;
+            line-height: 50px;
+            font-size: 17pt;
+            text-align: center;
+            text-transform: uppercase;
+        }
+
+        span:nth-child(1) {
+            color: #fff;
+            transform: translate3d(0, 0, 30px);
+        }
+
+        span:nth-child(2) {
+            color: #737f39;
+            background: #fff;
+            transform: rotateX(90deg) translate3d(0, 0, 30px);
+        }
+    </style>
+</head>
+
+<body>
+    <!-- Swiper -->
+    <div class="swiper mySwiper">
+        <div class="swiper-wrapper">
+            <div class="swiper-slide">
+                <img src="../images/i_1.jpg" alt="">
+                <iframe src="http://m.qd.bendibao.com/news/youjiachaxun/" width="350" height="600"
+                    scrolling="no"></iframe>
+            </div>
+            <div class="swiper-slide">
+                <img src="../images/i_2.jpg" alt="">
+                <div class="btn">
+
+                    <figure>
+                        <div>
+                            <span>Hover Me</span>
+                            <span>Button</span>
+                        </div>
+                    </figure>
+
+
+                </div>
+            </div>
+            <div class="swiper-slide">
+                <img src="../images/i_3.jpg" alt="">
+            </div>
+            <div class="swiper-slide">
+                <img src="../images/i_4.jpg" alt="">
+            </div>
+            <div class="swiper-slide">
+                <img src="../images/i_5.jpg" alt="">
+            </div>
+            <div class="swiper-slide">
+                <img src="../images/i_6.jpg" alt="">
+            </div>
+            <div class="swiper-slide">
+                <img src="../images/i_7.jpg" alt="">
+            </div>
+        </div>
+        <div class="swiper-pagination"></div>
+    </div>
+    <script src="https://unpkg.com/swiper@8/swiper-bundle.min.js"> </script>
+    <script>
+        var swiper = new Swiper(".mySwiper", {
+            direction: "vertical",
+            pagination: {
+                el: ".swiper-pagination",
+                clickable: true,
+            },
+        });
+    </script>
+</body>
+
+</html>
