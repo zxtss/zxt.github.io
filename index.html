@@ -55,6 +55,7 @@
                                     <el-menu-item index="2-5" @click="goPRO(6)">潮点视频大全</el-menu-item>
                                     <el-menu-item index="2-5" @click="goPRO(7)">在线设计工具</el-menu-item>
                                     <el-menu-item index="2-5" @click="goPRO(8)">收藏夹</el-menu-item>
+                                    <el-menu-item index="2-5" @click="goPRO(9)">在线编译器</el-menu-item>
                                     <!-- <el-menu-item index="2-5" @click="goPRO(6)">网站模板下载</el-menu-item> -->
                                 </el-submenu>
                                 <el-menu-item index="6">新闻资讯</el-menu-item>
@@ -563,6 +564,8 @@
                         window.location.href = './designer/index.html';
                     } else if (type === 8) {
                         window.location.href = './html/collection.html';
+                    } else if (type === 9) {
+                        window.location.href = './html/edit.html';
                     }
                 },
                 handleSelect(key) {
