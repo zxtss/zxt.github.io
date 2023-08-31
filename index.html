@@ -23,7 +23,7 @@
                         <div class="grid-content ">
                         </div>
                     </el-col>
-                    <el-col :span="16">
+                    <el-col :span="16" id="top">
                         <div class="grid-content placedTop"
                             style="background: url('./images/background.webp') no-repeat;">
                             <el-menu :default-active="activeIndex" class="el-menu-i" mode="horizontal"
@@ -309,7 +309,6 @@
     <script
         src="https://gwpre.sina.cn/interface/news/ncp/data.d.json?mod=province&province=beijing&&callback=beijingChartData&_=1665196104970"></script>
     <script>
-
         function getUrlParam(name) {
             var reg = new RegExp("(^|&)" + name + "=([^&]*)(&|$)");
             var r = window.location.search.substr(1).match(reg);
@@ -330,6 +329,13 @@
                 ) || (event.returnValue = false)
             });
         }
+        document.addEventListener('keydown', function (event) {
+            if (event.keyCode == 122) {
+                document.getElementById('top').style.display = 'none';
+            } else {
+                document.getElementById('top').style.display = 'block';
+            }
+        });
 
         //创建右键菜单
         var epMenu = {

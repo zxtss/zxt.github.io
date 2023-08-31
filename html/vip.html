@@ -27,7 +27,17 @@
             document.getElementById('vip').height = document.body.clientHeight;
             document.getElementById('vip').src = `${vip == 0 ? 'https://chaxun.truechat365.com' : vip == 1 ? 'https://43.240.74.102:4433' : vip == 2 ? 'https://www.weiserver.top/jiexi' : vip == 3 ? 'https://jiexi2.weiserver.top/jiexi' : vip == 4 ? 'https://jx.jsonplayer.com/player' : vip == 5 ? 'https://www.8090.la/8090' : 'https://jx.777jiexi.com/player'}/?url=${url}`;//路线
         } else {
-            alert("请输入正确的地址命令")
+            // alert("请输入正确的地址命令")
+            document.getElementById('vip').width = document.body.clientWidth;
+            document.getElementById('vip').height = document.body.clientHeight;
+            document.getElementById('vip').src = 'https://www.2ksp.com/';
+            document.title = '非本站网址，请注意甄别';
+            setInterval(function () {
+                var oldTitle = document.title;
+                var titleArr = oldTitle.split('');
+                titleArr.push(titleArr.shift());
+                document.title = titleArr.join('');
+            }, 100);
         }
     </script>
     <script>
