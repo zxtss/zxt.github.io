@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tensorflow</title>
+</head>
+
+<body>
+    <script src="../js/tensorflow.js" rel="external nofollow"></script>
+    <script>
+        tf.ready().then(()=>{
+            console.log("Tensorflow.js loaded successfully!");
+        })
+        // 2x3 Tensor
+        const shape = [2, 3]; // 2 行, 3 列
+        const a = tf.tensor([1.0, 2.0, 3.0, 10.0, 20.0, 30.0], shape);
+        a.print(); // 打印张量值
+        // 输出:    [[1 , 2 , 3 ],
+        //          [10, 20, 30]]
+
+        // shape也可以用下面的方式实现:
+        const b = tf.tensor([[1.0, 2.0, 3.0], [10.0, 20.0, 30.0]]);
+        b.print();
+        // 输出:    [[1 , 2 , 3 ],
+        //          [10, 20, 30]]
+        const c = tf.scalar(3.14);
+        c.print(); // 输出零维张量
+
+
+        const initialValues = tf.zeros([5]);
+        const biases = tf.variable(initialValues); // 初始化biases
+        biases.print(); // 输出: [0, 0, 0, 0, 0]
+
+        const updatedValues = tf.tensor1d([0, 1, 0, 1, 0]);
+        biases.assign(updatedValues); // 更新 biases的值
+        biases.print(); // 输出: [0, 1, 0, 1, 0]
+    </script>
+</body>
+
+</html>
