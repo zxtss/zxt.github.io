@@ -19,12 +19,21 @@
             align-items: center;
             padding-left: 10px;
         }
+
+        .search {
+            display: flex;
+            align-items: center;
+        }
     </style>
 </head>
 
 <body>
     <div id="app">
-        <div class="container">
+        <div class="container" v-loading="loading">
+            <div class="search">
+                <el-input type="text" v-model="key" placeholder="请输入"></el-input>
+                <el-button type="primary" style="margin-left: 10px;" @click="search">搜索</el-button>
+            </div>
             <p v-for="(item,index) in sourceList" :key="" index>{{item.key}}
                 <el-button type="success" @click="handleClick(item)" size="small">答案</el-button>
             </p>
@@ -40,6 +49,8 @@
             data() {
                 return {
                     sourceList: [],
+                    key: "",
+                    loading:true,
                 }
             },
             methods: {
@@ -49,7 +60,7 @@
                         `2、什么东西最硬？女孩子最喜欢，特别是结了婚的女人，更是爱死了。答案：钻石`,
                         `3、为什么小弟开车遇见交叉道从不停车 答案：因为他以前是开火车的。`,
                         `4、春运时，小张排队六天六夜到第一位了，为什么明明有票他却没有买到票呢？答案：小张排到第一位时高兴的死了！`,
-                        `5、请你把九匹马平均放在十个马圈里，并让每个马圈里的马的数目都相同，怎么办？ 把九匹马放到一个马圈里然后在这个马圈外再套九个马圈`,
+                        `5、请你把九匹马平均放在十个马圈里，并让每个马圈里的马的数目都相同，怎么办？ 答案：把九匹马放到一个马圈里然后在这个马圈外再套九个马圈`,
                         `6、请仔细想一想，你所见到的最大影子是什么？答案：地球的影子，即每天的晚上`,
                         `7、梁山伯和祝英台变成了一对比翼双飞的蝴蝶之后怎样了？  答案： 生了一堆毛毛虫`,
                         `8、在营休假的阿福和阿明，为什么躲在寝室里却搞得流血又流浓的好不畅快？  答案： 相互挤青春痘`,
@@ -862,11 +873,26 @@
                     let sourceList = [];
                     for (var i in dataList) {
                         sourceList.push({
-                            value: dataList[i].slice(dataList[i].indexOf('答案'), -1),
+                            value: dataList[i].slice(dataList[i].indexOf('答案'), dataList.length),
                             key: dataList[i].slice(0, dataList[i].indexOf('答案'))
                         })
                     }
                     this.sourceList = sourceList;
+                    this.loading=false;
+                },
+                search() {
+                    if (this.key) {
+                        let data = this.sourceList;
+                        let dataList = [];
+                        for (var i in data) {
+                            if (data[i].key.indexOf(this.key) > -1) {
+                                dataList.push(data[i]);
+                            }
+                        }
+                        this.sourceList = dataList;
+                    } else {
+                        this.init();
+                    }
                 },
                 handleClick(item) {
                     this.$message({ type: 'success', message: item.value });
